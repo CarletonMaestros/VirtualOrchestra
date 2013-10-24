@@ -15,7 +15,5 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         public delegate void VolumeChangedDelegate(float volume);
         static public event VolumeChangedDelegate VolumeChanged;
         static public void TriggerVolumeChanged(float volume) { VolumeChanged(volume); }
-        asdf
-
     }
 }
