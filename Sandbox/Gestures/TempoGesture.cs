@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Kinect;
 
-namespace Microsoft.Samples.Kinect.SkeletonBasics
+namespace Orchestra.Gestures
 {
     class TempoGesture
     {
@@ -54,7 +54,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
                         {
                             if (prevYTwo < (prevYOne -  threshold) && prevYOne < (rightHandY - threshold))
                             {
-                                Console.WriteLine((counter%4)+1);
+                                Console.WriteLine("Beat "+ (counter%4+1));
                                 seeking = 2;
                                 counter++;
                                 break;

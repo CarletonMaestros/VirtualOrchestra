@@ -8,8 +8,8 @@
     <ProjectGuid>{8121846D-923E-4BB0-8647-30DA753D156E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Samples.Kinect.SkeletonBasics</RootNamespace>
-    <AssemblyName>SkeletonBasics-WPF</AssemblyName>
+    <RootNamespace>Orchestra</RootNamespace>
+    <AssemblyName>Sandbox</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -73,6 +73,7 @@
     <Compile Include="Gestures\TempoGesture.cs" />
     <Compile Include="Gestures\VolumeGesture.cs" />
     <Compile Include="Dispatch.cs" />
+    <Compile Include="Loggers\Loggers.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

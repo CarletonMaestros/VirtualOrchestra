@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Microsoft.Samples.Kinect.SkeletonBasics.Gestures
+namespace Orchestra.Loggers
 {
-    class Gestures
+    class Loggers
     {
         /// <summary>
         /// Gesture recognizers (stored to prevent garbage collection)
         /// </summary>
-        private static List<object> gestures = new List<object>();
+        private static List<object> loggers = new List<object>();
 
         /// <summary>
-        /// Activate a bunch of gesture recognizers
+        /// Activate a bunch of loggers
         /// </summary>
         public static void Load()
         {
-            gestures.Add(new VolumeGesture());
-            gestures.Add(new TempoGesture());
         }
     }
 }
