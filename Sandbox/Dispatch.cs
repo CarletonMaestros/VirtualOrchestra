@@ -9,12 +9,12 @@ namespace Orchestra
     class Dispatch
     {
         public delegate void SkeletonMovedDelegate(Skeleton skeleton);
-        static public event SkeletonMovedDelegate SkeletonMoved;
-        static public void TriggerSkeletonMoved(Skeleton skeleton) { if (SkeletonMoved != null) SkeletonMoved(skeleton); }
+        public static event SkeletonMovedDelegate SkeletonMoved;
+        public static void TriggerSkeletonMoved(Skeleton skeleton) { if (SkeletonMoved != null) SkeletonMoved(skeleton); }
 
         public delegate void VolumeChangedDelegate(float volume);
-        static public event VolumeChangedDelegate VolumeChanged;
-        static public void TriggerVolumeChanged(float volume) { if (VolumeChanged != null) VolumeChanged(volume); }
+        public static event VolumeChangedDelegate VolumeChanged;
+        public static void TriggerVolumeChanged(float volume) { if (VolumeChanged != null) VolumeChanged(volume); }
     }
 }
 

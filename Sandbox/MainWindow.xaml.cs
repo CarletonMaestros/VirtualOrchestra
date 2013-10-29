@@ -180,8 +180,6 @@
             {
                 this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
-
-            Console.WriteLine("For some reason, deleting this print statement causes events to stop working. I have no fucking clue why.");
         }
 
         /// <summary>
@@ -214,11 +212,15 @@
                     skeletonFrame.CopySkeletonDataTo(skeletons);
                 }
             }
-
+            
             // Push event to the rest of the system
-            if (skeletons.Length > 0 && skeletons[0].TrackingState == SkeletonTrackingState.Tracked)
+            foreach (Skeleton skel in skeletons)
             {
-                Dispatch.TriggerSkeletonMoved(skeletons[0]);
+                if (skel.TrackingState == SkeletonTrackingState.Tracked)
+                {
+                    Dispatch.TriggerSkeletonMoved(skel);
+                    break;
+                }
             }
 
             // Draw skeletons
