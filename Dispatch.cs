@@ -10,10 +10,11 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
     {
         public delegate void SkeletonMovedDelegate(Skeleton skeleton);
         static public event SkeletonMovedDelegate SkeletonMoved;
-        static public void TriggerSkeletonMoved(Skeleton skeleton) { SkeletonMoved(skeleton); }
+        static public void TriggerSkeletonMoved(Skeleton skeleton) { if (SkeletonMoved != null) SkeletonMoved(skeleton); }
 
         public delegate void VolumeChangedDelegate(float volume);
         static public event VolumeChangedDelegate VolumeChanged;
-        static public void TriggerVolumeChanged(float volume) { VolumeChanged(volume); }
+        static public void TriggerVolumeChanged(float volume) { if (VolumeChanged != null) VolumeChanged(volume); }
     }
 }
+

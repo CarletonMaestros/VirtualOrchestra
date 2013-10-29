@@ -144,7 +144,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             // Add some gesture recognizers
-            gestures.Add(new VolumeGesture());
+            //gestures.Add(new VolumeGesture());
+            gestures.Add(new TempoGesture());
 
             // Create the drawing group we'll use for drawing
             this.drawingGroup = new DrawingGroup();
@@ -191,6 +192,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
             {
                 this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
+
+            Console.WriteLine("For some reason, deleting this print statement causes events to stop working. I have no fucking clue why.");
         }
 
         /// <summary>
@@ -225,7 +228,7 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
             }
 
             // Push event to the rest of the system
-            if (skeletons.Length > 0)
+            if (skeletons.Length > 0 && skeletons[0].TrackingState == SkeletonTrackingState.Tracked)
             {
                 Dispatch.TriggerSkeletonMoved(skeletons[0]);
             }
