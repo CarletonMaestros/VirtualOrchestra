@@ -8,7 +8,7 @@ namespace Orchestra.Sandbox.Loggers
     class Loggers
     {
         /// <summary>
-        /// Gesture recognizers (stored to prevent garbage collection)
+        /// Loggers (stored to prevent garbage collection)
         /// </summary>
         private static List<object> loggers = new List<object>();
 
