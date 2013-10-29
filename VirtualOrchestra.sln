@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dispatch", "Dispatch\Dispatch.csproj", "{F190E14D-FEF2-49FF-AEC1-118209A207F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gestures", "Gestures\Gestures.csproj", "{30440EA9-6E96-4B4C-9057-814EC231B9F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{F190E14D-FEF2-49FF-AEC1-118209A207F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F190E14D-FEF2-49FF-AEC1-118209A207F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F190E14D-FEF2-49FF-AEC1-118209A207F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30440EA9-6E96-4B4C-9057-814EC231B9F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30440EA9-6E96-4B4C-9057-814EC231B9F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30440EA9-6E96-4B4C-9057-814EC231B9F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30440EA9-6E96-4B4C-9057-814EC231B9F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

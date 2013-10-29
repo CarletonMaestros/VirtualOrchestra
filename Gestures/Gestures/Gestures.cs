@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Orchestra.Sandbox.Gestures
+namespace Orchestra.Gestures
 {
-    class Gestures
+    public class Gestures
     {
         /// <summary>
         /// Gesture recognizers (stored to prevent garbage collection)

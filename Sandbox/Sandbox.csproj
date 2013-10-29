@@ -69,9 +69,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gestures\Gestures.cs" />
-    <Compile Include="Gestures\TempoGesture.cs" />
-    <Compile Include="Gestures\VolumeGesture.cs" />
     <Compile Include="Loggers\Loggers.cs" />
     <Compile Include="Loggers\BeatLogger.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -116,6 +113,10 @@
     <ProjectReference Include="..\Dispatch\Dispatch.csproj">
       <Project>{f190e14d-fef2-49ff-aec1-118209a207f9}</Project>
       <Name>Dispatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gestures\Gestures.csproj">
+      <Project>{30440ea9-6e96-4b4c-9057-814ec231b9f9}</Project>
+      <Name>Gestures</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

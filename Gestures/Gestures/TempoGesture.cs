@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Microsoft.Kinect;
 
-namespace Orchestra.Sandbox.Gestures
+namespace Orchestra.Gestures
 {
-    class TempoGesture
+    public class TempoGesture
     {
         public Int32 counter;
         public int seeking;
