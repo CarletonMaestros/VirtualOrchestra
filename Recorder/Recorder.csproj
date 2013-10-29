@@ -65,16 +65,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dispatch\Dispatch.csproj">
-      <Project>{f190e14d-fef2-49ff-aec1-118209a207f9}</Project>
-      <Name>Dispatch</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Gestures\Gestures.csproj">
-      <Project>{30440ea9-6e96-4b4c-9057-814ec231b9f9}</Project>
-      <Name>Gestures</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>

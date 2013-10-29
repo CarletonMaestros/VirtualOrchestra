@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Kinect;
 
@@ -63,13 +64,13 @@ namespace Orchestra.Recorder
             // Jank-ass shit
             if (stopwatch == null)
             {
-                Console.WriteLine(@"Found skeleton! Recording to Desktop\Output.txt");
+                Console.WriteLine(@"Found skeleton! Recording to Desktop\Output.csv");
 
                 // Start timer
                 stopwatch = Stopwatch.StartNew();
 
                 // Open output file
-                file = new System.IO.StreamWriter(@"C:\Users\admin\Desktop\Output.txt");
+                file = new System.IO.StreamWriter(@"C:\Users\admin\Desktop\Output.csv");
 
                 // Write headers
                 file.Write("Time");
@@ -96,6 +97,7 @@ namespace Orchestra.Recorder
                 }
             }
             file.WriteLine();
+            file.Flush();
         }
 
         static void Main(string[] args)
@@ -104,6 +106,8 @@ namespace Orchestra.Recorder
             Console.WriteLine("Press <Enter> to quit.\n");
             Console.WriteLine("Looking for skeleton...");
             Console.ReadLine();
+            sensor.SkeletonFrameReady -= SkeletonFrameReady;
+            Thread.Sleep(100);
         }
     }
 }
