@@ -84,11 +84,6 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         private DrawingImage imageSource;
 
         /// <summary>
-        /// Gesture recognizers (stored to prevent garbage collection)
-        /// </summary>
-        private List<object> gestures = new List<object>();
-
-        /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
         public MainWindow()
@@ -143,9 +138,8 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
         /// <param name="e">event arguments</param>
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            // Add some gesture recognizers
-            //gestures.Add(new VolumeGesture());
-            gestures.Add(new TempoGesture());
+            // Load components
+            Gestures.Gestures.Load();
 
             // Create the drawing group we'll use for drawing
             this.drawingGroup = new DrawingGroup();

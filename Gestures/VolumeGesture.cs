@@ -20,11 +20,6 @@ namespace Microsoft.Samples.Kinect.SkeletonBasics
 
         void SkeletonMoved(Skeleton skel)
         {
-            // Do some very complicated processing
-            // to finally arrive, exhausted,
-            // at the perfect volume...
-            Console.WriteLine("Weeeee!");
-            Dispatch.TriggerVolumeChanged(11);
         }
     }
 }
