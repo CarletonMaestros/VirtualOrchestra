@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Kinect;
 
-namespace Orchestra.Gestures
+namespace Orchestra.Sandbox.Gestures
 {
     class TempoGesture
     {

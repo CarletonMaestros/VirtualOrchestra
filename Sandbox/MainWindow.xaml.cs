@@ -1,4 +1,4 @@
-﻿namespace Orchestra
+﻿namespace Orchestra.Sandbox
 {
     using System;
     using System.Collections.Generic;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Kinect;
 
-namespace Orchestra.Loggers
+namespace Orchestra.Sandbox.Loggers
 {
     class BeatLogger
     {

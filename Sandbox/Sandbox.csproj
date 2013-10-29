@@ -8,7 +8,7 @@
     <ProjectGuid>{8121846D-923E-4BB0-8647-30DA753D156E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Orchestra</RootNamespace>
+    <RootNamespace>Orchestra.Sandbox</RootNamespace>
     <AssemblyName>Sandbox</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -72,7 +72,6 @@
     <Compile Include="Gestures\Gestures.cs" />
     <Compile Include="Gestures\TempoGesture.cs" />
     <Compile Include="Gestures\VolumeGesture.cs" />
-    <Compile Include="Dispatch.cs" />
     <Compile Include="Loggers\Loggers.cs" />
     <Compile Include="Loggers\BeatLogger.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -112,6 +111,12 @@
     <Resource Include="Images\CheckedNormal.png" />
     <Resource Include="Images\UncheckedHover.png" />
     <Resource Include="Images\UncheckedNormal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dispatch\Dispatch.csproj">
+      <Project>{f190e14d-fef2-49ff-aec1-118209a207f9}</Project>
+      <Name>Dispatch</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

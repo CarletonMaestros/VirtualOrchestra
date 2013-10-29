@@ -6,7 +6,7 @@ using Microsoft.Kinect;
 
 namespace Orchestra
 {
-    class Dispatch
+    public class Dispatch
     {
         public delegate void SkeletonMovedDelegate(Skeleton skeleton);
         public static event SkeletonMovedDelegate SkeletonMoved;
@@ -21,4 +21,3 @@ namespace Orchestra
         public static void TriggerBeat(int beat) { if (Beat != null) Beat(beat); }
     }
 }
-
