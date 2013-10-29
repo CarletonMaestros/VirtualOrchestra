@@ -54,7 +54,7 @@ namespace Orchestra.Gestures
                         {
                             if (prevYTwo < (prevYOne -  threshold) && prevYOne < (rightHandY - threshold))
                             {
-                                Console.WriteLine("Beat "+ (counter%4+1));
+                                Dispatch.TriggerBeat(counter % 4 + 1);
                                 seeking = 2;
                                 counter++;
                                 break;

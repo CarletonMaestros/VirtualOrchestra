@@ -17,6 +17,7 @@ namespace Orchestra.Loggers
         /// </summary>
         public static void Load()
         {
+            loggers.Add(new BeatLogger());
         }
     }
 }

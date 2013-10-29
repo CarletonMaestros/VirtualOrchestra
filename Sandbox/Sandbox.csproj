@@ -74,6 +74,7 @@
     <Compile Include="Gestures\VolumeGesture.cs" />
     <Compile Include="Dispatch.cs" />
     <Compile Include="Loggers\Loggers.cs" />
+    <Compile Include="Loggers\BeatLogger.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
