@@ -4,6 +4,7 @@
 
 .hg
 .hgignore
+*.userprefs
 
 
 #################
