@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gestures", "Gestures\Gestur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recorder", "Recorder\Recorder.csproj", "{361619D9-0CF1-4E6B-878F-FF6A60FE0639}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sanford.Multimedia.Midi", "Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.csproj", "{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequencerDemo", "SequencerDemo\SequencerDemo.csproj", "{90480CE5-E392-4713-AB5C-7D659ACA0B85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,14 @@ Global
 		{361619D9-0CF1-4E6B-878F-FF6A60FE0639}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{361619D9-0CF1-4E6B-878F-FF6A60FE0639}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{361619D9-0CF1-4E6B-878F-FF6A60FE0639}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90480CE5-E392-4713-AB5C-7D659ACA0B85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90480CE5-E392-4713-AB5C-7D659ACA0B85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90480CE5-E392-4713-AB5C-7D659ACA0B85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90480CE5-E392-4713-AB5C-7D659ACA0B85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
