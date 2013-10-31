@@ -69,6 +69,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Class1.cs" />
     <Compile Include="Loggers\Loggers.cs" />
     <Compile Include="Loggers\BeatLogger.cs" />
     <Compile Include="MainWindow.xaml.cs">

@@ -1,0 +1,155 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Kinect;
+
+namespace Orchestra.Gestures
+{
+    public class TempoGestureII
+    {
+        public class CircularFloatQueue
+        {
+            private float[] queueStorage;
+            private int firstElementIndex;
+            private int capacity;
+            private int numElements;
+
+            public CircularFloatQueue(int size)
+            {
+                queueStorage = new float[size];
+                capacity = size;
+                firstElementIndex = 0;
+            }
+
+            public void enqueue(float element)
+            {
+                if (numElements < capacity)
+                {
+                    queueStorage[firstElementIndex + numElements] = element;
+                    numElements++;
+                }
+                else if (numElements == capacity)
+                {
+                    queueStorage[firstElementIndex] = element;
+                    firstElementIndex = (firstElementIndex + 1) % capacity;
+                }
+            }
+
+            public float get(int index)
+            {
+                return queueStorage[(firstElementIndex + capacity - index - 1) % capacity];
+            }
+
+            public float diff(int x, int y)
+            {
+                return this.get(x) - this.get(y);
+            }
+
+            public Boolean isFull()
+            {
+                if (numElements == capacity)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public int seeking;
+        public float X;
+        public float Y;
+        public float headX;
+        public float headY;
+        public CircularFloatQueue recentX;
+        public CircularFloatQueue recentY;
+        public float threshold;
+        public int numXSaved;
+        public int numYSaved;
+        Boolean conducting;
+        int counter;
+
+        public TempoGestureII()
+        {
+            Dispatch.SkeletonMoved += this.SkeletonMoved;
+            numXSaved = 8;
+            numYSaved = 6;
+            recentX = new CircularFloatQueue(numXSaved);
+            recentY = new CircularFloatQueue(numYSaved);
+            conducting = true;
+            counter = 0;
+        }
+
+        ~TempoGestureII()
+        {
+            Dispatch.SkeletonMoved -= this.SkeletonMoved;
+        }
+
+        void SkeletonMoved(Skeleton skel)
+        {
+            foreach (Joint joint in skel.Joints)
+            {
+                // Grab the hand coordinates.
+                if (joint.JointType == JointType.HandRight)
+                {
+                    Y = joint.Position.Y;
+                    /*if (Y < .6) 
+                    {
+                        Console.WriteLine(Y);
+                    }*/
+                    X = joint.Position.X;
+                }
+                // As the starting motion requires the right hand to be close to the 
+                // head, grab the head coordinates if conducting has not yet begun.
+                if (!conducting)
+                {
+                    if (joint.JointType == JointType.Head)
+                    {
+                        headY = joint.Position.Y;
+                        headX = joint.Position.X;
+
+                    }
+                }
+
+            }
+            // When there are atleast max(numXSaved, numYSaved) frames 
+            // of data, begin looking for gestures.  
+            if (recentX.isFull() && recentY.isFull())
+            {
+                if (conducting)
+                {
+                    //Console.WriteLine(recentY.get(4) + "\t" + recentY.get(3) + "\t" + recentY.get(2) + "\t" + recentY.get(1) + "\t" + recentY.get(0));
+                    if (recentY.diff(numYSaved - 1, 1) > .09 && recentY.diff(1, 2) < 0 && recentY.diff(1, 2) > -.05 && recentY.diff(0, 1) < 0 && recentY.diff(0, 1) > -.04 && Math.Abs(Y - recentY.get(0)) < .01)
+                    {
+                        //Console.WriteLine(0);
+                        //Dispatch.TriggerBeat(1);
+                        if (counter % 4 == 0)
+                        {
+                            Console.WriteLine("\n>>>");
+                        }
+                        if (counter % 4 == 1)
+                        {
+                            Console.WriteLine("\n>>>>>>>>>>");
+                        }
+                        if (counter % 4 == 2)
+                        {
+                            Console.WriteLine("\n>>>>>>>>>>>>>>>>>");
+                        }
+                        if (counter % 4 == 3)
+                        {
+                            Console.WriteLine("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                        }
+                        counter++;
+                    }
+                }
+                
+            }
+            recentX.enqueue(X);
+            recentY.enqueue(Y);
+            
+        }
+    }
+}

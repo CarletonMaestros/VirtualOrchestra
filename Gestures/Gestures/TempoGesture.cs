@@ -44,7 +44,7 @@ namespace Orchestra.Gestures
                     {
                         rightHandY = joint.Position.Y;
                         rightHandX = joint.Position.X;
-                        //Console.WriteLine(rightHandY);
+                        Console.WriteLine(rightHandX + "\t" + rightHandY);
                         //Console.WriteLine(prevYOne);
                     }
                 }
@@ -54,7 +54,7 @@ namespace Orchestra.Gestures
                         {
                             if (prevYTwo < (prevYOne -  threshold) && prevYOne < (rightHandY - threshold))
                             {
-                                Dispatch.TriggerBeat(counter % 4 + 1);
+                                //Dispatch.TriggerBeat(counter % 4 + 1);
                                 seeking = 2;
                                 counter++;
                                 break;
