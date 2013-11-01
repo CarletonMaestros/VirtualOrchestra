@@ -66,7 +66,14 @@ namespace Orchestra.Gestures
         public float headY;
         public CircularFloatQueue recentX;
         public CircularFloatQueue recentY;
+        public float changeInX;
+        public float changeInY;
+        public float combinedChange;
+        public float changeInXSmoothed;
+        public float changeInYSmoothed;
+        public float combinedChangeSmoothed;
         public float threshold;
+        public float weight;
         public int numXSaved;
         public int numYSaved;
         Boolean conducting;
@@ -75,8 +82,9 @@ namespace Orchestra.Gestures
         public TempoGestureII()
         {
             Dispatch.SkeletonMoved += this.SkeletonMoved;
-            numXSaved = 8;
-            numYSaved = 6;
+            numXSaved = 2;
+            numYSaved = 2;
+            weight = 3;
             recentX = new CircularFloatQueue(numXSaved);
             recentY = new CircularFloatQueue(numYSaved);
             conducting = true;
@@ -87,6 +95,7 @@ namespace Orchestra.Gestures
         {
             Dispatch.SkeletonMoved -= this.SkeletonMoved;
         }
+
 
         void SkeletonMoved(Skeleton skel)
         {
@@ -110,7 +119,6 @@ namespace Orchestra.Gestures
                     {
                         headY = joint.Position.Y;
                         headX = joint.Position.X;
-
                     }
                 }
 
@@ -119,7 +127,14 @@ namespace Orchestra.Gestures
             // of data, begin looking for gestures.  
             if (recentX.isFull() && recentY.isFull())
             {
-                if (conducting)
+                changeInX = X - recentX.get(0);
+                changeInY = Y - recentY.get(0);
+                combinedChange = Math.Sqrt(Math.Pow(changeInX, 2) + Math.Pow(changeInY, 2));
+                changeInXSmoothed = (changeInXSmoothed + weight * changeInX) / (weight + 1);
+                changeInYSmoothed = (changeInYSmoothed + weight * changeInY) / (weight + 1);
+                combinedChangeSmoothed = Math.Sqrt(Math.Pow(changeInXSmoothed, 2) + Math.Pow(changeInYSmoothed, 2));
+                Console.WriteLine(Y + "\t" + changeInY + "\t" + changeInYSmoothed + "\t" + combinedChange + "\t" + combinedChangeSmoothed);
+                /*if (conducting)
                 {
                     //Console.WriteLine(recentY.get(4) + "\t" + recentY.get(3) + "\t" + recentY.get(2) + "\t" + recentY.get(1) + "\t" + recentY.get(0));
                     if (recentY.diff(numYSaved - 1, 1) > .09 && recentY.diff(1, 2) < 0 && recentY.diff(1, 2) > -.05 && recentY.diff(0, 1) < 0 && recentY.diff(0, 1) > -.04 && Math.Abs(Y - recentY.get(0)) < .01)
@@ -144,8 +159,7 @@ namespace Orchestra.Gestures
                         }
                         counter++;
                     }
-                }
-                
+                } */
             }
             recentX.enqueue(X);
             recentY.enqueue(Y);
