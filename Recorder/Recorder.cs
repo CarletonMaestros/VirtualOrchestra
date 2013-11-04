@@ -64,13 +64,13 @@ namespace Orchestra.Recorder
             // Jank-ass shit
             if (stopwatch == null)
             {
-                Console.WriteLine(@"Found skeleton! Recording to Desktop\Output.csv");
+                Console.WriteLine(@"Found skeleton! Recording to Desktop\Dance.csv");
 
                 // Start timer
                 stopwatch = Stopwatch.StartNew();
 
                 // Open output file
-                file = new System.IO.StreamWriter(@"C:\Users\admin\Desktop\Output.csv");
+                file = new System.IO.StreamWriter(@"C:\Users\admin\Desktop\Dance.csv");
 
                 // Write headers
                 file.Write("Time");
@@ -89,7 +89,7 @@ namespace Orchestra.Recorder
                 if (joint.TrackingState == JointTrackingState.Tracked)
                 {
                     SkeletonPoint p = joint.Position;
-                    file.Write(", " + p.X + ", " + p.Y + ", " + p.Z);
+                    file.Write(", {0}, {1}, {2}", p.X.ToString("#.##"), p.Y.ToString("#.##"), p.Z.ToString("#.##"));
                 }
                 else
                 {
