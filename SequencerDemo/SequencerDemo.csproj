@@ -61,6 +61,7 @@
     <Compile Include="AboutDialog.Designer.cs">
       <DependentUpon>AboutDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="LiveMidi.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

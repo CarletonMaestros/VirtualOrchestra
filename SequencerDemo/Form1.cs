@@ -225,7 +225,6 @@ namespace SequencerDemo
 
             outDevice.Send(e.Message);
             pianoControl1.Send(e.Message);
-            //Console.WriteLine(e.Message.Data1);
 
             Console.Write(e.Message.Command);
             Console.Write(": ");
@@ -308,6 +307,7 @@ namespace SequencerDemo
         {
 
             sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(numericUpDown1.Value));
-        }        
+        }
+               
     }
 }

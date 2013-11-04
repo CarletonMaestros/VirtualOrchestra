@@ -51,8 +51,9 @@ namespace SequencerDemo
             this.pianoControl1 = new Sanford.Multimedia.Midi.UI.PianoControl();
             this.sequence1 = new Sanford.Multimedia.Midi.Sequence();
             this.sequencer1 = new Sanford.Multimedia.Midi.Sequencer();
-
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+
+
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -261,6 +262,7 @@ namespace SequencerDemo
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Sequencer Demo";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
