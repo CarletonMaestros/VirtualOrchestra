@@ -77,7 +77,7 @@ namespace Orchestra.Recorder
                 foreach (Joint joint in skel.Joints)
                 {
                     JointType t = joint.JointType;
-                    file.Write(", " + t + ".X, " + t + ".Y, " + t + ".Z");
+                    file.Write("," + t + ".X," + t + ".Y," + t + ".Z");
                 }
                 file.WriteLine();
             }
@@ -89,11 +89,11 @@ namespace Orchestra.Recorder
                 if (joint.TrackingState == JointTrackingState.Tracked)
                 {
                     SkeletonPoint p = joint.Position;
-                    file.Write(", {0}, {1}, {2}", p.X.ToString("#.##"), p.Y.ToString("#.##"), p.Z.ToString("#.##"));
+                    file.Write(",{0},{1},{2}", p.X.ToString("#.##"), p.Y.ToString("#.##"), p.Z.ToString("#.##"));
                 }
                 else
                 {
-                    file.Write(", , , ");
+                    file.Write(",,,");
                 }
             }
             file.WriteLine();

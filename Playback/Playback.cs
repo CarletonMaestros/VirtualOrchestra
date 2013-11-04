@@ -15,8 +15,9 @@ namespace Orchestra.Playback
             var dict = new Dictionary<String, float>();
             for (var i = 0; i < row.Length; ++i)
             {
-                var x = row[i];
-                dict[headers[i]] = row[i] == "" ? float.NaN : float.Parse(row[i]);
+                float x;
+                bool valid = float.TryParse(row[i], out x);
+                dict[headers[i]] = valid ? x : float.NaN;
             }
             return dict;
         }
@@ -57,7 +58,7 @@ namespace Orchestra.Playback
         static void Main(string[] args)
         {
             Gestures.Load();
-            ReadCSV(@"C:\Users\Calder\Desktop\Dance.csv");
+            ReadCSV(@"C:\Users\admin\Desktop\Dance.csv");
             Console.ReadLine();
         }
     }

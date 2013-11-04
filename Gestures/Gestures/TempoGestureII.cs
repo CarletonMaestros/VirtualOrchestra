@@ -74,6 +74,7 @@ namespace Orchestra
         public int numYSaved;
         Boolean conducting;
         int counter;
+
         public TempoGestureII()
         {
             Dispatch.SkeletonMoved += this.SkeletonMoved;
@@ -91,8 +92,7 @@ namespace Orchestra
             Dispatch.SkeletonMoved -= this.SkeletonMoved;
         }
 
-
-        void SkeletonMoved(Skeleton skel)
+        private void SkeletonMoved(Skeleton skel)
         {
             foreach (Joint joint in skel.Joints)
             {
