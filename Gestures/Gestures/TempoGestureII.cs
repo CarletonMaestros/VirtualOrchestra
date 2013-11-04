@@ -8,21 +8,21 @@ namespace Orchestra
 {
     public class TempoGestureII
     {
-        public class CircularFloatQueue
+        public class CircularQueue<X>
         {
-            private float[] queueStorage;
+            private X[] queueStorage;
             private int firstElementIndex;
             private int capacity;
             private int numElements;
 
-            public CircularFloatQueue(int size)
+            public CircularQueue(int size)
             {
-                queueStorage = new float[size];
+                queueStorage = new X[size];
                 capacity = size;
                 firstElementIndex = 0;
             }
 
-            public void enqueue(float element)
+            public void enqueue(X element)
             {
                 if (numElements < capacity)
                 {
@@ -36,15 +36,11 @@ namespace Orchestra
                 }
             }
 
-            public float get(int index)
+            public X get(int index)
             {
                 return queueStorage[(firstElementIndex + capacity - index - 1) % capacity];
             }
 
-            public float diff(int x, int y)
-            {
-                return this.get(x) - this.get(y);
-            }
 
             public Boolean isFull()
             {
@@ -64,8 +60,8 @@ namespace Orchestra
         public float Y;
         public float headX;
         public float headY;
-        public CircularFloatQueue recentX;
-        public CircularFloatQueue recentY;
+        public CircularQueue<float> recentX;
+        public CircularQueue<float> recentY;
         public float changeInX;
         public float changeInY;
         public float combinedChange;
@@ -78,15 +74,14 @@ namespace Orchestra
         public int numYSaved;
         Boolean conducting;
         int counter;
-
         public TempoGestureII()
         {
             Dispatch.SkeletonMoved += this.SkeletonMoved;
             numXSaved = 2;
             numYSaved = 2;
-            weight = 3;
-            recentX = new CircularFloatQueue(numXSaved);
-            recentY = new CircularFloatQueue(numYSaved);
+            weight = 2;
+            recentX = new CircularQueue<float>(numXSaved);
+            recentY = new CircularQueue<float>(numYSaved);
             conducting = true;
             counter = 0;
         }
@@ -130,10 +125,10 @@ namespace Orchestra
                 changeInX = X - recentX.get(0);
                 changeInY = Y - recentY.get(0);
                 combinedChange = (float)Math.Sqrt(Math.Pow(changeInX, 2) + Math.Pow(changeInY, 2));
-                changeInXSmoothed = (changeInXSmoothed + weight * changeInX) / (weight + 1);
+                changeInXSmoothed = (changeInXSmoothed + weight * changeInX) / (weight + 1); 
                 changeInYSmoothed = (changeInYSmoothed + weight * changeInY) / (weight + 1);
                 combinedChangeSmoothed = (float)Math.Sqrt(Math.Pow(changeInXSmoothed, 2) + Math.Pow(changeInYSmoothed, 2));
-                Console.WriteLine(Y + "\t" + changeInY + "\t" + changeInYSmoothed + "\t" + combinedChange + "\t" + combinedChangeSmoothed);
+                Console.WriteLine(Y + "\t" + changeInY + "\t" + changeInYSmoothed);
                 /*if (conducting)
                 {
                     //Console.WriteLine(recentY.get(4) + "\t" + recentY.get(3) + "\t" + recentY.get(2) + "\t" + recentY.get(1) + "\t" + recentY.get(0));
