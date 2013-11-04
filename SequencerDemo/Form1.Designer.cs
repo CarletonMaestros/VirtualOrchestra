@@ -47,16 +47,16 @@ namespace SequencerDemo
             this.openMidiFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+
             this.pianoControl1 = new Sanford.Multimedia.Midi.UI.PianoControl();
             this.sequence1 = new Sanford.Multimedia.Midi.Sequence();
             this.sequencer1 = new Sanford.Multimedia.Midi.Sequencer();
+
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
             // 
             // stopButton
@@ -244,30 +244,11 @@ namespace SequencerDemo
             0});
             this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(286, 222);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(63, 20);
-            this.numericUpDown2.TabIndex = 8;
-            this.numericUpDown2.Value = new decimal(new int[] {
-            63,
-            0,
-            0,
-            0});
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged_1);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(457, 318);
-            this.Controls.Add(this.numericUpDown2);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pianoControl1);
@@ -285,7 +266,6 @@ namespace SequencerDemo
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -314,7 +294,6 @@ namespace SequencerDemo
         private Sequencer sequencer1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
     }
 }
 

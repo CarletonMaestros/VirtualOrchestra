@@ -306,25 +306,8 @@ namespace SequencerDemo
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
+
             sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(numericUpDown1.Value));
-        }
-
-        private void numericUpDown2_ValueChanged_1(object sender, EventArgs e)
-        {
-            for (int i = 0; i <= 15; i++)
-            {
-                outDevice.Send(new ChannelMessage(ChannelCommand.Controller, i, 11, Convert.ToInt32(numericUpDown2.Value)));
-            }
-        }
-        /*
-        Constructor ()
-        {
-            Dispatch.VolumeChanged += this.VolumeChanged;
-        }
-
-        private void VolumeChanged(float volume)
-        {
-        }
-        */
+        }        
     }
 }

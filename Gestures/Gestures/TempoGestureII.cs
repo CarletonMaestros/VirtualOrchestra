@@ -129,10 +129,10 @@ namespace Orchestra.Gestures
             {
                 changeInX = X - recentX.get(0);
                 changeInY = Y - recentY.get(0);
-                combinedChange = (float)Math.Sqrt(Math.Pow((double)changeInX, 2) + Math.Pow((double)changeInY, 2));
+                combinedChange = (float)Math.Sqrt(Math.Pow(changeInX, 2) + Math.Pow(changeInY, 2));
                 changeInXSmoothed = (changeInXSmoothed + weight * changeInX) / (weight + 1);
                 changeInYSmoothed = (changeInYSmoothed + weight * changeInY) / (weight + 1);
-                combinedChangeSmoothed = (float)Math.Sqrt(Math.Pow((double)changeInXSmoothed, 2) + Math.Pow((double)changeInYSmoothed, 2));
+                combinedChangeSmoothed = (float)Math.Sqrt(Math.Pow(changeInXSmoothed, 2) + Math.Pow(changeInYSmoothed, 2));
                 Console.WriteLine(Y + "\t" + changeInY + "\t" + changeInYSmoothed + "\t" + combinedChange + "\t" + combinedChangeSmoothed);
                 /*if (conducting)
                 {
