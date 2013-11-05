@@ -99,6 +99,26 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dispatch\Dispatch.csproj">
+      <Project>{f190e14d-fef2-49ff-aec1-118209a207f9}</Project>
+      <Name>Dispatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gestures\Gestures.csproj">
+      <Project>{30440ea9-6e96-4b4c-9057-814ec231b9f9}</Project>
+      <Name>Gestures</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Playback\Playback.csproj">
+      <Project>{82c6d2ec-0972-4a19-8529-6d6b1a245a20}</Project>
+      <Name>Playback</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Recorder\Recorder.csproj">
+      <Project>{361619d9-0cf1-4e6b-878f-ff6a60fe0639}</Project>
+      <Name>Recorder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sandbox\Sandbox.csproj">
+      <Project>{8121846d-923e-4bb0-8647-30da753d156e}</Project>
+      <Name>Sandbox</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.csproj">
       <Project>{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}</Project>
       <Name>Sanford.Multimedia.Midi</Name>
