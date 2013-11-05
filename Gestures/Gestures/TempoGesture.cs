@@ -121,7 +121,7 @@ namespace Orchestra
             {
                 case "START":
                     {
-                        if ()
+                        if (true) // FIXME!!!
                         {
 
                         }

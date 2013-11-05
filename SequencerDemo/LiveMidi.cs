@@ -32,17 +32,16 @@ namespace Orchestra.LiveMidi
 
         public LiveMidi()
         {
-            Dispatch.Tick += this.Tick;        
+            Dispatch.Beat += this.Beat;        
         }
 
         ~LiveMidi()
         {
-            Dispatch.SkeletonMoved -= this.SkeletonMoved;
+            Dispatch.Beat -= this.Beat;
         }
 
-        private void Beat()
+        private void Beat(int beat)
         {
-
         }
         private void InitializeComponent()
         {
