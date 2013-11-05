@@ -4,6 +4,13 @@ using System.Text;
 using Sanford.Multimedia.Midi;
 using Sanford.Multimedia.Midi.UI;
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Diagnostics;
+using Microsoft.Kinect;
+
 using System.ComponentModel; //AsyncCompletedEventArgs
 
 
@@ -20,8 +27,22 @@ namespace Orchestra.LiveMidi
         private Sequencer sequencer1;
         private OutputDevice outDevice;
         private int outDeviceID = 0;
+        private Int32 TempoData;
         //private OutputDeviceDialog outDialog = new OutputDeviceDialog();
 
+        public LiveMidi()
+        {
+            Dispatch.Beat += this.Beat;        
+        }
+
+        ~LiveMidi()
+        {
+            Dispatch.Beat -= this.Beat;
+        }
+
+        private void Beat(int beat)
+        {
+        }
         private void InitializeComponent()
         {
             this.sequence1 = new Sanford.Multimedia.Midi.Sequence();

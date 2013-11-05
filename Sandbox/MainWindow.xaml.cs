@@ -133,7 +133,7 @@
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             // Load components
-            Gestures.Gestures.Load();
+            Gestures.Load();
             Loggers.Loggers.Load();
 
             // Create the drawing group we'll use for drawing

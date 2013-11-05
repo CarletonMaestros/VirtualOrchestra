@@ -18,6 +18,6 @@ namespace Orchestra
 
         public delegate void BeatDelegate(int beat);
         public static event BeatDelegate Beat;
-        public static void TriggerBeat(int beat) { if (Beat != null) Beat(beat); }
+        public static void TriggerBeat(int beat) { if (beat != null) Beat(beat); }
     }
 }
