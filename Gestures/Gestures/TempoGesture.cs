@@ -66,6 +66,7 @@ namespace Orchestra
         }
 
         public Int32 counter;
+        public Stopwatch stopwatch;
         public String seeking;
         public float prevYOne;
         public float prevYTwo;
@@ -74,20 +75,23 @@ namespace Orchestra
         public float rightHandY;
         public float rightHandX;
         public float threshold;
-        public Stopwatch stopwatch;
         public Boolean conducting;
         public CircularQueue<string> recentEvents;
+        public int stillFramesCount;
+        public int framesInFirstBeat;
         public float headX;
         public float headY;
 
         public TempoGesture()
         {
             Dispatch.SkeletonMoved += this.SkeletonMoved;
-            stopwatch = new Stopwatch();
             recentEvents = new CircularQueue<string>(20);
+            stopwatch = new Stopwatch();
             counter = 0;
-            seeking = "START";
+            seeking = "STILL";
             threshold = .002F;
+            stillFramesCount = 0;
+            framesInFirstBeat = 0;
         }
 
         ~TempoGesture()
@@ -103,27 +107,40 @@ namespace Orchestra
                 {
                     rightHandY = joint.Position.Y;
                     rightHandX = joint.Position.X;
-                    Console.WriteLine(rightHandX + "\t" + rightHandY);
-                    //Console.WriteLine(prevYOne);
-                }
-                // As the starting motion requires the right hand to be close to the 
-                // head, grab the head coordinates if conducting has not yet begun.
-                if (seeking.Equals("START"))
-                {
-                    if (joint.JointType == JointType.Head)
-                    {
-                        headY = joint.Position.Y;
-                        headX = joint.Position.X;
-                    }
                 }
             }
             switch (seeking)
             {
+                case "STILL":
+                    {
+                        if (stillFramesCount == 15)
+                        {
+                            seeking = "START";
+                        }
+                        if (stillFramesCount < 15 && Math.Abs(prevXOne - rightHandX) < .08 && Math.Abs(prevYOne - rightHandY) < .08 && Math.Abs(prevXTwo - rightHandX) < .08 && Math.Abs(prevYTwo - rightHandY) < .08)
+                        {
+                            stillFramesCount++;
+                            break;
+                        }
+                        else if (stillFramesCount < 15)
+                        {
+                            stillFramesCount = 0;
+                        }
+                        break;
+                    }
                 case "START":
                     {
-                        if (true) // FIXME!!!
+                        if (prevYTwo < (prevYOne - .01) && prevYOne < (rightHandY - .01))
                         {
-
+                            framesInFirstBeat++;
+                            break;
+                        }
+                        if (prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01))
+                        {
+                            Console.WriteLine("Start with " + framesInFirstBeat + " in the pre-start beat.");
+                            seeking = "MINIMUM";
+                            stopwatch.Start();
+                            break;
                         }
                         break;
                     }
@@ -131,7 +148,7 @@ namespace Orchestra
                     {
                         if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
                         {
-                            //Dispatch.TriggerBeat(counter % 4 + 1);
+                            Console.WriteLine("MIN");
                             seeking = "MAXIMUM";
                             counter++;
                             break;
@@ -142,7 +159,7 @@ namespace Orchestra
                     {
                         if (prevYTwo > (prevYOne + threshold) && prevYOne > (rightHandY + threshold))
                         {
-                            //Console.WriteLine((counter % 4) + 1);
+                            Console.WriteLine("MAX");
                             seeking = "MINIMUM";
                             break;
                         }

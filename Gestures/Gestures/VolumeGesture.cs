@@ -11,6 +11,7 @@ namespace Orchestra
         float leftWristY = 0;
         float leftWristX = 0;
         Boolean aboveHip = false;
+
         float startValueX = 0;
         float startValueY = 0;
         float changeInYVal = 0;

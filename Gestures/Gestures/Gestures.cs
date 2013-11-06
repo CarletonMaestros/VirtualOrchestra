@@ -18,7 +18,7 @@ namespace Orchestra
         public static void Load()
         {
             gestures.Add(new VolumeGesture());
-            gestures.Add(new TempoGestureII());
+            gestures.Add(new TempoGesture());
         }
     }
 }
