@@ -65,7 +65,7 @@ namespace Orchestra
             }
         }
 
-        public Int32 counter;
+        public Int32 counter = 1;
         public Stopwatch stopwatch;
         public String seeking;
         public float prevYOne;
@@ -81,6 +81,7 @@ namespace Orchestra
         public int framesInFirstBeat;
         public float headX;
         public float headY;
+        public int startMarker = 0;
 
         public TempoGesture()
         {
@@ -132,23 +133,41 @@ namespace Orchestra
                     {
                         if (prevYTwo < (prevYOne - .01) && prevYOne < (rightHandY - .01))
                         {
+                            if (framesInFirstBeat == 0)
+                            {
+                                stopwatch.Start();
+                            }
+
                             framesInFirstBeat++;
                             break;
                         }
-                        if (prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01))
+                        if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01))
                         {
-                            Console.WriteLine("Start with " + framesInFirstBeat + " in the pre-start beat.");
+                            Console.WriteLine("Start with " + stopwatch.ElapsedMilliseconds + " in the pre-start beat.");
                             seeking = "MINIMUM";
-                            stopwatch.Start();
                             break;
                         }
+
                         break;
                     }
                 case "MINIMUM":
                     {
                         if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
                         {
-                            Console.WriteLine("MIN");
+                            if (counter == 5)
+                            {
+                                counter = 1;
+                            }
+                            if (startMarker == 0)
+                            {
+                                startMarker = 1;
+                                Console.WriteLine(counter + " " + stopwatch.ElapsedMilliseconds / 2);
+                            }
+                            else
+                            {
+                                Console.WriteLine(counter + " " + stopwatch.ElapsedMilliseconds);
+                            }
+                            stopwatch.Restart();
                             seeking = "MAXIMUM";
                             counter++;
                             break;
@@ -159,7 +178,6 @@ namespace Orchestra
                     {
                         if (prevYTwo > (prevYOne + threshold) && prevYOne > (rightHandY + threshold))
                         {
-                            Console.WriteLine("MAX");
                             seeking = "MINIMUM";
                             break;
                         }
