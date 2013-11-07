@@ -127,6 +127,7 @@ namespace Orchestra
                             }
                             int intVolume = (int)volume;
                             System.Console.WriteLine(intVolume);
+                            Dispatch.TriggerVolumeChanged(intVolume / 127f);
                         }
                     }
                     else
