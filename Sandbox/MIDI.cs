@@ -7,7 +7,6 @@ using System.Text;
 
 using Microsoft.Kinect;
 using Sanford.Multimedia.Midi;
-using Sanford.Multimedia.Midi.UI;
 
 namespace Orchestra
 {
@@ -48,7 +47,10 @@ namespace Orchestra
             long delta_micros = (time - ref_time)*1000;
             ref_time = time;
             //sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(tempo));
-            sequencer1.clock.Tempo = (Convert.ToInt32(delta_micros));
+            //sequencer1.clock.Tempo = (Convert.ToInt32(delta_micros));
+            // ^^^
+            // clock is a private variable (hence the error) anyway
+            // so there HAS to be a better way to do this...
         }
 
         private void VolumeChanged(float volume)
