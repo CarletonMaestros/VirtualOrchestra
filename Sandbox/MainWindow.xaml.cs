@@ -78,6 +78,11 @@
         private DrawingImage imageSource;
 
         /// <summary>
+        /// The MIDI player
+        /// </summary>
+        private LiveMidi midi;
+
+        /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
         public MainWindow()
@@ -181,6 +186,8 @@
             {
                 this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
+
+            midi = new LiveMidi();
         }
 
         /// <summary>

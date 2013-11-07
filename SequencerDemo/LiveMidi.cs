@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Sanford.Multimedia.Midi;
@@ -32,18 +33,28 @@ namespace Orchestra.LiveMidi
 
         public LiveMidi()
         {
-            Dispatch.Beat += this.Beat;        
+            Dispatch.Beat += this.Beat;
+            Dispatch.VolumeChanged += this.VolumeChanged;
+
+            Initialize();
         }
 
         ~LiveMidi()
         {
             Dispatch.Beat -= this.Beat;
+            Dispatch.VolumeChanged -= this.VolumeChanged;
         }
 
         private void Beat(int beat)
         {
+            sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(beat));
         }
-        private void InitializeComponent()
+
+        private void VolumeChanged(float volume)
+        {
+            outDevice.Send(new ChannelMessage(ChannelCommand.Controller, 11, (int)(volume*127)));
+        }
+        private void Initialize()
         {
             this.sequence1 = new Sanford.Multimedia.Midi.Sequence();
             this.sequencer1 = new Sanford.Multimedia.Midi.Sequencer();
@@ -63,8 +74,8 @@ namespace Orchestra.LiveMidi
         {
             outDevice.Send(e.Message);
         }
-        
-        protected override void OnLoad(EventArgs e)
+
+        protected void OnLoad(EventArgs e)
         {
             if (OutputDevice.DeviceCount == 0)
             {
