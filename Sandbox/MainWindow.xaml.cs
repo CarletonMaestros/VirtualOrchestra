@@ -80,7 +80,7 @@
         /// <summary>
         /// The MIDI player
         /// </summary>
-        private LiveMidi midi;
+        private MIDI midi;
 
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
@@ -139,7 +139,10 @@
         {
             // Load components
             Gestures.Load();
-            Loggers.Loggers.Load();
+
+            // Add event loggers
+            Dispatch.Beat += beat => Console.WriteLine("Beat {0}", beat);
+            Dispatch.VolumeChanged += volume => Console.WriteLine("Volume {0}%", (int)(volume*100));
 
             // Create the drawing group we'll use for drawing
             this.drawingGroup = new DrawingGroup();
@@ -187,7 +190,7 @@
                 this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
 
-            midi = new LiveMidi();
+            midi = new MIDI();
         }
 
         /// <summary>

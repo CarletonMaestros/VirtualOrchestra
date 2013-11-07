@@ -81,9 +81,7 @@
       <SubType>Code</SubType>
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LiveMidi.cs" />
-    <Compile Include="Loggers\Loggers.cs" />
-    <Compile Include="Loggers\BeatLogger.cs" />
+    <Compile Include="MIDI.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
