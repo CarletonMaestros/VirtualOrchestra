@@ -1,28 +1,17 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
+
+using Microsoft.Kinect;
 using Sanford.Multimedia.Midi;
 using Sanford.Multimedia.Midi.UI;
 
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using Microsoft.Kinect;
-
-using System.ComponentModel; //AsyncCompletedEventArgs
-
-
-
-
-
-
-
 namespace Orchestra
 {
-    class LiveMidi
+    class MIDI
     {
         private Stopwatch stopwatch = new Stopwatch();
         private long ref_time = 0;
@@ -33,7 +22,7 @@ namespace Orchestra
         //private Int32 TempoData;
         //private OutputDeviceDialog outDialog = new OutputDeviceDialog();
 
-        public LiveMidi()
+        public MIDI()
         {
             Dispatch.Beat += Beat;
             Dispatch.VolumeChanged += VolumeChanged;
@@ -41,7 +30,7 @@ namespace Orchestra
             Initialize();
         }
 
-        ~LiveMidi()
+        ~MIDI()
         {
             Dispatch.Beat -= Beat;
             Dispatch.VolumeChanged -= VolumeChanged;
