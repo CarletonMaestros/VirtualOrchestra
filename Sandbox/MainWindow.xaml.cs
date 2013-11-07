@@ -140,7 +140,7 @@
             // Load components
             Gestures.Load();
 
-            // Add event loggers 
+            // Add event loggers
             Dispatch.Beat += beat => Console.WriteLine("Beat {0}", beat);
             Dispatch.VolumeChanged += volume => Console.WriteLine("Volume {0}%", (int)(volume*100));
 
