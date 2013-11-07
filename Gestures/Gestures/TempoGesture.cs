@@ -149,6 +149,8 @@ namespace Orchestra
                         if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
                         {
                             Console.WriteLine("MIN");
+                            Dispatch.TriggerBeat(1); // JOE AND CALDER ADDED THIS TO TEST SHIT
+                            // GET OVER IT
                             seeking = "MAXIMUM";
                             counter++;
                             break;
