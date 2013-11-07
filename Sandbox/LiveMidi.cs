@@ -5,7 +5,7 @@ using System.Text;
 using Sanford.Multimedia.Midi;
 using Sanford.Multimedia.Midi.UI;
 
-using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,30 +24,42 @@ namespace Orchestra
 {
     class LiveMidi
     {
+        private Stopwatch stopwatch = new Stopwatch();
+        private long ref_time = 0;
         private Sequence sequence1;
         private Sequencer sequencer1;
         private OutputDevice outDevice;
         private int outDeviceID = 0;
-        private Int32 TempoData;
+        //private Int32 TempoData;
         //private OutputDeviceDialog outDialog = new OutputDeviceDialog();
 
         public LiveMidi()
         {
-            Dispatch.Beat += this.Beat;
-            Dispatch.VolumeChanged += this.VolumeChanged;
+            Dispatch.Beat += Beat;
+            Dispatch.VolumeChanged += VolumeChanged;
 
             Initialize();
         }
 
         ~LiveMidi()
         {
-            Dispatch.Beat -= this.Beat;
-            Dispatch.VolumeChanged -= this.VolumeChanged;
+            Dispatch.Beat -= Beat;
+            Dispatch.VolumeChanged -= VolumeChanged;
         }
 
         private void Beat(int beat)
         {
-            sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(beat));
+            if (ref_time == 0)
+            {
+                ref_time = stopwatch.ElapsedMilliseconds;
+                return;
+            }
+            
+            long time = stopwatch.ElapsedMilliseconds;
+            long delta_micros = (time - ref_time)*1000;
+            ref_time = time;
+            //sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(tempo));
+            sequencer1.clock.Tempo = (Convert.ToInt32(delta_micros));
         }
 
         private void VolumeChanged(float volume)
@@ -60,6 +72,7 @@ namespace Orchestra
 
         private void Initialize()
         {
+            stopwatch.Start();
             this.sequence1 = new Sanford.Multimedia.Midi.Sequence();
             this.sequencer1 = new Sanford.Multimedia.Midi.Sequencer();
             sequence1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\g.mid");
