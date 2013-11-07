@@ -52,8 +52,10 @@ namespace Orchestra
 
         private void VolumeChanged(float volume)
         {
-            sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(volume*500));
-            outDevice.Send(new ChannelMessage(ChannelCommand.Controller, 11, (int)(volume * 127)));
+            for (int i = 0; i < 16; i++)
+            {
+                outDevice.Send(new ChannelMessage(ChannelCommand.Controller, i , 11, (int)(volume*127)));
+            }
         }
 
         private void Initialize()
@@ -87,7 +89,7 @@ namespace Orchestra
             //this.sequencer1.PlayingCompleted += new System.EventHandler(this.HandlePlayingCompleted);
             sequencer1.ChannelMessagePlayed += HandleChannelMessagePlayed;
             //this.sequencer1.SysExMessagePlayed += new System.EventHandler<Sanford.Multimedia.Midi.SysExMessageEventArgs>(this.HandleSysExMessagePlayed);
-            //this.sequencer1.Chased += new System.EventHandler<Sanford.Multimedia.Midi.ChasedEventArgs>(this.HandleChased);
+            sequencer1.Chased += HandleChased;
             //this.sequencer1.Stopped += new System.EventHandler<Sanford.Multimedia.Midi.StoppedEventArgs>(this.HandleStopped);
         }
 
@@ -103,6 +105,14 @@ namespace Orchestra
         private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
             outDevice.Send(e.Message);
+        }
+
+        private void HandleChased(object sender, ChasedEventArgs e)
+        {
+            foreach (ChannelMessage message in e.Messages)
+            {
+                outDevice.Send(message);
+            }
         }
     }
 }
