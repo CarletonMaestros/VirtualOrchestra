@@ -53,10 +53,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Sanford.MidiToolkit.5.0.2\lib\net40\Sanford.Multimedia.dll</HintPath>
     </Reference>
-    <Reference Include="Sanford.Multimedia.Midi, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Sanford.MidiToolkit.5.0.2\lib\net40\Sanford.Multimedia.Midi.dll</HintPath>
-    </Reference>
     <Reference Include="Sanford.Multimedia.Timers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Sanford.MidiToolkit.5.0.2\lib\net40\Sanford.Multimedia.Timers.dll</HintPath>
@@ -141,6 +137,10 @@
     <ProjectReference Include="..\Gestures\Gestures.csproj">
       <Project>{30440ea9-6e96-4b4c-9057-814ec231b9f9}</Project>
       <Name>Gestures</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.csproj">
+      <Project>{4269c72a-8d3a-4737-8f89-72eaa33ea9e1}</Project>
+      <Name>Sanford.Multimedia.Midi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

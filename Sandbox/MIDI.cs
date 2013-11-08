@@ -46,19 +46,9 @@ namespace Orchestra
             long time = stopwatch.ElapsedMilliseconds;
             long delta_micros = (time - ref_time)*1000;
             ref_time = time;
-            //sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(tempo));
-            //sequencer1.clock.Tempo = (Convert.ToInt32(delta_micros));
-            byte[] three_byte_time = new byte[3];
-            //six_byte_time  = time;
-            //TempoChangeBuilder builder = new TempoChangeBuilder();
-            //builder.Tempo =100000;
-            //builder.Build();
-            //outDevice.Send(builder.Result);
-            KeySignatureBuilder builder = new KeySignatureBuilder();
-            builder.Key = 5;
-            builder.Build();
-            outDevice.Send(3462);
-            //outDevice.Send(new MetaMessage(MetaType.Tempo, three_byte_time));
+ 
+            sequencer1.clock.Tempo = (Convert.ToInt32(delta_micros));
+
             //MidiInternalClock.SetTempo(500000);
             // ^^^
             // clock is a private variable (hence the error) anyway
