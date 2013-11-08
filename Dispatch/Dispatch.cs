@@ -16,8 +16,12 @@ namespace Orchestra
         public static event VolumeChangedDelegate VolumeChanged;
         public static void TriggerVolumeChanged(float volume) { if (VolumeChanged != null) VolumeChanged(volume); }
 
-        public delegate void BeatDelegate(int beat);
+        public delegate void BeatDelegate(long beat);
         public static event BeatDelegate Beat;
-        public static void TriggerBeat(int beat) { if (beat != null) Beat(beat); }
+        public static void TriggerBeat(long beat) { if (beat != null) Beat(beat); }
+
+        public delegate void StartPieceDelegate();
+        public static event StartPieceDelegate StartPiece;
+        public static void TriggerStartPiece() { StartPiece(); }
     }
 }

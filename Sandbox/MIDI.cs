@@ -24,6 +24,7 @@ namespace Orchestra
         public MIDI()
         {
             Dispatch.Beat += Beat;
+            Dispatch.StartPiece += StartPiece;
             Dispatch.VolumeChanged += VolumeChanged;
 
             Initialize();
@@ -32,22 +33,18 @@ namespace Orchestra
         ~MIDI()
         {
             Dispatch.Beat -= Beat;
+            Dispatch.StartPiece -= StartPiece;
             Dispatch.VolumeChanged -= VolumeChanged;
         }
 
-        private void Beat(int beat)
+        private void StartPiece()
         {
-            if (ref_time == 0)
-            {
-                ref_time = stopwatch.ElapsedMilliseconds;
-                return;
-            }
-            
-            long time = stopwatch.ElapsedMilliseconds;
-            long delta_micros = (time - ref_time)*1000;
-            ref_time = time;
- 
-            sequencer1.clock.Tempo = (Convert.ToInt32(delta_micros));
+            sequencer1.Start();
+        }
+
+        private void Beat(long beat)
+        {
+            sequencer1.clock.Tempo = (Convert.ToInt32(beat));
 
             //MidiInternalClock.SetTempo(500000);
             // ^^^
@@ -65,10 +62,9 @@ namespace Orchestra
 
         private void Initialize()
         {
-            stopwatch.Start();
             this.sequence1 = new Sanford.Multimedia.Midi.Sequence();
             this.sequencer1 = new Sanford.Multimedia.Midi.Sequencer();
-            sequence1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\g.mid");
+            sequence1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
 
             //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
             //also, perhaps sequencer1.position could be used (ticks)
@@ -103,7 +99,6 @@ namespace Orchestra
         {
             var x = sequence1.GetLength();
             sequencer1.Sequence = sequence1;
-            sequencer1.Start();
         }
 
 
