@@ -57,7 +57,7 @@ namespace Orchestra
             KeySignatureBuilder builder = new KeySignatureBuilder();
             builder.Key = 5;
             builder.Build();
-            //outDevice.Send(3462);
+            outDevice.Send(3462);
             //outDevice.Send(new MetaMessage(MetaType.Tempo, three_byte_time));
             //MidiInternalClock.SetTempo(500000);
             // ^^^
