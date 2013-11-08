@@ -48,6 +48,18 @@ namespace Orchestra
             ref_time = time;
             //sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(tempo));
             //sequencer1.clock.Tempo = (Convert.ToInt32(delta_micros));
+            byte[] three_byte_time = new byte[3];
+            //six_byte_time  = time;
+            //TempoChangeBuilder builder = new TempoChangeBuilder();
+            //builder.Tempo =100000;
+            //builder.Build();
+            //outDevice.Send(builder.Result);
+            KeySignatureBuilder builder = new KeySignatureBuilder();
+            builder.Key = 5;
+            builder.Build();
+            outDevice.Send(3462);
+            //outDevice.Send(new MetaMessage(MetaType.Tempo, three_byte_time));
+            //MidiInternalClock.SetTempo(500000);
             // ^^^
             // clock is a private variable (hence the error) anyway
             // so there HAS to be a better way to do this...
@@ -71,7 +83,7 @@ namespace Orchestra
             //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
             //also, perhaps sequencer1.position could be used (ticks)
             //sequence1.GetLength()
-
+            
             if (OutputDevice.DeviceCount == 0)
             {
                 Console.WriteLine("No MIDI output devices available.");
