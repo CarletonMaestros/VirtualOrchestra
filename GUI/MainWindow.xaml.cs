@@ -120,7 +120,75 @@ namespace GUI
                         //Application.Current.MainWindow.Background = new SolidColorBrush(Colors.DarkOrchid);
                     }));
                 }
+
+                if (instpos[e.Message.MidiChannel] == 71)
+                {
+
+
+                    this.Dispatcher.Invoke((Action)(() =>
+                    {
+
+                        Image myImage = new Image();
+                        myImage.Width = 200;
+
+                        BitmapImage myBitmapImage = new BitmapImage();
+
+                        myBitmapImage.BeginInit();
+                        myBitmapImage.UriSource = new Uri(@"C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\clarinet.jpg");
+
+                        myBitmapImage.DecodePixelWidth = 200;
+                        myBitmapImage.EndInit();
+
+                        InstrumentImage2.Source = myBitmapImage;
+                        //Application.Current.MainWindow.Background = new SolidColorBrush(Colors.DarkOrchid);
+                    }));
+                }
+                if (instpos[e.Message.MidiChannel] == 60)
+                {
+
+
+                    this.Dispatcher.Invoke((Action)(() =>
+                    {
+
+                        Image myImage = new Image();
+                        myImage.Width = 200;
+
+                        BitmapImage myBitmapImage = new BitmapImage();
+
+                        myBitmapImage.BeginInit();
+                        myBitmapImage.UriSource = new Uri(@"C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\frenchhorn.jpg");
+
+                        myBitmapImage.DecodePixelWidth = 200;
+                        myBitmapImage.EndInit();
+
+                        InstrumentImage3.Source = myBitmapImage;
+                        //Application.Current.MainWindow.Background = new SolidColorBrush(Colors.DarkOrchid);
+                    }));
+                }
+                if (instpos[e.Message.MidiChannel] == 48)
+                {
+
+
+                    this.Dispatcher.Invoke((Action)(() =>
+                    {
+
+                        Image myImage = new Image();
+                        myImage.Width = 200;
+
+                        BitmapImage myBitmapImage = new BitmapImage();
+
+                        myBitmapImage.BeginInit();
+                        myBitmapImage.UriSource = new Uri(@"C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\violin.jpg");
+
+                        myBitmapImage.DecodePixelWidth = 200;
+                        myBitmapImage.EndInit();
+
+                        InstrumentImage4.Source = myBitmapImage;
+                        //Application.Current.MainWindow.Background = new SolidColorBrush(Colors.DarkOrchid);
+                    }));
+                }
             }
+            
             if (e.Message.Command == ChannelCommand.NoteOff)
             {
                 Console.Write("Stopping note on ");
@@ -140,6 +208,9 @@ namespace GUI
                     myBitmapImage.DecodePixelWidth = 200;
                     myBitmapImage.EndInit();
                     InstrumentImage.Source = myBitmapImage;
+                    InstrumentImage2.Source = myBitmapImage;
+                    InstrumentImage3.Source = myBitmapImage;
+                    InstrumentImage4.Source = myBitmapImage;
                     //Application.Current.MainWindow.Background = new SolidColorBrush(Colors.Azure);
                 }));
             }

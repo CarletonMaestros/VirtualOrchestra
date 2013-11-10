@@ -114,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\blacksquare.jpg" />
+    <Resource Include="Resources\frenchhorn.jpg" />
+    <None Include="Resources\violin.jpg" />
+    <None Include="Resources\clarinet.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\flute.jpg" />
