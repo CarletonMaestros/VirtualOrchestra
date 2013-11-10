@@ -88,16 +88,16 @@ namespace GUI
             outDevice.Send(e.Message);
             if (e.Message.Command == ChannelCommand.ProgramChange)
             {
-                Console.Write("Changing Midi Channel ");
-                Console.Write(e.Message.MidiChannel);
-                Console.Write(" to ");
-                Console.WriteLine((GeneralMidiInstrument)e.Message.Data1);
+                //Console.Write("Changing Midi Channel ");
+                //Console.Write(e.Message.MidiChannel);
+                //Console.Write(" to ");
+                //Console.WriteLine((GeneralMidiInstrument)e.Message.Data1);
                 instpos[e.Message.MidiChannel] = e.Message.Data1;
             }
             if (e.Message.Command == ChannelCommand.NoteOn) 
             {
-                Console.Write("Playing note on ");
-                Console.WriteLine((GeneralMidiInstrument)instpos[e.Message.MidiChannel]);
+                //Console.Write("Playing note on ");
+                //Console.WriteLine((GeneralMidiInstrument)instpos[e.Message.MidiChannel]);
                 if (instpos[e.Message.MidiChannel] == 73)
                 {
   
@@ -191,8 +191,8 @@ namespace GUI
             
             if (e.Message.Command == ChannelCommand.NoteOff)
             {
-                Console.Write("Stopping note on ");
-                Console.WriteLine((GeneralMidiInstrument)instpos[e.Message.MidiChannel]);
+                //Console.Write("Stopping note on ");
+                //Console.WriteLine((GeneralMidiInstrument)instpos[e.Message.MidiChannel]);
                 this.Dispatcher.Invoke((Action)(() =>
                 {
 
