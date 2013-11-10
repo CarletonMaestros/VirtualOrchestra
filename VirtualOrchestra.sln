@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playback", "Playback\Playba
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyplotDemo", "OxyplotDemo\OxyplotDemo.csproj", "{13B4AE2C-26CD-4644-B198-8E8D14155ACD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{E305192D-66CD-4662-B546-285EDFBF7B23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{13B4AE2C-26CD-4644-B198-8E8D14155ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13B4AE2C-26CD-4644-B198-8E8D14155ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13B4AE2C-26CD-4644-B198-8E8D14155ACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E305192D-66CD-4662-B546-285EDFBF7B23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E305192D-66CD-4662-B546-285EDFBF7B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E305192D-66CD-4662-B546-285EDFBF7B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E305192D-66CD-4662-B546-285EDFBF7B23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

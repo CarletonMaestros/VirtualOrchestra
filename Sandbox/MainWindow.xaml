@@ -66,6 +66,6 @@
             <StatusBarItem Padding="0 0 0 10">
                 <TextBlock Name="statusBarText" Margin="-1 0 0 0">Click 'Seated' to change skeletal pipeline type!</TextBlock>
             </StatusBarItem>
-        </StatusBar>       
+        </StatusBar>
     </Grid>
 </Window>
