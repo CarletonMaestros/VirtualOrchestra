@@ -32,10 +32,6 @@ namespace GUI
         int[] instpos = new int[16];
 
 
-      
-
-        
-
 
         public MainWindow()
         {
