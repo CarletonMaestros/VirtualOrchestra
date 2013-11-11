@@ -106,6 +106,8 @@ namespace Orchestra
         private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
             outDevice.Send(e.Message);
+            if e.Message.Command==ChannelMessage 
+            Console.WriteLine(e.Message.Command
         }
 
         private void HandleChased(object sender, ChasedEventArgs e)
