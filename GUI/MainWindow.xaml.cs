@@ -26,10 +26,14 @@ namespace GUI
     public partial class MainWindow : Window
     {
         private Sequence seq1;
+        private Sequence seq2; //for preprocessing
+        private Sequencer seqr1;
+        private Sequencer seqr2; //for preprocessing
         private OutputDevice outDevice;
         private int outDeviceID = 0;
-        private Sequencer seqr1;
+        
         int[] instpos = new int[16];
+        int[] positions = new int[];
 
 
 
@@ -48,7 +52,14 @@ namespace GUI
         {
             var x = seq1.GetLength();
             seqr1.Sequence = seq1;
+            positions = Preprocess();
             seqr1.Start();
+        }
+        private int[] Preprocess()
+        {
+            seq2 = seq1;
+            seqr2 = seqr1;
+            seqr2.clock.Tempo = 
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)

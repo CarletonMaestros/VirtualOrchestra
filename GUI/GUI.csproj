@@ -43,9 +43,6 @@
     <Reference Include="Sanford.Multimedia">
       <HintPath>..\packages\Sanford.MidiToolkit.5.0.2\lib\net40\Sanford.Multimedia.dll</HintPath>
     </Reference>
-    <Reference Include="Sanford.Multimedia.Midi">
-      <HintPath>..\packages\Sanford.MidiToolkit.5.0.2\lib\net40\Sanford.Multimedia.Midi.dll</HintPath>
-    </Reference>
     <Reference Include="Sanford.Multimedia.Timers">
       <HintPath>..\packages\Sanford.MidiToolkit.5.0.2\lib\net40\Sanford.Multimedia.Timers.dll</HintPath>
     </Reference>
@@ -120,6 +117,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\flute.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.csproj">
+      <Project>{4269c72a-8d3a-4737-8f89-72eaa33ea9e1}</Project>
+      <Name>Sanford.Multimedia.Midi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
