@@ -92,7 +92,6 @@
       <SubType>Code</SubType>
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MIDI.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -141,6 +140,10 @@
     <ProjectReference Include="..\Gestures\Gestures.csproj">
       <Project>{30440ea9-6e96-4b4c-9057-814ec231b9f9}</Project>
       <Name>Gestures</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MIDI\MIDI.csproj">
+      <Project>{63b7c1dd-a88b-469f-b065-c95e34fde015}</Project>
+      <Name>MIDI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.csproj">
       <Project>{4269c72a-8d3a-4737-8f89-72eaa33ea9e1}</Project>

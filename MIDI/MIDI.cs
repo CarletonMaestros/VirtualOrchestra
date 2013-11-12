@@ -10,7 +10,7 @@ using Sanford.Multimedia.Midi;
 
 namespace Orchestra
 {
-    class MIDI
+    public class MIDI
     {
         private Stopwatch stopwatch = new Stopwatch();
         private Sequence sequence1;
@@ -24,8 +24,8 @@ namespace Orchestra
 
         public MIDI()
         {
-            Dispatch.Beat += Beat;
             Dispatch.Play += Play;
+            Dispatch.Beat += Beat;
             Dispatch.VolumeChanged += VolumeChanged;
 
             Initialize();
@@ -33,8 +33,8 @@ namespace Orchestra
 
         ~MIDI()
         {
-            Dispatch.Beat -= Beat;
             Dispatch.Play -= Play;
+            Dispatch.Beat -= Beat;
             Dispatch.VolumeChanged -= VolumeChanged;
         }
 
@@ -64,7 +64,7 @@ namespace Orchestra
         {
             this.sequence1 = new Sanford.Multimedia.Midi.Sequence();
             this.sequencer1 = new Sanford.Multimedia.Midi.Sequencer();
-            sequence1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.mid");
+            sequence1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\e.mid");
 
             //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
             //also, perhaps sequencer1.position could be used (ticks)

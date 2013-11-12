@@ -118,12 +118,6 @@
   <ItemGroup>
     <None Include="Resources\flute.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.csproj">
-      <Project>{4269c72a-8d3a-4737-8f89-72eaa33ea9e1}</Project>
-      <Name>Sanford.Multimedia.Midi</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
