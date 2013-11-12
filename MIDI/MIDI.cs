@@ -48,7 +48,6 @@ namespace Orchestra
             sequencer1.Clock.Tempo = (int)(1000000 * (time - lastBeat));
 
             //MidiInternalClock.SetTempo(500000);
-            Dispatch.VolumeChanged -= VolumeChanged;
             lastBeat = time;
         }
 
@@ -64,7 +63,7 @@ namespace Orchestra
         {
             this.sequence1 = new Sanford.Multimedia.Midi.Sequence();
             this.sequencer1 = new Sanford.Multimedia.Midi.Sequencer();
-            sequence1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\e.mid");
+            sequence1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
 
             //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
             //also, perhaps sequencer1.position could be used (ticks)
