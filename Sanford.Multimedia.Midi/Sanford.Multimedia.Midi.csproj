@@ -217,26 +217,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Device Classes\OutputDevice Classes\OutputStream.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Messages\MessageDispatcher.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Device Classes\InputDevice Class\InputDevice.Events.cs" />
-    <Compile Include="Messages\EventArgs\ChannelMessageEventArgs.cs" />
-    <Compile Include="Messages\EventArgs\InvalidShortMessageEventArgs.cs" />
-    <Compile Include="Messages\EventArgs\InvalidSysExMessageEventArgs.cs" />
-    <Compile Include="Messages\EventArgs\MetaMessageEventArgs.cs" />
-    <Compile Include="Messages\EventArgs\SysCommonMessageEventArgs.cs" />
-    <Compile Include="Messages\EventArgs\SysExMessageEventArgs.cs" />
-    <Compile Include="Messages\EventArgs\SysRealtimeMessageEventArgs.cs" />
-    <Compile Include="Processing\ChasedEventArgs.cs" />
-    <Compile Include="Processing\StoppedEventArgs.cs" />
-    <Compile Include="Sequencing\RecordingSession.cs" />
-    <Compile Include="Sequencing\Sequencer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Sequencing\Track Classes\Track.Test.cs" />
     <Compile Include="UI\DeviceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -270,20 +250,36 @@
     <Compile Include="UI\PianoKeyEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Messages\MessageDispatcher.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Device Classes\InputDevice Class\InputDevice.Events.cs" />
+    <Compile Include="Messages\EventArgs\ChannelMessageEventArgs.cs" />
+    <Compile Include="Messages\EventArgs\InvalidShortMessageEventArgs.cs" />
+    <Compile Include="Messages\EventArgs\InvalidSysExMessageEventArgs.cs" />
+    <Compile Include="Messages\EventArgs\MetaMessageEventArgs.cs" />
+    <Compile Include="Messages\EventArgs\SysCommonMessageEventArgs.cs" />
+    <Compile Include="Messages\EventArgs\SysExMessageEventArgs.cs" />
+    <Compile Include="Messages\EventArgs\SysRealtimeMessageEventArgs.cs" />
+    <Compile Include="Processing\ChasedEventArgs.cs" />
+    <Compile Include="Processing\StoppedEventArgs.cs" />
+    <Compile Include="Sequencing\RecordingSession.cs" />
+    <Compile Include="Sequencing\Sequencer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Sequencing\Track Classes\Track.Test.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="UI\DeviceDialog.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>DeviceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\InputDeviceDialog.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>InputDeviceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OutputDeviceDialog.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>OutputDeviceDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PianoControlDialog.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>PianoControlDialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

@@ -24,7 +24,7 @@ namespace Orchestra
         public MIDI()
         {
             Dispatch.Beat += Beat;
-            Dispatch.StartPiece += StartPiece;
+            Dispatch.Play += Play;
             Dispatch.VolumeChanged += VolumeChanged;
 
             Initialize();
@@ -33,26 +33,42 @@ namespace Orchestra
         ~MIDI()
         {
             Dispatch.Beat -= Beat;
-            Dispatch.StartPiece -= StartPiece;
+            Dispatch.Play -= Play;
             Dispatch.VolumeChanged -= VolumeChanged;
         }
 
-        private void StartPiece()
+        private void Play(float time)
         {
             sequencer1.Start();
         }
 
         private void Beat(long beat)
         {
-            sequencer1.clock.Tempo = (Convert.ToInt32(beat));
+            //sequencer1.clock.Tempo = (Convert.ToInt32(beat));
 
             //MidiInternalClock.SetTempo(500000);
+            Dispatch.VolumeChanged -= VolumeChanged;
+        }
+
+        private void Beat(float time, int beat)
+        {
+            if (ref_time == 0)
+            {
+                ref_time = stopwatch.ElapsedMilliseconds;
+                return;
+            }
+            
+            long time2 = stopwatch.ElapsedMilliseconds;
+            long delta_micros = (time2 - ref_time)*1000;
+            ref_time = time2;
+            //sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(tempo));
+            //sequencer1.clock.Tempo = (Convert.ToInt32(delta_micros));
             // ^^^
             // clock is a private variable (hence the error) anyway
             // so there HAS to be a better way to do this...
         }
 
-        private void VolumeChanged(float volume)
+        private void VolumeChanged(float time, float volume)
         {
             for (int i = 0; i < 16; i++)
             {
@@ -69,7 +85,7 @@ namespace Orchestra
             //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
             //also, perhaps sequencer1.position could be used (ticks)
             //sequence1.GetLength()
-            
+
             if (OutputDevice.DeviceCount == 0)
             {
                 Console.WriteLine("No MIDI output devices available.");
@@ -99,6 +115,7 @@ namespace Orchestra
         {
             var x = sequence1.GetLength();
             sequencer1.Sequence = sequence1;
+            sequencer1.Start();
         }
 
 
@@ -106,8 +123,6 @@ namespace Orchestra
         private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
             outDevice.Send(e.Message);
-            if e.Message.Command==ChannelMessage 
-            Console.WriteLine(e.Message.Command
         }
 
         private void HandleChased(object sender, ChasedEventArgs e)

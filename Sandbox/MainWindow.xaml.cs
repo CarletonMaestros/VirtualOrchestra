@@ -139,10 +139,11 @@
         {
             // Load components
             Gestures.Load();
+            midi = new MIDI();
 
             // Add event loggers
-            Dispatch.Beat += beat => Console.WriteLine("Beat {0}", beat);
-            Dispatch.VolumeChanged += volume => Console.WriteLine("Volume {0}%", (int)(volume*100));
+            Dispatch.Beat += (time, beat) => Console.WriteLine("Beat {0}", beat);
+            Dispatch.VolumeChanged += (time, volume) => Console.WriteLine("Volume {0}%", (int)(volume*100));
 
             // Create the drawing group we'll use for drawing
             this.drawingGroup = new DrawingGroup();
@@ -190,7 +191,9 @@
                 this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
 
-            midi = new MIDI();
+            // Initiate startup sequence, capitan
+            Dispatch.TriggerStartup();
+            Dispatch.TriggerPlay();
         }
 
         /// <summary>

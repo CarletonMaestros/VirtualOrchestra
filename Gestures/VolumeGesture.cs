@@ -11,7 +11,6 @@ namespace Orchestra
         float leftWristY = 0;
         float leftWristX = 0;
         Boolean aboveHip = false;
-
         float startValueX = 0;
         float startValueY = 0;
         float changeInYVal = 0;
@@ -25,15 +24,21 @@ namespace Orchestra
 
         public VolumeGesture()
         {
-            Dispatch.SkeletonMoved += this.SkeletonMoved;
+            Dispatch.SkeletonMoved += SkeletonMoved;
+            Dispatch.Startup += Startup;
         }
 
         ~VolumeGesture()
         {
-            Dispatch.SkeletonMoved -= this.SkeletonMoved;
+            Dispatch.SkeletonMoved -= SkeletonMoved;
         }
 
-        void SkeletonMoved(Skeleton skeleton)
+        void Startup()
+        {
+            Dispatch.TriggerVolumeChanged(0.5f);
+        }
+
+        void SkeletonMoved(float time, Skeleton skeleton)
         {
             foreach (Joint joint in skeleton.Joints)
             {
@@ -113,25 +118,18 @@ namespace Orchestra
                             if (changeInYVal - changeVolume > .1)
                             {
                                 if (volume < 127)
-                                    volume += (4 * (127 - volume) / 127);
-                                else
-                                    System.Console.WriteLine("Max volume reached");
+                                    volume += (5 * (127 - volume) / 127);
 
                             }
                             else if (changeInYVal - changeVolume < -.1)
                             {
                                 if (volume > 0)
-                                    volume -= (4 * volume / 127);
-                                else
-                                    System.Console.WriteLine("Min volume reached");
+                                    volume -= (5 * volume / 127);
                             }
                             int intVolume = (int)volume;
-                            System.Console.WriteLine(intVolume);
                             Dispatch.TriggerVolumeChanged(intVolume / 127f);
                         }
                     }
-                    else
-                        System.Console.WriteLine("Not recognized");
                 }
             }
         }

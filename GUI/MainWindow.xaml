@@ -1,0 +1,13 @@
+﻿<Window x:Class="GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="725">
+    <Grid>
+        <Button Name="PlayButton" Content="Play" HorizontalAlignment="Left" Margin="307,277,0,0" VerticalAlignment="Top" Width="75" Click="PlayButton_Click" />
+        <Image Name = "InstrumentImage" HorizontalAlignment="Left" Height="100" Margin="38,65,0,0" VerticalAlignment="Top" Width="100" />
+        <Image Name= "InstrumentImage2" HorizontalAlignment="Left" Height="100" Margin="190,65,0,0" VerticalAlignment="Top" Width="100"/>
+        <Image Name="InstrumentImage3" HorizontalAlignment="Left" Height="100" Margin="346,75,0,0" VerticalAlignment="Top" Width="100"/>
+        <Image Name="InstrumentImage4" HorizontalAlignment="Left" Height="100" Margin="554,65,0,0" VerticalAlignment="Top" Width="100"/>
+
+    </Grid>
+</Window>

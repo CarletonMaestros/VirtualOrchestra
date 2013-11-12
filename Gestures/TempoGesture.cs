@@ -100,7 +100,7 @@ namespace Orchestra
             Dispatch.SkeletonMoved -= this.SkeletonMoved;
         }
 
-        void SkeletonMoved(Skeleton skel)
+        void SkeletonMoved(float time, Skeleton skel)
         {
             foreach (Joint joint in skel.Joints)
             {
@@ -163,16 +163,18 @@ namespace Orchestra
                                 startMarker = 1;
                                 long firstTempo = stopwatch.ElapsedMilliseconds * 1000 / 2;
                                 Console.WriteLine(counter + " " + firstTempo);
-                                Dispatch.TriggerStartPiece();
-                                Dispatch.TriggerBeat(firstTempo);
+                                //Dispatch.TriggerPlay(); // FIXME!!!
+                                Dispatch.TriggerBeat(counter);
                             }
                             else
                             {
                                 long tempo = stopwatch.ElapsedMilliseconds * 1000;
                                 Console.WriteLine(counter + " " + tempo);
-                                Dispatch.TriggerBeat(tempo);
+                                Dispatch.TriggerBeat(counter);
                             }
                             stopwatch.Restart();
+
+                            // GET OVER IT
                             seeking = "MAXIMUM";
                             counter++;
                             break;

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TempoGestureII.cs" />
     <Compile Include="Gestures.cs" />
     <Compile Include="TempoGesture.cs" />
     <Compile Include="VolumeGesture.cs" />
