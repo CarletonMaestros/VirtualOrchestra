@@ -13,13 +13,14 @@ namespace Orchestra
     class MIDI
     {
         private Stopwatch stopwatch = new Stopwatch();
-        private long ref_time = 0;
         private Sequence sequence1;
         private Sequencer sequencer1;
         private OutputDevice outDevice;
         private int outDeviceID = 0;
         //private Int32 TempoData;
         //private OutputDeviceDialog outDialog = new OutputDeviceDialog();
+
+        float lastBeat = 0;
 
         public MIDI()
         {
@@ -42,30 +43,13 @@ namespace Orchestra
             sequencer1.Start();
         }
 
-        private void Beat(long beat)
+        private void Beat(float time, int beat)
         {
-            //sequencer1.clock.Tempo = (Convert.ToInt32(beat));
+            sequencer1.Clock.Tempo = (int)(1000000 * (time - lastBeat));
 
             //MidiInternalClock.SetTempo(500000);
             Dispatch.VolumeChanged -= VolumeChanged;
-        }
-
-        private void Beat(float time, int beat)
-        {
-            if (ref_time == 0)
-            {
-                ref_time = stopwatch.ElapsedMilliseconds;
-                return;
-            }
-            
-            long time2 = stopwatch.ElapsedMilliseconds;
-            long delta_micros = (time2 - ref_time)*1000;
-            ref_time = time2;
-            //sequencer1.clock.Tempo = (60000000 / Convert.ToInt32(tempo));
-            //sequencer1.clock.Tempo = (Convert.ToInt32(delta_micros));
-            // ^^^
-            // clock is a private variable (hence the error) anyway
-            // so there HAS to be a better way to do this...
+            lastBeat = time;
         }
 
         private void VolumeChanged(float time, float volume)

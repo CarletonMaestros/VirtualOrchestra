@@ -33,7 +33,7 @@ namespace Orchestra
 
         private static float Time 
         {
-            get { return stopwatch.ElapsedMilliseconds; }
+            get { return stopwatch.ElapsedMilliseconds/1000f; }
         }
     }
 }
