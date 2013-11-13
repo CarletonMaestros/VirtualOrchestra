@@ -63,7 +63,7 @@ namespace Orchestra
         {
             this.sequence1 = new Sanford.Multimedia.Midi.Sequence();
             this.sequencer1 = new Sanford.Multimedia.Midi.Sequencer();
-            sequence1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
+            sequence1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid");
 
             //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
             //also, perhaps sequencer1.position could be used (ticks)
@@ -89,6 +89,7 @@ namespace Orchestra
 
             //this.sequencer1.PlayingCompleted += new System.EventHandler(this.HandlePlayingCompleted);
             sequencer1.ChannelMessagePlayed += HandleChannelMessagePlayed;
+            sequencer1.MetaMessagePlayed += HandleMetaMessagePlayed;
             //this.sequencer1.SysExMessagePlayed += new System.EventHandler<Sanford.Multimedia.Midi.SysExMessageEventArgs>(this.HandleSysExMessagePlayed);
             sequencer1.Chased += HandleChased;
             //this.sequencer1.Stopped += new System.EventHandler<Sanford.Multimedia.Midi.StoppedEventArgs>(this.HandleStopped);
@@ -96,16 +97,32 @@ namespace Orchestra
 
         private void HandleLoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            var x = sequence1.GetLength();
             sequencer1.Sequence = sequence1;
             sequencer1.Start();
+            //foreach (var track in sequence1)
+            //{
+            //    for (int i = 0; i < track.Count; ++i)
+            //    {
+            //        var m = track.GetMidiEvent(i).MidiMessage;
+            //        if (m.MessageType == MessageType.Channel) continue;
+            //        Console.Write("{0} {1:X} ", m.MessageType, m.Status);
+            //        foreach (var b in m.GetBytes()) Console.Write("{0} ", b);
+            //        Console.WriteLine();
+            //    }
+            //}
         }
-
-
 
         private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
             outDevice.Send(e.Message);
+        }
+
+        private void HandleMetaMessagePlayed(object sender, MetaMessageEventArgs e)
+        {
+            var m = e.Message;
+            Console.Write("{0}    ", m.MetaType);
+            foreach (var b in m.GetBytes()) Console.Write("{0:X} ", b);
+            Console.WriteLine();
         }
 
         private void HandleChased(object sender, ChasedEventArgs e)
@@ -114,6 +131,7 @@ namespace Orchestra
             {
                 outDevice.Send(message);
             }
+
         }
     }
 }

@@ -143,7 +143,7 @@ namespace Orchestra
                         }
                         if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01))
                         {
-                            Console.WriteLine("Start with " + stopwatch.ElapsedMilliseconds + " in the pre-start beat.");
+                            //Console.WriteLine("Start with " + stopwatch.ElapsedMilliseconds + " in the pre-start beat.");
                             seeking = "MINIMUM";
                             break;
                         }
@@ -162,14 +162,14 @@ namespace Orchestra
                             {
                                 startMarker = 1;
                                 long firstTempo = stopwatch.ElapsedMilliseconds * 1000 / 2;
-                                Console.WriteLine(counter + " " + firstTempo);
+                                //Console.WriteLine(counter + " " + firstTempo);
                                 //Dispatch.TriggerPlay(); // FIXME!!!
                                 Dispatch.TriggerBeat(counter);
                             }
                             else
                             {
                                 long tempo = stopwatch.ElapsedMilliseconds * 1000;
-                                Console.WriteLine(counter + " " + tempo);
+                                //Console.WriteLine(counter + " " + tempo);
                                 Dispatch.TriggerBeat(counter);
                             }
                             stopwatch.Restart();
