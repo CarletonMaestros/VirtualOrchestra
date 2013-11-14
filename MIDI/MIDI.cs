@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-
 using Microsoft.Kinect;
 using Sanford.Multimedia.Midi;
 
@@ -12,105 +11,55 @@ namespace Orchestra
 {
     public class MIDI
     {
-        private Stopwatch stopwatch = new Stopwatch();
-        private Sequence sequence1;
-        private Sequencer sequencer1;
-        private OutputDevice outDevice;
-        private int outDeviceID = 0;
-        //private Int32 TempoData;
-        //private OutputDeviceDialog outDialog = new OutputDeviceDialog();
+        static Stopwatch    stopwatch = new Stopwatch();
+        static Sequence     sequence  = new Sanford.Multimedia.Midi.Sequence();
+        static Sequencer    sequencer = new Sanford.Multimedia.Midi.Sequencer();
+        static OutputDevice outDevice = new OutputDevice(0);
 
-        float lastBeat = 0;
+        static float lastBeat = 0;
 
-        public MIDI()
+        /// <summary>
+        /// Activate the MIDI player
+        /// </summary>
+        public static void Load()
         {
+            // Subscribe to dispatch events
             Dispatch.Play += Play;
             Dispatch.Beat += Beat;
             Dispatch.VolumeChanged += VolumeChanged;
 
-            Initialize();
-        }
+            // Subscribe to MIDI events
+            sequencer.ChannelMessagePlayed += MIDIChannelMessagePlayed;
+            sequencer.MetaMessagePlayed += MIDIMetaMessagePlayed;
+            sequencer.Chased += MIDIChased;
 
-        ~MIDI()
-        {
-            Dispatch.Play -= Play;
-            Dispatch.Beat -= Beat;
-            Dispatch.VolumeChanged -= VolumeChanged;
-        }
+            // Initialize MIDI
+            sequencer.Sequence = sequence;
+            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
 
-        private void Play(float time)
-        {
-            sequencer1.Start();
-        }
-
-        private void Beat(float time, int beat)
-        {
-            sequencer1.Clock.Tempo = (int)(1000000 * (time - lastBeat));
-
-            //MidiInternalClock.SetTempo(500000);
-            lastBeat = time;
-        }
-
-        private void VolumeChanged(float time, float volume)
-        {
-            for (int i = 0; i < 16; i++)
-            {
-                outDevice.Send(new ChannelMessage(ChannelCommand.Controller, i , 11, (int)(volume*127)));
-            }
-        }
-
-        private void Initialize()
-        {
-            this.sequence1 = new Sanford.Multimedia.Midi.Sequence();
-            this.sequencer1 = new Sanford.Multimedia.Midi.Sequencer();
-            sequence1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid");
-
-            //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
-            //also, perhaps sequencer1.position could be used (ticks)
-            //sequence1.GetLength()
-
-            if (OutputDevice.DeviceCount == 0)
-            {
-                Console.WriteLine("No MIDI output devices available.");
-            }
-            else
-            {
-                try
-                {
-                    outDevice = new OutputDevice(outDeviceID);
-                    sequence1.LoadCompleted += HandleLoadCompleted;
-                }
-                catch (Exception ex)
-                {
-                    Console.Write(ex.Message, "Error!");
-                }
-            }
-
-
-            //this.sequencer1.PlayingCompleted += new System.EventHandler(this.HandlePlayingCompleted);
-            sequencer1.ChannelMessagePlayed += HandleChannelMessagePlayed;
-            sequencer1.MetaMessagePlayed += HandleMetaMessagePlayed;
+            // Other messages that might be useful
+            //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
             //this.sequencer1.SysExMessagePlayed += new System.EventHandler<Sanford.Multimedia.Midi.SysExMessageEventArgs>(this.HandleSysExMessagePlayed);
-            sequencer1.Chased += HandleChased;
             //this.sequencer1.Stopped += new System.EventHandler<Sanford.Multimedia.Midi.StoppedEventArgs>(this.HandleStopped);
         }
 
-        private void HandleLoadCompleted(object sender, AsyncCompletedEventArgs e)
+        public static void LoadSong(string file)
         {
-            sequencer1.Sequence = sequence1;
-            //sequencer1.Start();
-            IEnumerable<Track> tracks = sequencer1.Sequence.AsEnumerable();
-            foreach (var track in tracks)
-            {
-                Console.WriteLine("______________________________________________________________________________________");
-                IEnumerable<MidiEvent> midievents = track.Iterator();
-                foreach (MidiEvent midievent in midievents)
-                {
-                    Console.WriteLine(midievent.MidiMessage);
-                }
-            }
+            sequence.Load(file);
+            Dispatch.TriggerSongLoaded();
 
-            
+            // Print track data
+            //IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
+            //foreach (var track in tracks)
+            //{
+            //    Console.WriteLine("______________________________________________________________________________________");
+            //    IEnumerable<MidiEvent> midievents = track.Iterator();
+            //    foreach (MidiEvent midievent in midievents)
+            //    {
+            //        Console.WriteLine(midievent.MidiMessage);
+            //    }
+            //}
+
             //foreach (var track in sequence1)
             //{
             //    for (int i = 0; i < track.Count; ++i)
@@ -124,12 +73,38 @@ namespace Orchestra
             //}
         }
 
-        private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
+        static void Play(float time)
+        {
+            sequencer.Start();
+        }
+
+        static void Pause(float time)
+        {
+            sequencer.Stop();
+        }
+
+        static void Beat(float time, int beat)
+        {
+            // Adjust clock based on how long the last beat took
+            sequencer.Clock.Tempo = (int)(1000000 * (time - lastBeat));
+            lastBeat = time;
+        }
+
+        static void VolumeChanged(float time, float volume)
+        {
+            // Send a volume change message to each channel
+            for (int i = 0; i < 16; i++)
+            {
+                outDevice.Send(new ChannelMessage(ChannelCommand.Controller, i , 11, (int)(volume*127)));
+            }
+        }
+
+        static void MIDIChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
             outDevice.Send(e.Message);
         }
 
-        private void HandleMetaMessagePlayed(object sender, MetaMessageEventArgs e)
+        static void MIDIMetaMessagePlayed(object sender, MetaMessageEventArgs e)
         {
             var m = e.Message;
             Console.Write("{0}    ", m.MetaType);
@@ -137,13 +112,12 @@ namespace Orchestra
             Console.WriteLine();
         }
 
-        private void HandleChased(object sender, ChasedEventArgs e)
+        static void MIDIChased(object sender, ChasedEventArgs e)
         {
             foreach (ChannelMessage message in e.Messages)
             {
                 outDevice.Send(message);
             }
-
         }
     }
 }
