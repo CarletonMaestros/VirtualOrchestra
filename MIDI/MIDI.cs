@@ -33,22 +33,32 @@ namespace Orchestra
             sequencer.MetaMessagePlayed += MIDIMetaMessagePlayed;
             sequencer.Chased += MIDIChased;
 
-            //Initialize MIDI
+            // Initialize MIDI
             sequencer.Sequence = sequence;
-            sequence.Load(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid");
-            sequencer.Start();
+            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
+
+            // Other messages that might be useful
+            //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
+            //this.sequencer1.SysExMessagePlayed += new System.EventHandler<Sanford.Multimedia.Midi.SysExMessageEventArgs>(this.HandleSysExMessagePlayed);
+            //this.sequencer1.Stopped += new System.EventHandler<Sanford.Multimedia.Midi.StoppedEventArgs>(this.HandleStopped);
+        }
+
+        public static void LoadSong(string file)
+        {
+            sequence.Load(file);
+            Dispatch.TriggerSongLoaded();
 
             // Print track data
-            IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
-            foreach (var track in tracks)
-            {
-                Console.WriteLine("______________________________________________________________________________________");
-                IEnumerable<MidiEvent> midievents = track.Iterator();
-                foreach (MidiEvent midievent in midievents)
-                {
-                    Console.WriteLine(midievent.MidiMessage);
-                }
-            }
+            //IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
+            //foreach (var track in tracks)
+            //{
+            //    Console.WriteLine("______________________________________________________________________________________");
+            //    IEnumerable<MidiEvent> midievents = track.Iterator();
+            //    foreach (MidiEvent midievent in midievents)
+            //    {
+            //        Console.WriteLine(midievent.MidiMessage);
+            //    }
+            //}
 
             //foreach (var track in sequence1)
             //{
@@ -61,11 +71,6 @@ namespace Orchestra
             //        Console.WriteLine();
             //    }
             //}
-
-            // Other messages that might be useful
-            //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
-            //this.sequencer1.SysExMessagePlayed += new System.EventHandler<Sanford.Multimedia.Midi.SysExMessageEventArgs>(this.HandleSysExMessagePlayed);
-            //this.sequencer1.Stopped += new System.EventHandler<Sanford.Multimedia.Midi.StoppedEventArgs>(this.HandleStopped);
         }
 
         static void Play(float time)

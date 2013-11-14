@@ -25,7 +25,7 @@ namespace Orchestra
         public VolumeGesture()
         {
             Dispatch.SkeletonMoved += SkeletonMoved;
-            Dispatch.Startup += Startup;
+            Dispatch.SongLoaded += SongLoaded;
         }
 
         ~VolumeGesture()
@@ -33,7 +33,7 @@ namespace Orchestra
             Dispatch.SkeletonMoved -= SkeletonMoved;
         }
 
-        void Startup()
+        void SongLoaded()
         {
             Dispatch.TriggerVolumeChanged(0.5f);
         }

@@ -9,9 +9,9 @@ namespace Orchestra
 {
     public class Dispatch
     {
-        public delegate void StartupDelegate();
-        public static event StartupDelegate Startup;
-        public static void TriggerStartup() { stopwatch.Restart(); if (Startup != null) Startup(); }
+        public delegate void SongLoadedDelegate();
+        public static event SongLoadedDelegate SongLoaded;
+        public static void TriggerSongLoaded() { stopwatch.Restart(); if (SongLoaded != null) SongLoaded(); }
 
         public delegate void SkeletonMovedDelegate(float time, Skeleton skeleton);
         public static event SkeletonMovedDelegate SkeletonMoved;

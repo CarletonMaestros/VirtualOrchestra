@@ -1,142 +1,39 @@
-﻿namespace Orchestra.Sandbox
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Windows;
-    using System.Windows.Media;
-    using Microsoft.Kinect;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows;
+using System.Windows.Media;
+using Microsoft.Kinect;
 
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+namespace Orchestra.Sandbox
+{
     public partial class MainWindow : Window
     {
-        /// <summary>
-        /// Width of output drawing
-        /// </summary>
         private const float RenderWidth = 640.0f;
-
-        /// <summary>
-        /// Height of our output drawing
-        /// </summary>
         private const float RenderHeight = 480.0f;
-
-        /// <summary>
-        /// Thickness of drawn joint lines
-        /// </summary>
         private const double JointThickness = 3;
-
-        /// <summary>
-        /// Thickness of body center ellipse
-        /// </summary>
         private const double BodyCenterThickness = 10;
-
-        /// <summary>
-        /// Thickness of clip edge rectangles
-        /// </summary>
         private const double ClipBoundsThickness = 10;
-
-        /// <summary>
-        /// Brush used to draw skeleton center point
-        /// </summary>
         private readonly Brush centerPointBrush = Brushes.Blue;
-
-        /// <summary>
-        /// Brush used for drawing joints that are currently tracked
-        /// </summary>
         private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
-
-        /// <summary>
-        /// Brush used for drawing joints that are currently inferred
-        /// </summary>        
         private readonly Brush inferredJointBrush = Brushes.Yellow;
-
-        /// <summary>
-        /// Pen used for drawing bones that are currently tracked
-        /// </summary>
         private readonly Pen trackedBonePen = new Pen(Brushes.Green, 6);
-
-        /// <summary>
-        /// Pen used for drawing bones that are currently inferred
-        /// </summary>        
         private readonly Pen inferredBonePen = new Pen(Brushes.Gray, 1);
-
-        /// <summary>
-        /// Active Kinect sensor
-        /// </summary>
         private KinectSensor sensor;
-
-        /// <summary>
-        /// Drawing group for skeleton rendering output
-        /// </summary>
         private DrawingGroup drawingGroup;
-
-        /// <summary>
-        /// Drawing image that we will display
-        /// </summary>
         private DrawingImage imageSource;
 
-        /// <summary>
-        /// The MIDI player
-        /// </summary>
-        private MIDI midi;
-
-        /// <summary>
-        /// Initializes a new instance of the MainWindow class.
-        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Draws indicators to show which edges are clipping skeleton data
-        /// </summary>
-        /// <param name="skeleton">skeleton to draw clipping information for</param>
-        /// <param name="drawingContext">drawing context to draw to</param>
-        private static void RenderClippedEdges(Skeleton skeleton, DrawingContext drawingContext)
-        {
-            if (skeleton.ClippedEdges.HasFlag(FrameEdges.Bottom))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(0, RenderHeight - ClipBoundsThickness, RenderWidth, ClipBoundsThickness));
-            }
-
-            if (skeleton.ClippedEdges.HasFlag(FrameEdges.Top))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(0, 0, RenderWidth, ClipBoundsThickness));
-            }
-
-            if (skeleton.ClippedEdges.HasFlag(FrameEdges.Left))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(0, 0, ClipBoundsThickness, RenderHeight));
-            }
-
-            if (skeleton.ClippedEdges.HasFlag(FrameEdges.Right))
-            {
-                drawingContext.DrawRectangle(
-                    Brushes.Red,
-                    null,
-                    new Rect(RenderWidth - ClipBoundsThickness, 0, ClipBoundsThickness, RenderHeight));
-            }
-        }
-
-        /// <summary>
-        /// Execute startup tasks
-        /// </summary>
-        /// <param name="sender">object sending the event</param>
-        /// <param name="e">event arguments</param>
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
+            // Initialize GUI elements
+            InitKinect();
+            InitDrawing();
+
             // Load components
             Gestures.Load();
             MIDI.Load();
@@ -145,19 +42,14 @@
             Dispatch.Beat += (time, beat) => Console.WriteLine("Beat {0}", beat);
             Dispatch.VolumeChanged += (time, volume) => Console.WriteLine("Volume {0}%", (int)(volume*100));
 
-            // Create the drawing group we'll use for drawing
-            this.drawingGroup = new DrawingGroup();
+            // Please don't stop the muuusic
+            Dispatch.TriggerPlay();
+        }
 
-            // Create an image source that we can use in our image control
-            this.imageSource = new DrawingImage(this.drawingGroup);
-
-            // Display the drawing using our image control
-            Image.Source = this.imageSource;
-
+        private void InitKinect()
+        {
             // Look through all sensors and start the first connected one.
             // This requires that a Kinect is connected at the time of app startup.
-            // To make your app robust against plug/unplug, 
-            // it is recommended to use KinectSensorChooser provided in Microsoft.Kinect.Toolkit (See components in Toolkit Browser).
             foreach (var potentialSensor in KinectSensor.KinectSensors)
             {
                 if (potentialSensor.Status == KinectStatus.Connected)
@@ -190,9 +82,18 @@
             {
                 this.statusBarText.Text = Properties.Resources.NoKinectReady;
             }
+        }
 
-            // Initiate startup sequence, capitan
-            Dispatch.TriggerStartup();
+        private void InitDrawing()
+        {
+            // Create the drawing group we'll use for drawing
+            this.drawingGroup = new DrawingGroup();
+
+            // Create an image source that we can use in our image control
+            this.imageSource = new DrawingImage(this.drawingGroup);
+
+            // Display the drawing using our image control
+            Image.Source = this.imageSource;
         }
 
         /// <summary>
@@ -265,14 +166,44 @@
                 this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, RenderWidth, RenderHeight));
             }
         }
+
         /// <summary>
-        /// Redraw skeleton whenever it moves
+        /// Draws indicators to show which edges are clipping skeleton data
         /// </summary>
-        /// <param name="skel"></param>
-        private void SkeletonMoved(Skeleton skel)
+        /// <param name="skeleton">skeleton to draw clipping information for</param>
+        /// <param name="drawingContext">drawing context to draw to</param>
+        private static void RenderClippedEdges(Skeleton skeleton, DrawingContext drawingContext)
         {
-            using (DrawingContext dc = this.drawingGroup.Open())
+            if (skeleton.ClippedEdges.HasFlag(FrameEdges.Bottom))
             {
+                drawingContext.DrawRectangle(
+                    Brushes.Red,
+                    null,
+                    new Rect(0, RenderHeight - ClipBoundsThickness, RenderWidth, ClipBoundsThickness));
+            }
+
+            if (skeleton.ClippedEdges.HasFlag(FrameEdges.Top))
+            {
+                drawingContext.DrawRectangle(
+                    Brushes.Red,
+                    null,
+                    new Rect(0, 0, RenderWidth, ClipBoundsThickness));
+            }
+
+            if (skeleton.ClippedEdges.HasFlag(FrameEdges.Left))
+            {
+                drawingContext.DrawRectangle(
+                    Brushes.Red,
+                    null,
+                    new Rect(0, 0, ClipBoundsThickness, RenderHeight));
+            }
+
+            if (skeleton.ClippedEdges.HasFlag(FrameEdges.Right))
+            {
+                drawingContext.DrawRectangle(
+                    Brushes.Red,
+                    null,
+                    new Rect(RenderWidth - ClipBoundsThickness, 0, ClipBoundsThickness, RenderHeight));
             }
         }
 
