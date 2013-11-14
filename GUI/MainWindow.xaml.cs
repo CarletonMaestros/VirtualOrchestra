@@ -26,18 +26,10 @@ namespace GUI
     public partial class MainWindow : Window
     {
         private Sequence seq1;
-        //private Sequence seq2; //for preprocessing
         private Sequencer seqr1;
-        //private Sequencer seqr2; //for preprocessing
         private OutputDevice outDevice;
         private int outDeviceID = 0;
-        //private bool donePreProcessing = false;
-
-        
         int[] instpos = new int[16];
-        //int[] positions = new int[256];
-
-
 
         public MainWindow()
         {
@@ -54,42 +46,8 @@ namespace GUI
         {
             var x = seq1.GetLength();
             seqr1.Sequence = seq1;
-            //Preprocess();
             seqr1.Start();
         }
-        //private void HandlePlayingCompleted(object sender, EventArgs e)
-        //{
-        //    donePreProcessing = true;
-        //}
-        //private void Preprocess()
-        //{
-        //    seq2 = seq1;
-        //    seqr2 = seqr1;
-        //    seqr2.Start();
-        //    while (!donePreProcessing)
-        //    {
-
-        //        //seq2 = new Sanford.Multimedia.Midi.Sequence();
-        //        //seqr2 = new Sanford.Multimedia.Midi.Sequencer();
-        //        //seqr2.Sequence = seq2;
-        //        //seq2.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\g.mid");
-                
-        //        seqr2.clock.Tempo = 1000;
-        //        seqr2.ChannelMessagePlayed += PreProcessChannelMessage;
-        //        seqr2.PlayingCompleted += new System.EventHandler(this.HandlePlayingCompleted);
-                
-        //    }
-        //    seqr2.Stop();
-        //}
-        
-        //private void PreProcessChannelMessage(object sender, ChannelMessageEventArgs e)
-        //{
-        //    seqr2.clock.Tempo = 1000;
-        //    if (e.Message.Command == ChannelCommand.ProgramChange)
-        //    {
-        //        positions[e.Message.Data1+1] = 1;
-        //    }
-        //}
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {

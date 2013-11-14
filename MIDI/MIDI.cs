@@ -98,7 +98,19 @@ namespace Orchestra
         private void HandleLoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
             sequencer1.Sequence = sequence1;
-            sequencer1.Start();
+            //sequencer1.Start();
+            IEnumerable<Track> tracks = sequencer1.Sequence.AsEnumerable();
+            foreach (var track in tracks)
+            {
+                Console.WriteLine("______________________________________________________________________________________");
+                IEnumerable<MidiEvent> midievents = track.Iterator();
+                foreach (MidiEvent midievent in midievents)
+                {
+                    Console.WriteLine(midievent.MidiMessage);
+                }
+            }
+
+            
             //foreach (var track in sequence1)
             //{
             //    for (int i = 0; i < track.Count; ++i)
