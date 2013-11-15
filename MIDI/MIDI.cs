@@ -46,27 +46,36 @@ namespace Orchestra
         public static void LoadSong(string file)
         {
             sequence.Load(file);
-            Dispatch.TriggerSongLoaded();
+            //Dispatch.TriggerSongLoaded();
 
-            // Print track data
-            //IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
-            //foreach (var track in tracks)
-            //{
-            //    Console.WriteLine("______________________________________________________________________________________");
-            //    IEnumerable<MidiEvent> midievents = track.Iterator();
-            //    foreach (MidiEvent midievent in midievents)
-            //    {
-            //        Console.WriteLine(midievent.MidiMessage);
-            //    }
-            //}
+            //Print track data
+            IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
+            foreach (var track in tracks)
+            {
+                Console.WriteLine("______________________________________________________________________________________");
+                IEnumerable<MidiEvent> midievents = track.Iterator();
+                foreach (MidiEvent midievent in midievents)
+                {
 
-            //foreach (var track in sequence1)
+                    //if (midievent.MidiMessage.MessageType == MessageType.Meta)
+                    //{
+                    //    Console.WriteLine(midievent.MidiMessage.MetaType);
+                    //}
+                    Console.Write("{0:X}, {1}, {2} {3}",  midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
+                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X} ", b);
+                    Console.WriteLine(" ");
+                    
+
+                }
+            }
+
+            //foreach (var track in sequence)
             //{
             //    for (int i = 0; i < track.Count; ++i)
             //    {
             //        var m = track.GetMidiEvent(i).MidiMessage;
             //        if (m.MessageType == MessageType.Channel) continue;
-            //        Console.Write("{0} {1:X} ", m.MessageType, m.Status);
+            //        Console.Write("{0} {1:X} ", m.MessageType, m.Status, );
             //        foreach (var b in m.GetBytes()) Console.Write("{0} ", b);
             //        Console.WriteLine();
             //    }
