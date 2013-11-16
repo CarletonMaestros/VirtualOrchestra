@@ -46,40 +46,76 @@ namespace Orchestra
         public static void LoadSong(string file)
         {
             sequence.Load(file);
-            //Dispatch.TriggerSongLoaded();
-
-            //Print track data
-            IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
-            foreach (var track in tracks)
-            {
-                Console.WriteLine("______________________________________________________________________________________");
-                IEnumerable<MidiEvent> midievents = track.Iterator();
-                foreach (MidiEvent midievent in midievents)
-                {
-
-                    //if (midievent.MidiMessage.MessageType == MessageType.Meta)
-                    //{
-                    //    Console.WriteLine(midievent.MidiMessage.MetaType);
-                    //}
-                    Console.Write("{0:X}, {1}, {2} {3}",  midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
-                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X} ", b);
-                    Console.WriteLine(" ");
-                    
-
-                }
-            }
-
-            //foreach (var track in sequence)
+            Dispatch.TriggerSongLoaded();
+            //Console.Write("tempo : ");
+            //Console.WriteLine(sequencer.Clock.Tempo);
+            //Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
+            //IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
+            //foreach (Track track in tracks)
             //{
-            //    for (int i = 0; i < track.Count; ++i)
+            //    IEnumerable<MidiEvent> midievents = track.Iterator();
+            //    foreach (MidiEvent midievent in midievents)
             //    {
-            //        var m = track.GetMidiEvent(i).MidiMessage;
-            //        if (m.MessageType == MessageType.Channel) continue;
-            //        Console.Write("{0} {1:X} ", m.MessageType, m.Status, );
-            //        foreach (var b in m.GetBytes()) Console.Write("{0} ", b);
-            //        Console.WriteLine();
+            //        int[] eventData = new int[5];
+            //        eventData[0] = 
+            //        Console.Write("{0:X}, {1}, {2} {3}", midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
+            //        switch (midievent.MidiMessage.Status)
+            //        {
+            //            case 3:
+            //                {
+            //                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write((char)b);
+            //                    break;
+            //                }
+            //            default:
+            //                {
+            //                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X} ", b);
+            //                    break;
+            //                }
+            //        }
+            //        Console.WriteLine(" ");
+
+
             //    }
             //}
+
+
+            //Print track data
+            //Console.WriteLine("______________________________________________________________________________________");
+            //Console.Write("Sequencer division: ");
+            //Console.WriteLine(sequencer.Sequence.Division);
+            //IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
+            //foreach (var track in tracks)
+            //{
+            //    Console.WriteLine("______________________________________________________________________________________");
+            //    IEnumerable<MidiEvent> midievents = track.Iterator();
+            //    foreach (MidiEvent midievent in midievents)
+            //    {
+
+            //        //if (midievent.MidiMessage.MessageType == MessageType.Meta)
+            //        //{
+            //        //    Console.WriteLine(midievent.MidiMessage.MetaType);
+            //        //}
+            //        Console.Write("{0:X}, {1}, {2} {3}", midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
+            //        switch (midievent.MidiMessage.Status)
+            //        {
+            //            case 3:
+            //                {
+            //                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write((char)b);
+            //                    break;
+            //                }
+            //            default:
+            //                {
+            //                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X} ", b);
+            //                    break;
+            //                }
+            //        }
+            //        Console.WriteLine(" ");
+
+
+            //    }
+            //}
+
+
         }
 
         static void Play(float time)
@@ -111,6 +147,10 @@ namespace Orchestra
         static void MIDIChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
             outDevice.Send(e.Message);
+            if (e.Message.MidiChannel == 4)
+            {
+                Console.WriteLine(e.Message.Message);
+            }
         }
 
         static void MIDIMetaMessagePlayed(object sender, MetaMessageEventArgs e)
