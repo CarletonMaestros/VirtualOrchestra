@@ -120,6 +120,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\blacksquare.jpg" />
+    <Resource Include="Resources\robot1.png" />
+    <Resource Include="Resources\robot2.png" />
+    <Resource Include="Resources\robot3.jpg" />
+    <Resource Include="Resources\robot4.jpg" />
     <Resource Include="Resources\frenchhorn.jpg" />
     <None Include="Resources\violin.jpg" />
     <None Include="Resources\clarinet.jpg" />

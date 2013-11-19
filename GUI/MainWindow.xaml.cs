@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 using Sanford.Multimedia.Midi;
 
 namespace GUI
@@ -28,13 +29,29 @@ namespace GUI
         private Sequence seq1;
         private Sequencer seqr1;
         private OutputDevice outDevice;
+        private Storyboard robot1Storyboard;
+        private DoubleAnimation myDoubleAnimation;
         private int outDeviceID = 0;
         int[] instpos = new int[16];
 
         public MainWindow()
         {
             InitializeComponent();
-            
+        }
+
+        public void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+            myDoubleAnimation = new DoubleAnimation();
+            myDoubleAnimation.From = 1.0;
+            myDoubleAnimation.To = 0.5;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(.25));
+            myDoubleAnimation.AutoReverse = true;
+            myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
+
+            robot1Storyboard = new Storyboard();
+            robot1Storyboard.Children.Add(myDoubleAnimation);
+            Storyboard.SetTargetName(myDoubleAnimation, InstrumentImage.Name);
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Image.OpacityProperty));
         }
 
         public void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -53,7 +70,7 @@ namespace GUI
         {
             this.seq1 = new Sanford.Multimedia.Midi.Sequence();
             this.seqr1 = new Sanford.Multimedia.Midi.Sequencer();
-            seq1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\g.mid");
+            seq1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
 
             //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
             //also, perhaps sequencer1.position could be used (ticks)
@@ -79,10 +96,13 @@ namespace GUI
             seqr1.Chased += HandleChased;
         }
 
+        //public void ImageLoaded(object sender, ChannelMessageEventArgs e)
+        //{
+        //    robot1Storyboard.Begin();
+        //}
+
         private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
-
-
             outDevice.Send(e.Message);
             if (e.Message.Command == ChannelCommand.ProgramChange)
             {
@@ -96,26 +116,12 @@ namespace GUI
             {
                 //Console.Write("Playing note on ");
                 //Console.WriteLine((GeneralMidiInstrument)instpos[e.Message.MidiChannel]);
-                if (instpos[e.Message.MidiChannel] == 73)
+                if (instpos[e.Message.MidiChannel] == 80)
                 {
-  
 
                     this.Dispatcher.Invoke((Action)(() =>
                     {
-
-                        Image myImage = new Image();
-                        myImage.Width = 200;
-
-                        BitmapImage myBitmapImage = new BitmapImage();
-
-                        myBitmapImage.BeginInit();
-                        myBitmapImage.UriSource = new Uri(@"C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\flute.jpg");
-
-                        myBitmapImage.DecodePixelWidth = 200;
-                        myBitmapImage.EndInit();
-
-                        InstrumentImage.Source = myBitmapImage;
-                        //Application.Current.MainWindow.Background = new SolidColorBrush(Colors.DarkOrchid);
+                        robot1Storyboard.Begin();
                     }));
                 }
 
