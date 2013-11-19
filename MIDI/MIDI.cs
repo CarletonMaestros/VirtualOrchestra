@@ -17,8 +17,10 @@ namespace Orchestra
         static OutputDevice outDevice = new OutputDevice(0);
         private int[] curChannelInstruments = new int[16]; //keeps track of what instruments are on what channel
         private List<int>   allInstrumentsUsed = new List<int>();
+        //yolO(n) time
+        private List<int[]> instrChanges = new List<int[]>(); //int[17] [0-15] = inst @ chan. [16] = tick
         
-        Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
+        //Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
         static float lastBeat = 0;
 
@@ -39,7 +41,7 @@ namespace Orchestra
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
-            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
+            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid");
 
             // Other messages that might be useful
             //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
@@ -47,8 +49,9 @@ namespace Orchestra
             //this.sequencer1.Stopped += new System.EventHandler<Sanford.Multimedia.Midi.StoppedEventArgs>(this.HandleStopped);
         }
 
+        //private void 
         //adds to dictionary, and check for collisions, instead of exception, edits val at key
-        private void addHandleCollisions(int key, int[] eventData)
+        private Dictionary<int, List<int[]>> addToDictHandleCollisions(int key, int[] eventData, Dictionary<int, List<int[]>> eventsAtTicksDict)
         {
             List<int[]> keyValHolder = new List<int[]>();
             if (eventsAtTicksDict.ContainsKey(key))
@@ -58,19 +61,198 @@ namespace Orchestra
                 keyValHolder.Add(eventData);
                 eventsAtTicksDict.Remove(key);
                 eventsAtTicksDict.Add(key, keyValHolder);
+                return eventsAtTicksDict;
                 //this is ridiculous. Whatever, I suppose
             }
             else
             {
                 keyValHolder.Add(eventData);
                 eventsAtTicksDict.Add(key, keyValHolder);
+                return eventsAtTicksDict;
             }
+        }
+
+        // populates instrChanges
+        private int[,] populateInstrChanges(Sequence sequence)
+        {
+            IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
+            foreach (Track track in tracks)
+            {
+                IEnumerable<MidiEvent> midievents = track.Iterator();
+                foreach (MidiEvent midievent in midievents)
+                {
+
+                    switch (midievent.MidiMessage.Status>>4)
+                    {
+                        case 0xC:
+                            {
+                                int[] deltaEvent = new int[18];
+                                int locationInDE;
+                                byte[] byteHold = new byte[4];
+                                int timestamp;
+
+                                
+                                locationInDE = midievent.MidiMessage.Status & 0x0F;
+                                byteHold = midievent.MidiMessage.GetBytes();
+                                deltaEvent[locationInDE] = byteHold[1]; //second byte is instr number
+                                if (!allInstrumentsUsed.Contains(byteHold[1]))
+                                {
+                                    allInstrumentsUsed.Add(byteHold[1]);
+                                }
+                                deltaEvent[16] = midievent.AbsoluteTicks;
+                                deltaEvent[17] = locationInDE;
+
+                                instrChanges.Add(deltaEvent); //start filling deltaEvent
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
+                    }
+                }
+            }
+            allInstrumentsUsed.Sort();
+            return mergeInstrChangeData();
+        }
+
+        /*
+         * Merges the irresponsibly-generated instr-change data
+         */ 
+        private int[,] mergeInstrChangeData()
+        {
+            List<int> uniqueDeltaEvents = new List<int>();
+            foreach (int[] deltaEvent in instrChanges)
+            {
+                if (uniqueDeltaEvents.Contains(deltaEvent[16]))
+                {
+                    continue;
+                }
+                else
+                {
+                    uniqueDeltaEvents.Add(deltaEvent[16]);
+                }
+            }
+            int[,] instrChangesArray = new int[uniqueDeltaEvents.Count,17];
+            uniqueDeltaEvents.Sort();
+            int[] uniqueDeltaEventsArray = new int[uniqueDeltaEvents.Count];
+            uniqueDeltaEvents.CopyTo(uniqueDeltaEventsArray);
+            for (int i = 0; i<uniqueDeltaEvents.Count; ++i)
+            {
+                instrChangesArray[i, 16] = uniqueDeltaEventsArray[i];
+                foreach (int[] deltaEvent in instrChanges)
+                {
+                    if (deltaEvent[16] == uniqueDeltaEventsArray[i])
+                    {
+                        instrChangesArray[i, deltaEvent[17]] = deltaEvent[deltaEvent[17]];
+                    }
+                }
+                if (i < uniqueDeltaEvents.Count - 1)
+                {
+                    for (int j = 0; j < 16; ++j)
+                    {
+                        instrChangesArray[i + 1, j] = instrChangesArray[i, j];
+                    }
+                }
+            }
+
+            return instrChangesArray;
+        }
+
+        private Dictionary<int, List<int[]>> getInstrumentNoteTimes(Track track, int[,] instrumentsAtTicks, Dictionary<int, List<int[]>> eventsAtTicksDict)
+        {
+            //Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
+
+            //dict to be modified to allow note duration calculations
+            Dictionary<Tuple<int, int>, int[]> noteDurationData = new Dictionary<Tuple<int, int>, int[]>(); //key = <channel,pitch> data = <abs, vel>
+            IEnumerable<MidiEvent> midievents = track.Iterator();
+            foreach (MidiEvent midievent in midievents)
+            {
+                //Console.Write("{0:X}, {1}, {2} {3}", midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
+                //foreach (byte b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X}, {1}", b, " ");
+                //Console.WriteLine();
+
+                switch (midievent.MidiMessage.Status >> 4)
+                {
+                    case 0x9:
+                        
+                        byte[] byteHold = new byte[4];
+                        byteHold = midievent.MidiMessage.GetBytes();
+                        int channel = byteHold[0] & 0x0F;//bitwise and to get last 4 bits
+                        int pitch = byteHold[1];
+                        int vel = byteHold[2];
+                        int abs = midievent.AbsoluteTicks;
+                        Tuple<int, int> key = new Tuple<int, int>(channel, pitch);
+                            
+                        int[] data = new int[2] { abs, vel };
+                        try
+                        {
+                            noteDurationData.Add(key, data);
+                        }
+                        catch (ArgumentException)
+                        {
+                            //Console.WriteLine("too stupid for real msg"); // i no longer trust Sanford's merge method. slut. probably a guy, actually. bitch. Interesting gender norms appearing here.
+                            //MULTIPLE NOTES ARE ALLOWED TO BE PLAYED BY THE SAME INSTRUMENT AT THE SAME TIME
+                        }
+                        break;
+                        
+                    case 0x8:
+                        
+                        byte[] byteHoldNOFF = new byte[4];
+                        byteHoldNOFF = midievent.MidiMessage.GetBytes();
+                        int channelNOFF = byteHoldNOFF[0] & 0x0F;//bitwise and to get last 4 bits
+                        int pitchNOFF = byteHoldNOFF[1];
+                        int absNOFF = midievent.AbsoluteTicks;
+                        Tuple<int, int> keyNOFF = new Tuple<int, int>(channelNOFF, pitchNOFF);
+                        try
+                        {
+                            int[] NONdata = noteDurationData[keyNOFF];
+                            noteDurationData.Remove(keyNOFF);
+                            int absNON = NONdata[0];
+                            int velNON = NONdata[1];
+                            int dur = absNOFF - absNON;
+                            int instr = -1;
+                            //CALCULATE current instrument
+                            for (int i = 0; i < instrumentsAtTicks.GetLength(0); ++i)
+                            {
+                                if (instrumentsAtTicks[i, 16] > absNON)
+                                {
+                                    instr = instrumentsAtTicks[i - 1, channelNOFF]; //this makes sense. finding a bigger time then backtracking should never fail
+                                }
+                                else if (i == instrumentsAtTicks.GetLength(0) - 1)
+                                {
+                                    instr = instrumentsAtTicks[i, channelNOFF]; //added this case because I was wrong in the previous comment. Fuck you t-2 Joe Brown.
+                                }
+                            }
+                            int[] eventdata = new int[4] { instr, pitchNOFF, velNON, dur };
+                            eventsAtTicksDict = addToDictHandleCollisions(absNON, eventdata, eventsAtTicksDict);
+                        }
+                        catch (KeyNotFoundException)
+                        {
+                            //as If I even care at this point
+                        }
+                        break;
+                        
+
+                    default:
+                        break;
+                }
+            }
+
+            return eventsAtTicksDict;
         }
 
         public static void LoadSong(string file)
         {
             sequence.Load(file);
-            Dispatch.TriggerSongLoaded();
+            //Dispatch.TriggerSongLoaded();
+
+            //Oh golly gee wiz, the engineers are not going to like this...
+            MIDI preprocessor = new MIDI();
+            int[,] instrumentsAtTicks = preprocessor.populateInstrChanges(sequencer.Sequence); //efficiency has been checked into the ICU and is in a vegetative state
+            List<int> allInstrumentsUsed = preprocessor.allInstrumentsUsed;
+            
+
 
             //proving we can extract tempo
             Console.Write("Sequencer division: ");
@@ -84,81 +266,27 @@ namespace Orchestra
              * time between the events is recorded and sent to 
              * the dictionary as the note duration
              */
-            s
+            //Track allTracksMerged = new Track();
+
+            //IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
+            //foreach (Track track in tracks)
+            //{
+            //    if (track == tracks.First())
+            //    {
+            //        allTracksMerged = track;
+            //        continue;
+            //    }
+            //    allTracksMerged.Merge(track);
+            //}
+
+            Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
             IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
             foreach (Track track in tracks)
             {
-                IEnumerable<MidiEvent> midievents = track.Iterator();
-                foreach (MidiEvent midievent in midievents)
-                {
-                    int[] eventData = new int[5];
-                    //eventData[0] =
-                    Console.Write("{0:X}, {1}, {2} {3}", midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
-                    switch (midievent.MidiMessage.Status)
-                    {
-                        case 3:
-                            {
-                                foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write((char)b);
-                                break;
-                            }
-                        default:
-                            {
-                                foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X} ", b);
-                                break;
-                            }
-                    }
-                    Console.WriteLine(" ");
-
-
-                }
+                eventsAtTicksDict = preprocessor.getInstrumentNoteTimes(track, instrumentsAtTicks, eventsAtTicksDict);
             }
-
-
-            //Print track data
-            //Console.WriteLine("______________________________________________________________________________________");
-            //Console.Write("Sequencer division: ");
-            //Console.WriteLine(sequencer.Sequence.Division);
-            //int x ;
-            //IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
-            //foreach (var track in tracks)
-            //{
-            //    Console.WriteLine("______________________________________________________________________________________");
-            //    IEnumerable<MidiEvent> midievents = track.Iterator();
-            //    //MessageDispatcher md = new MessageDispatcher();
-            //    //int tickNumber = new int();
-            //    //ChannelChaser cc = new ChannelChaser();
-            //    //IEnumerable<int> dispathEvents = track.DispatcherIterator(md);
-            //    //IEnumerable<int> tickEvents = track.TickIterator(tickNumber, cc, md);
-
-            //    foreach (MidiEvent midievent in midievents)
-            //    {
-
-            //        //if (midievent.MidiMessage.MessageType == MessageType.Meta)
-            //        //{
-            //        //    Console.WriteLine(midievent.MidiMessage.MetaType);
-            //        //}
-            //        Console.Write("{0:X}, {1}, {2} {3}", midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
-            //        switch (midievent.MidiMessage.Status)
-            //        {
-            //            case 3:
-            //                {
-            //                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write((char)b);
-            //                    break;
-            //                }
-            //            default:
-            //                {
-            //                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X} ", b);
-            //                    break;
-            //                }
-            //        }
-            //        Console.WriteLine(" ");
-
-
-            //    }
-            //}
-
-
+            
         }
 
         static void Play(float time)
@@ -213,3 +341,77 @@ namespace Orchestra
         }
     }
 }
+
+
+
+
+
+
+
+
+//IEnumerable<MidiEvent> midievents = allTracksMerged.Iterator();
+//foreach (MidiEvent midievent in midievents)
+//{
+//    int[] eventData = new int[5];
+//    //eventData[0] =
+//    Console.Write("{0:X}, {1}, {2} {3}", midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
+//    switch (midievent.MidiMessage.Status)
+//    {
+//        case 3:
+//            {
+//                foreach (byte b in midievent.MidiMessage.GetBytes()) Console.Write((char)b);
+//                break;
+//            }
+//        default:
+//            {
+//                foreach (byte b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X}, {1}", b, " ");
+//                break;
+//            }
+//    }
+//    Console.WriteLine(" ");
+//}
+
+
+
+//Print track data
+//Console.WriteLine("______________________________________________________________________________________");
+//Console.Write("Sequencer division: ");
+//Console.WriteLine(sequencer.Sequence.Division);
+//int x ;
+//IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
+//foreach (var track in tracks)
+//{
+//    Console.WriteLine("______________________________________________________________________________________");
+//    IEnumerable<MidiEvent> midievents = track.Iterator();
+//    //MessageDispatcher md = new MessageDispatcher();
+//    //int tickNumber = new int();
+//    //ChannelChaser cc = new ChannelChaser();
+//    //IEnumerable<int> dispathEvents = track.DispatcherIterator(md);
+//    //IEnumerable<int> tickEvents = track.TickIterator(tickNumber, cc, md);
+
+//    foreach (MidiEvent midievent in midievents)
+//    {
+
+//        //if (midievent.MidiMessage.MessageType == MessageType.Meta)
+//        //{
+//        //    Console.WriteLine(midievent.MidiMessage.MetaType);
+//        //}
+//        Console.Write("{0:X}, {1}, {2} {3}", midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
+//        switch (midievent.MidiMessage.Status)
+//        {
+//            case 3:
+//                {
+//                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write((char)b);
+//                    break;
+//                }
+//            default:
+//                {
+//                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X} ", b);
+//                    break;
+//                }
+//        }
+//        Console.WriteLine(" ");
+
+
+//    }
+//}
