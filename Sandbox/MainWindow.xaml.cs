@@ -43,7 +43,7 @@ namespace Orchestra.Sandbox
             Dispatch.VolumeChanged += (time, volume) => Console.WriteLine("Volume {0}%", (int)(volume*100));
 
             // Please don't stop the muuusic
-            //Dispatch.TriggerPlay(); //fuck the music, i'm trying to get shit done
+            Dispatch.TriggerPlay(); //fuck the music, i'm trying to get shit done
         }
 
         private void InitKinect()
