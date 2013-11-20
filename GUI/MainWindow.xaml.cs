@@ -29,7 +29,9 @@ namespace GUI
         private Sequence seq1;
         private Sequencer seqr1;
         private OutputDevice outDevice;
-        private Storyboard robot1Storyboard;
+        private Storyboard johnStoryboard;
+        private Storyboard paulStoryboard;
+        private Storyboard georgeStoryboard;
         private DoubleAnimation myDoubleAnimation;
         private int outDeviceID = 0;
         int[] instpos = new int[16];
@@ -43,15 +45,31 @@ namespace GUI
         {
             myDoubleAnimation = new DoubleAnimation();
             myDoubleAnimation.From = 1.0;
-            myDoubleAnimation.To = 0.5;
-            myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(.25));
+            myDoubleAnimation.To = 0.2;
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(.1));
             myDoubleAnimation.AutoReverse = true;
             myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
 
-            robot1Storyboard = new Storyboard();
-            robot1Storyboard.Children.Add(myDoubleAnimation);
-            Storyboard.SetTargetName(myDoubleAnimation, InstrumentImage.Name);
+            johnStoryboard = new Storyboard();
+            johnStoryboard.Children.Add(myDoubleAnimation);
+            Storyboard.SetTargetName(myDoubleAnimation, johnImage.Name);
             Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Image.OpacityProperty));
+            johnStoryboard.Begin(this, true);
+            johnStoryboard.Pause(this);
+
+            paulStoryboard = new Storyboard();
+            paulStoryboard.Children.Add(myDoubleAnimation);
+            Storyboard.SetTargetName(myDoubleAnimation, paulImage.Name);
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Image.OpacityProperty));
+            paulStoryboard.Begin(this, true);
+            paulStoryboard.Pause(this);
+
+            georgeStoryboard = new Storyboard();
+            georgeStoryboard.Children.Add(myDoubleAnimation);
+            Storyboard.SetTargetName(myDoubleAnimation, georgeImage.Name);
+            Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Image.OpacityProperty));
+            georgeStoryboard.Begin(this, true);
+            georgeStoryboard.Pause(this);
         }
 
         public void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -70,7 +88,7 @@ namespace GUI
         {
             this.seq1 = new Sanford.Multimedia.Midi.Sequence();
             this.seqr1 = new Sanford.Multimedia.Midi.Sequencer();
-            seq1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
+            seq1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.mid");
 
             //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
             //also, perhaps sequencer1.position could be used (ticks)
@@ -116,79 +134,36 @@ namespace GUI
             {
                 //Console.Write("Playing note on ");
                 //Console.WriteLine((GeneralMidiInstrument)instpos[e.Message.MidiChannel]);
-                if (instpos[e.Message.MidiChannel] == 80)
+                if (instpos[e.Message.MidiChannel] == 24)
                 {
 
                     this.Dispatcher.Invoke((Action)(() =>
                     {
-                        robot1Storyboard.Begin(this);
+                        if (johnStoryboard.GetIsPaused(this) == true)
+                        {
+                            johnStoryboard.Resume(this);
+                        }
                     }));
                 }
 
-                if (instpos[e.Message.MidiChannel] == 71)
+                if (instpos[e.Message.MidiChannel] == 35)
                 {
-
-
                     this.Dispatcher.Invoke((Action)(() =>
                     {
-
-                        Image myImage = new Image();
-                        myImage.Width = 200;
-
-                        BitmapImage myBitmapImage = new BitmapImage();
-
-                        myBitmapImage.BeginInit();
-                        myBitmapImage.UriSource = new Uri(@"C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\clarinet.jpg");
-
-                        myBitmapImage.DecodePixelWidth = 200;
-                        myBitmapImage.EndInit();
-
-                        InstrumentImage2.Source = myBitmapImage;
-                        //Application.Current.MainWindow.Background = new SolidColorBrush(Colors.DarkOrchid);
+                        if (paulStoryboard.GetIsPaused(this) == true)
+                        {
+                            paulStoryboard.Resume(this);
+                        }
                     }));
                 }
-                if (instpos[e.Message.MidiChannel] == 60)
+                if (instpos[e.Message.MidiChannel] == 25)
                 {
-
-
                     this.Dispatcher.Invoke((Action)(() =>
                     {
-
-                        Image myImage = new Image();
-                        myImage.Width = 200;
-
-                        BitmapImage myBitmapImage = new BitmapImage();
-
-                        myBitmapImage.BeginInit();
-                        myBitmapImage.UriSource = new Uri(@"C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\frenchhorn.jpg");
-
-                        myBitmapImage.DecodePixelWidth = 200;
-                        myBitmapImage.EndInit();
-
-                        InstrumentImage3.Source = myBitmapImage;
-                        //Application.Current.MainWindow.Background = new SolidColorBrush(Colors.DarkOrchid);
-                    }));
-                }
-                if (instpos[e.Message.MidiChannel] == 48)
-                {
-
-
-                    this.Dispatcher.Invoke((Action)(() =>
-                    {
-
-                        Image myImage = new Image();
-                        myImage.Width = 200;
-
-                        BitmapImage myBitmapImage = new BitmapImage();
-
-                        myBitmapImage.BeginInit();
-                        myBitmapImage.UriSource = new Uri(@"C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\violin.jpg");
-
-                        myBitmapImage.DecodePixelWidth = 200;
-                        myBitmapImage.EndInit();
-
-                        InstrumentImage4.Source = myBitmapImage;
-                        //Application.Current.MainWindow.Background = new SolidColorBrush(Colors.DarkOrchid);
+                        if (georgeStoryboard.GetIsPaused(this) == true)
+                        {
+                            georgeStoryboard.Resume(this);
+                        }
                     }));
                 }
             }
@@ -197,26 +172,36 @@ namespace GUI
             {
                 //Console.Write("Stopping note on ");
                 //Console.WriteLine((GeneralMidiInstrument)instpos[e.Message.MidiChannel]);
-                this.Dispatcher.Invoke((Action)(() =>
+                if (instpos[e.Message.MidiChannel] == 24)
                 {
-
-                    Image myImage = new Image();
-                    myImage.Width = 200;
-
-
-                    BitmapImage myBitmapImage = new BitmapImage();
-
-                    myBitmapImage.BeginInit();
-                    myBitmapImage.UriSource = new Uri(@"C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\whitesquare.jpg");
-
-                    myBitmapImage.DecodePixelWidth = 200;
-                    myBitmapImage.EndInit();
-                    InstrumentImage.Source = myBitmapImage;
-                    InstrumentImage2.Source = myBitmapImage;
-                    InstrumentImage3.Source = myBitmapImage;
-                    InstrumentImage4.Source = myBitmapImage;
-                    //Application.Current.MainWindow.Background = new SolidColorBrush(Colors.Azure);
-                }));
+                    this.Dispatcher.Invoke((Action)(() =>
+                    {
+                        if (johnStoryboard.GetIsPaused(this) == false)
+                        {
+                            johnStoryboard.Pause(this);
+                        }
+                    }));
+                }
+                if (instpos[e.Message.MidiChannel] == 35)
+                {
+                    this.Dispatcher.Invoke((Action)(() =>
+                    {
+                        if (paulStoryboard.GetIsPaused(this) == false)
+                        {
+                            paulStoryboard.Pause(this);
+                        }
+                    }));
+                }
+                if (instpos[e.Message.MidiChannel] == 25)
+                {
+                    this.Dispatcher.Invoke((Action)(() =>
+                    {
+                        if (georgeStoryboard.GetIsPaused(this) == false)
+                        {
+                            georgeStoryboard.Pause(this);
+                        }
+                    }));
+                }
             }
         }
 

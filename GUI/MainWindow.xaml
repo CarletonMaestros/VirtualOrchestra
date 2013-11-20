@@ -5,10 +5,11 @@
     <Grid>
         <Button Name="PlayButton" Content="Play" HorizontalAlignment="Left" Margin="400
                 ,272,0,0" VerticalAlignment="Top" Width="75" Click="PlayButton_Click" />
-        <Image x:Name="InstrumentImage" Source="C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\robot1.png" 
-               HorizontalAlignment="Left" Height="100" Margin="100,112,0,0" VerticalAlignment="Top" Width="100"/>
-        <Image Name="InstrumentImage2" HorizontalAlignment="Left" Height="100" Margin="300,112,0,0" VerticalAlignment="Top" Width="100"/>
-        <Image Name="InstrumentImage3" HorizontalAlignment="Left" Height="100" Margin="500,112,0,0" VerticalAlignment="Top" Width="100"/>
-        <Image Name="InstrumentImage4" HorizontalAlignment="Left" Height="100" Margin="700,112,0,0" VerticalAlignment="Top" Width="100"/>
+        <Image x:Name="johnImage" Source="C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\john.jpg" 
+               HorizontalAlignment="Left" Height="170" Margin="82,84,0,0" VerticalAlignment="Top" Width="211"/>
+        <Image Name="paulImage" Source="C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\paul.jpg"
+               HorizontalAlignment="Left" Height="236" Margin="361,18,0,0" VerticalAlignment="Top" Width="176"/>
+        <Image Name="georgeImage" Source="C:\Users\Admin\Desktop\VirtualOrchestra\GUI\Resources\george.jpg"
+               HorizontalAlignment="Left" Height="170" Margin="608,84,0,0" VerticalAlignment="Top" Width="255"/>
     </Grid>
 </Window>
