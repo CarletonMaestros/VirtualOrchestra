@@ -46,7 +46,7 @@ namespace GUI
             myDoubleAnimation = new DoubleAnimation();
             myDoubleAnimation.From = 1.0;
             myDoubleAnimation.To = 0.2;
-            myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(.1));
+            myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(.2));
             myDoubleAnimation.AutoReverse = true;
             myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
 
@@ -113,11 +113,6 @@ namespace GUI
             seqr1.ChannelMessagePlayed += HandleChannelMessagePlayed;
             seqr1.Chased += HandleChased;
         }
-
-        //public void ImageLoaded(object sender, ChannelMessageEventArgs e)
-        //{
-        //    robot1Storyboard.Begin();
-        //}
 
         private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
