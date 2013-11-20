@@ -245,12 +245,12 @@ namespace Orchestra
         public static void LoadSong(string file)
         {
             sequence.Load(file);
-            Dispatch.TriggerSongLoaded();
+            //Dispatch.TriggerSongLoaded();
 
             //Oh golly gee wiz, the engineers are not going to like this...
-            //MIDI preprocessor = new MIDI();
-            //int[,] instrumentsAtTicks = preprocessor.populateInstrChanges(sequencer.Sequence); //efficiency has been checked into the ICU and is in a vegetative state
-            //List<int> allInstrumentsUsed = preprocessor.allInstrumentsUsed;
+            MIDI preprocessor = new MIDI();
+            int[,] instrumentsAtTicks = preprocessor.populateInstrChanges(sequencer.Sequence); //efficiency has been checked into the ICU and is in a vegetative state
+            List<int> allInstrumentsUsed = preprocessor.allInstrumentsUsed;
             
 
 
@@ -268,13 +268,13 @@ namespace Orchestra
              */
 
 
-            //Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
+            Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
-            //IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
-            //foreach (Track track in tracks)
-            //{
-            //    eventsAtTicksDict = preprocessor.getInstrumentNoteTimes(track, instrumentsAtTicks, eventsAtTicksDict);
-            //}
+            IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
+            foreach (Track track in tracks)
+            {
+                eventsAtTicksDict = preprocessor.getInstrumentNoteTimes(track, instrumentsAtTicks, eventsAtTicksDict);
+            }
             
         }
 

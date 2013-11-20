@@ -63,6 +63,11 @@ namespace Orchestra
                 }
                 return -1;
             }
+
+            public int getLength()
+            {
+                return numElements;
+            }
         }
 
         public Int32 counter = 1;
@@ -82,6 +87,11 @@ namespace Orchestra
         public float headX;
         public float headY;
         public int startMarker = 0;
+        //public CircularQueue<List<float>> circleChecker;
+        public Boolean stop = false;
+        //public List<float> xYValue();
+        //public float xAverage = 0;
+        //public float yAverage = 0;
 
         public TempoGesture()
         {
@@ -93,6 +103,7 @@ namespace Orchestra
             threshold = .002F;
             stillFramesCount = 0;
             framesInFirstBeat = 0;
+            //circleChecker = new CircularQueue<List<float>>(30);
         }
 
         ~TempoGesture()
@@ -108,90 +119,109 @@ namespace Orchestra
                 {
                     rightHandY = joint.Position.Y;
                     rightHandX = joint.Position.X;
+                    //xYValue().Add(rightHandX);
+                    //xYValue().Add(rightHandY);
+                    //circleChecker.enqueue(xYValue());
+                    //xAverage = xYValue().ElementAt(0);
+                    //yAverage = xYValue().ElementAt(1);
+                    //xYValue().Clear();
+                    //for (int i = 1; i <= circleChecker.getLength(); i++)
+                    //{
+                    //    xYValue().Add(circleChecker.get(i).ElementAt(0));
+                    //    xAverage += xYValue().ElementAt(0);
+                    //    yAverage += xYValue().ElementAt(1);
+                    //    xYValue().Clear();
+                    //}
+                    //xAverage = xAverage / circleChecker.getLength();
+                    //yAverage = yAverage / circleChecker.getLength();
+                    
                 }
             }
-            switch (seeking)
+            if (!stop)
             {
-                case "STILL":
-                    {
-                        if (stillFramesCount == 15)
+                switch (seeking)
+                {
+                    case "STILL":
                         {
-                            seeking = "START";
-                        }
-                        if (stillFramesCount < 15 && Math.Abs(prevXOne - rightHandX) < .08 && Math.Abs(prevYOne - rightHandY) < .08 && Math.Abs(prevXTwo - rightHandX) < .08 && Math.Abs(prevYTwo - rightHandY) < .08)
-                        {
-                            stillFramesCount++;
+                            if (stillFramesCount == 15)
+                            {
+                                seeking = "START";
+                            }
+                            if (stillFramesCount < 15 && Math.Abs(prevXOne - rightHandX) < .08 && Math.Abs(prevYOne - rightHandY) < .08 && Math.Abs(prevXTwo - rightHandX) < .08 && Math.Abs(prevYTwo - rightHandY) < .08)
+                            {
+                                stillFramesCount++;
+                                break;
+                            }
+                            else if (stillFramesCount < 15)
+                            {
+                                stillFramesCount = 0;
+                            }
                             break;
                         }
-                        else if (stillFramesCount < 15)
+                    case "START":
                         {
-                            stillFramesCount = 0;
-                        }
-                        break;
-                    }
-                case "START":
-                    {
-                        if (prevYTwo < (prevYOne - .01) && prevYOne < (rightHandY - .01))
-                        {
-                            if (framesInFirstBeat == 0)
+                            if (prevYTwo < (prevYOne - .01) && prevYOne < (rightHandY - .01))
                             {
-                                stopwatch.Start();
+                                if (framesInFirstBeat == 0)
+                                {
+                                    stopwatch.Start();
+                                }
+
+                                framesInFirstBeat++;
+                                break;
+                            }
+                            if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01))
+                            {
+                                //Console.WriteLine("Start with " + stopwatch.ElapsedMilliseconds + " in the pre-start beat.");
+                                seeking = "MINIMUM";
+                                break;
                             }
 
-                            framesInFirstBeat++;
                             break;
                         }
-                        if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01))
+                    case "MINIMUM":
                         {
-                            //Console.WriteLine("Start with " + stopwatch.ElapsedMilliseconds + " in the pre-start beat.");
-                            seeking = "MINIMUM";
+                            if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
+                            {
+                                if (counter == 5)
+                                {
+                                    counter = 1;
+                                }
+                                if (startMarker == 0)
+                                {
+                                    startMarker = 1;
+                                    long firstTempo = stopwatch.ElapsedMilliseconds * 1000 / 2;
+                                    //Console.WriteLine(counter + " " + firstTempo);
+                                    //Dispatch.TriggerPlay(); // FIXME!!!
+                                    Dispatch.TriggerBeat(counter);
+                                }
+                                else
+                                {
+                                    long tempo = stopwatch.ElapsedMilliseconds * 1000;
+                                    //Console.WriteLine(counter + " " + tempo);
+                                    Dispatch.TriggerBeat(counter);
+                                }
+                                stopwatch.Restart();
+
+                                // GET OVER IT
+                                seeking = "MAXIMUM";
+                                counter++;
+                                break;
+                            }
                             break;
                         }
-
-                        break;
-                    }
-                case "MINIMUM":
-                    {
-                        if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
+                    case "MAXIMUM":
                         {
-                            if (counter == 5)
+                            if (prevYTwo > (prevYOne + threshold) && prevYOne > (rightHandY + threshold))
                             {
-                                counter = 1;
+                                seeking = "MINIMUM";
+                                break;
                             }
-                            if (startMarker == 0)
-                            {
-                                startMarker = 1;
-                                long firstTempo = stopwatch.ElapsedMilliseconds * 1000 / 2;
-                                //Console.WriteLine(counter + " " + firstTempo);
-                                //Dispatch.TriggerPlay(); // FIXME!!!
-                                Dispatch.TriggerBeat(counter);
-                            }
-                            else
-                            {
-                                long tempo = stopwatch.ElapsedMilliseconds * 1000;
-                                //Console.WriteLine(counter + " " + tempo);
-                                Dispatch.TriggerBeat(counter);
-                            }
-                            stopwatch.Restart();
-
-                            // GET OVER IT
-                            seeking = "MAXIMUM";
-                            counter++;
                             break;
                         }
-                        break;
-                    }
-                case "MAXIMUM":
-                    {
-                        if (prevYTwo > (prevYOne + threshold) && prevYOne > (rightHandY + threshold))
-                        {
-                            seeking = "MINIMUM";
-                            break;
-                        }
-                        break;
-                    }
 
 
+                }
             }
             prevYTwo = prevYOne;
             prevXTwo = prevXOne;

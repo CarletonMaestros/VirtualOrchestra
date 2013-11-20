@@ -121,7 +121,7 @@ namespace GUI
 
                     this.Dispatcher.Invoke((Action)(() =>
                     {
-                        robot1Storyboard.Begin();
+                        robot1Storyboard.Begin(this);
                     }));
                 }
 
