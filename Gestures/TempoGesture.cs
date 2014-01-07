@@ -193,14 +193,13 @@ namespace Orchestra
                                     long firstTempo = stopwatch.ElapsedMilliseconds * 1000 / 2;
                                     //Console.WriteLine(counter + " " + firstTempo);
                                     //Dispatch.TriggerPlay(); // FIXME!!!
-                                    Dispatch.TriggerBeat(counter);
                                 }
                                 else
                                 {
                                     long tempo = stopwatch.ElapsedMilliseconds * 1000;
-                                    //Console.WriteLine(counter + " " + tempo);
-                                    Dispatch.TriggerBeat(counter);
+                                    //Console.WriteLine(counter + " " + tempo);\
                                 }
+                                Dispatch.TriggerBeat(counter);
                                 stopwatch.Restart();
 
                                 // GET OVER IT

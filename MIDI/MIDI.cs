@@ -11,15 +11,15 @@ namespace Orchestra
 {
     public class MIDI
     {
-        static Stopwatch    stopwatch = new Stopwatch();
-        static Sequence     sequence  = new Sanford.Multimedia.Midi.Sequence();
-        static Sequencer    sequencer = new Sanford.Multimedia.Midi.Sequencer();
+        static Stopwatch stopwatch = new Stopwatch();
+        static Sequence sequence = new Sanford.Multimedia.Midi.Sequence();
+        static Sequencer sequencer = new Sanford.Multimedia.Midi.Sequencer();
         static OutputDevice outDevice = new OutputDevice(0);
         private int[] curChannelInstruments = new int[16]; //keeps track of what instruments are on what channel
-        private List<int>   allInstrumentsUsed = new List<int>();
+        private List<int> allInstrumentsUsed = new List<int>();
         //yolO(n) time
         private List<int[]> instrChanges = new List<int[]>(); //int[17] [0-15] = inst @ chan. [16] = tick
-        
+
         //Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
         static float lastBeat = 0;
@@ -57,7 +57,6 @@ namespace Orchestra
             List<int[]> keyValHolder = new List<int[]>();
             if (eventsAtTicksDict.ContainsKey(key))
             {
-                
                 keyValHolder = eventsAtTicksDict[key];
                 keyValHolder.Add(eventData);
                 eventsAtTicksDict.Remove(key);
@@ -82,7 +81,7 @@ namespace Orchestra
                 foreach (MidiEvent midievent in midievents)
                 {
 
-                    switch (midievent.MidiMessage.Status>>4)
+                    switch (midievent.MidiMessage.Status >> 4)
                     {
                         case 0xC:
                             {
@@ -90,9 +89,9 @@ namespace Orchestra
                                 int locationInDE;
                                 byte[] byteHold = new byte[4];
 
-                                
+
                                 locationInDE = midievent.MidiMessage.Status & 0x0F; //grabs channel number (0-15)
-                                byteHold = midievent.MidiMessage.GetBytes(); 
+                                byteHold = midievent.MidiMessage.GetBytes();
                                 deltaEvent[locationInDE] = byteHold[1]; //second byte is instr number
                                 if (!allInstrumentsUsed.Contains(byteHold[1]))
                                 {
@@ -117,7 +116,7 @@ namespace Orchestra
 
         /*
          * Merges the irresponsibly-generated instr-change data
-         */ 
+         */
         private int[,] mergeInstrChangeData()
         {
             List<int> uniqueDeltaEvents = new List<int>();
@@ -132,11 +131,11 @@ namespace Orchestra
                     uniqueDeltaEvents.Add(deltaEvent[16]);
                 }
             }
-            int[,] instrChangesArray = new int[uniqueDeltaEvents.Count,17];
+            int[,] instrChangesArray = new int[uniqueDeltaEvents.Count, 17];
             uniqueDeltaEvents.Sort();
             int[] uniqueDeltaEventsArray = new int[uniqueDeltaEvents.Count];
             uniqueDeltaEvents.CopyTo(uniqueDeltaEventsArray);
-            for (int i = 0; i<uniqueDeltaEvents.Count; ++i)
+            for (int i = 0; i < uniqueDeltaEvents.Count; ++i)
             {
                 instrChangesArray[i, 16] = uniqueDeltaEventsArray[i];
                 foreach (int[] deltaEvent in instrChanges)
@@ -174,7 +173,7 @@ namespace Orchestra
                 switch (midievent.MidiMessage.Status >> 4)
                 {
                     case 0x9:
-                        
+
                         byte[] byteHold = new byte[4];
                         byteHold = midievent.MidiMessage.GetBytes();
                         int channel = byteHold[0] & 0x0F;//bitwise and to get last 4 bits
@@ -182,7 +181,7 @@ namespace Orchestra
                         int vel = byteHold[2];
                         int abs = midievent.AbsoluteTicks;
                         Tuple<int, int> key = new Tuple<int, int>(channel, pitch);
-                            
+
                         int[] data = new int[2] { abs, vel };
                         try
                         {
@@ -219,7 +218,7 @@ namespace Orchestra
                                     }
                                 }
                                 int[] eventdata = new int[4] { instr, pitchNOFF_NOD, velNON_NOD, dur }; //to be added to the dictionary of lists of lists
-                                eventsAtTicksDict = addToDictHandleCollisions(absNON_NOD, eventdata, eventsAtTicksDict); 
+                                eventsAtTicksDict = addToDictHandleCollisions(absNON_NOD, eventdata, eventsAtTicksDict);
                                 //pretend nothing happened. To be clear, in this try block, we are killing the duplicated note and restarting with a new note.
                                 noteDurationData.Add(key, data);
                             }
@@ -229,9 +228,9 @@ namespace Orchestra
                             }
                         }
                         break;
-                        
+
                     case 0x8:
-                        
+
                         byte[] byteHoldNOFF = new byte[4];
                         byteHoldNOFF = midievent.MidiMessage.GetBytes();
                         int channelNOFF = byteHoldNOFF[0] & 0x0F;//bitwise and to get last 4 bits
@@ -266,7 +265,7 @@ namespace Orchestra
                             //as If I even care at this point
                         }
                         break;
-                        
+
 
                     default:
                         break;
@@ -279,12 +278,12 @@ namespace Orchestra
         public static void LoadSong(string file)
         {
             sequence.Load(file);
-            //Dispatch.TriggerSongLoaded();
+            Dispatch.TriggerSongLoaded();
 
             MIDI preprocessor = new MIDI();
             int[,] instrumentsAtTicks = preprocessor.populateInstrChanges(sequencer.Sequence);
             List<int> allInstrumentsUsed = preprocessor.allInstrumentsUsed;
-            
+
 
 
             //proving we can extract tempo
@@ -299,7 +298,7 @@ namespace Orchestra
             {
                 eventsAtTicksDict = preprocessor.getInstrumentNoteTimes(track, instrumentsAtTicks, eventsAtTicksDict);
             }
-            
+
         }
 
         static void Play(float time)
@@ -315,7 +314,7 @@ namespace Orchestra
         static void Beat(float time, int beat)
         {
             // Adjust clock based on how long the last beat took
-            //sequencer.Clock.Tempo = (int)(1000000 * (time - lastBeat));
+            sequencer.Clock.Tempo = (int)(1000000 * (time - lastBeat));
             lastBeat = time;
         }
 
@@ -324,7 +323,7 @@ namespace Orchestra
             // Send a volume change message to each channel
             for (int i = 0; i < 16; i++)
             {
-                outDevice.Send(new ChannelMessage(ChannelCommand.Controller, i , 11, (int)(volume*127)));
+                outDevice.Send(new ChannelMessage(ChannelCommand.Controller, i, 11, (int)(volume * 127)));
             }
         }
 
