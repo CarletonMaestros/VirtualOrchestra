@@ -23,6 +23,8 @@ namespace Orchestra
         //Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
         static float lastBeat = 0;
+        static int curTick = 0;
+        static int ppq = 0;
 
         /// <summary>
         /// Activate the MIDI player
@@ -41,7 +43,7 @@ namespace Orchestra
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
-            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\row.mid");
+            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
 
             // Other messages that might be useful
             //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
@@ -70,7 +72,26 @@ namespace Orchestra
                 return eventsAtTicksDict;
             }
         }
-
+        //removes tempo meta messages
+        private void stripMetaMessages(Sequence sequence)
+        {
+            IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
+            foreach (Track track in tracks)
+            {
+                int counter = 0;
+                IEnumerable<MidiEvent> midievents = track.Iterator();
+                foreach (MidiEvent midievent in midievents)
+                {
+                    //Console.WriteLine(midievent.MidiMessage.MessageType);
+                    if (midievent.MidiMessage.MessageType == MessageType.Meta)
+                    {
+                        Console.WriteLine(midievent.MidiMessage.MessageType);
+                        track.RemoveAt(counter);
+                    }
+                    counter++;
+                }
+            }
+        }
         // populates instrChanges
         private int[,] populateInstrChanges(Sequence sequence)
         {
@@ -183,13 +204,14 @@ namespace Orchestra
                         Tuple<int, int> key = new Tuple<int, int>(channel, pitch);
 
                         int[] data = new int[2] { abs, vel };
-                        try
+
+                        if (!noteDurationData.ContainsKey(key))
                         {
                             noteDurationData.Add(key, data);
                         }
-                        catch (ArgumentException)
+                        else
                         {
-                            Console.WriteLine("too stupid for real msg");
+                            //Console.WriteLine("too stupid for real msg");
                             //NOD stands for note-on duplicate. We need this because occasionally, songs like to send multiple NONs before a NOFF. I find this confusing and frustrating.
                             byte[] byteHoldNOFF_NOD = new byte[4];
                             byteHoldNOFF_NOD = midievent.MidiMessage.GetBytes();
@@ -197,35 +219,30 @@ namespace Orchestra
                             int pitchNOFF_NOD = byteHoldNOFF_NOD[1];
                             int absNOFF_NOD = midievent.AbsoluteTicks;
                             Tuple<int, int> keyNOFF_NOD = new Tuple<int, int>(channelNOFF_NOD, pitchNOFF_NOD);
-                            try
+
+                            int[] NONdata_NOD = noteDurationData[keyNOFF_NOD];
+                            noteDurationData.Remove(keyNOFF_NOD);
+                            int absNON_NOD = NONdata_NOD[0];
+                            int velNON_NOD = NONdata_NOD[1];
+                            int dur = absNOFF_NOD - absNON_NOD;
+                            int instr = -1;
+                            //CALCULATE current instrument
+                            for (int i = 0; i < instrumentsAtTicks.GetLength(0); ++i)
                             {
-                                int[] NONdata_NOD = noteDurationData[keyNOFF_NOD];
-                                noteDurationData.Remove(keyNOFF_NOD);
-                                int absNON_NOD = NONdata_NOD[0];
-                                int velNON_NOD = NONdata_NOD[1];
-                                int dur = absNOFF_NOD - absNON_NOD;
-                                int instr = -1;
-                                //CALCULATE current instrument
-                                for (int i = 0; i < instrumentsAtTicks.GetLength(0); ++i)
+                                if (instrumentsAtTicks[i, 16] > absNON_NOD)
                                 {
-                                    if (instrumentsAtTicks[i, 16] > absNON_NOD)
-                                    {
-                                        instr = instrumentsAtTicks[i - 1, channelNOFF_NOD]; //this makes sense. finding a bigger time then backtracking should never fail
-                                    }
-                                    else if (i == instrumentsAtTicks.GetLength(0) - 1)
-                                    {
-                                        instr = instrumentsAtTicks[i, channelNOFF_NOD]; //added this case because I was wrong in the previous comment.
-                                    }
+                                    instr = instrumentsAtTicks[i - 1, channelNOFF_NOD]; //this makes sense. finding a bigger time then backtracking should never fail
                                 }
-                                int[] eventdata = new int[4] { instr, pitchNOFF_NOD, velNON_NOD, dur }; //to be added to the dictionary of lists of lists
-                                eventsAtTicksDict = addToDictHandleCollisions(absNON_NOD, eventdata, eventsAtTicksDict);
-                                //pretend nothing happened. To be clear, in this try block, we are killing the duplicated note and restarting with a new note.
-                                noteDurationData.Add(key, data);
+                                else if (i == instrumentsAtTicks.GetLength(0) - 1)
+                                {
+                                    instr = instrumentsAtTicks[i, channelNOFF_NOD]; //added this case because I was wrong in the previous comment.
+                                }
                             }
-                            catch (KeyNotFoundException)
-                            {
-                                //as If I even care at this point
-                            }
+                            int[] eventdata = new int[4] { instr, pitchNOFF_NOD, velNON_NOD, dur }; //to be added to the dictionary of lists of lists
+                            eventsAtTicksDict = addToDictHandleCollisions(absNON_NOD, eventdata, eventsAtTicksDict);
+                            //pretend nothing happened. To be clear, in this try block, we are killing the duplicated note and restarting with a new note.
+                            noteDurationData.Add(key, data);
+
                         }
                         break;
 
@@ -237,7 +254,7 @@ namespace Orchestra
                         int pitchNOFF = byteHoldNOFF[1];
                         int absNOFF = midievent.AbsoluteTicks;
                         Tuple<int, int> keyNOFF = new Tuple<int, int>(channelNOFF, pitchNOFF);
-                        try
+                        if (noteDurationData.ContainsKey(keyNOFF))
                         {
                             int[] NONdata = noteDurationData[keyNOFF];
                             noteDurationData.Remove(keyNOFF);
@@ -260,7 +277,7 @@ namespace Orchestra
                             int[] eventdata = new int[4] { instr, pitchNOFF, velNON, dur };
                             eventsAtTicksDict = addToDictHandleCollisions(absNON, eventdata, eventsAtTicksDict);
                         }
-                        catch (KeyNotFoundException)
+                        else
                         {
                             //as If I even care at this point
                         }
@@ -281,15 +298,16 @@ namespace Orchestra
             Dispatch.TriggerSongLoaded();
 
             MIDI preprocessor = new MIDI();
+            preprocessor.stripMetaMessages(sequencer.Sequence);
             int[,] instrumentsAtTicks = preprocessor.populateInstrChanges(sequencer.Sequence);
             List<int> allInstrumentsUsed = preprocessor.allInstrumentsUsed;
+            ppq = sequencer.Sequence.Division;
 
 
 
             //proving we can extract tempo
-            Console.Write("Sequencer division: ");
-            Console.WriteLine(sequencer.Sequence.Division);
-
+            Console.Write("Sequencer division: "); 
+            Console.WriteLine(ppq);
 
             Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
@@ -298,7 +316,19 @@ namespace Orchestra
             {
                 eventsAtTicksDict = preprocessor.getInstrumentNoteTimes(track, instrumentsAtTicks, eventsAtTicksDict);
             }
-
+            //foreach (KeyValuePair<int, List<int[]>> kvp in eventsAtTicksDict)
+            //{
+            //    Console.WriteLine("Key = {0}", kvp.Key);
+            //    Console.WriteLine("\ti#\tp\tvel\tdur");
+            //    foreach (int[] NONevent in kvp.Value)
+            //    {
+            //        foreach (int NONsubEvent in NONevent)
+            //        {
+            //            Console.Write("\t{0}", NONsubEvent);
+            //        }
+            //        Console.WriteLine();
+            //    }
+            //}
         }
 
         static void Play(float time)
@@ -314,9 +344,19 @@ namespace Orchestra
         static void Beat(float time, int beat)
         {
             // Adjust clock based on how long the last beat took
+            //Console.WriteLine(sequencer.Clock.Tempo);
+
+            //Console.Write("Position: {0} , ", sequencer.Position); Console.WriteLine("curTick: {0}", curTick);
+            //setPosition();
+            Console.WriteLine(sequencer.Clock.Tempo);
+
             sequencer.Clock.Tempo = (int)(1000000 * (time - lastBeat));
+            Console.WriteLine(sequencer.Clock.Tempo);
             lastBeat = time;
-        }
+            curTick += ppq;
+            sequencer.Position = curTick;
+            Console.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");         
+         }
 
         static void VolumeChanged(float time, float volume)
         {
@@ -332,7 +372,7 @@ namespace Orchestra
             outDevice.Send(e.Message);
             if (e.Message.MidiChannel == 4)
             {
-                Console.WriteLine(e.Message.Message);
+                //Console.WriteLine(e.Message.Message);
             }
         }
 

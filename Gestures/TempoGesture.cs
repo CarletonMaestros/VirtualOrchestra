@@ -199,6 +199,7 @@ namespace Orchestra
                                     long tempo = stopwatch.ElapsedMilliseconds * 1000;
                                     //Console.WriteLine(counter + " " + tempo);\
                                 }
+                                
                                 Dispatch.TriggerBeat(counter);
                                 stopwatch.Restart();
 
