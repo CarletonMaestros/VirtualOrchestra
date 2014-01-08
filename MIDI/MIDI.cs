@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Kinect;
 using Sanford.Multimedia.Midi;
+using System.Threading.Tasks;
 
 namespace Orchestra
 {
@@ -25,6 +26,7 @@ namespace Orchestra
         static float lastBeat = 0;
         static int curTick = 0;
         static int ppq = 0;
+        static int beatCount = 0;
 
         /// <summary>
         /// Activate the MIDI player
@@ -343,20 +345,46 @@ namespace Orchestra
 
         static void Beat(float time, int beat)
         {
+            beatCount++;
+            int localBeatCount = beatCount;
+            float beatPercentComplete = (sequencer.Position % ppq) / (float)ppq;
+            Console.WriteLine(beatPercentComplete);
             // Adjust clock based on how long the last beat took
             //Console.WriteLine(sequencer.Clock.Tempo);
 
             //Console.Write("Position: {0} , ", sequencer.Position); Console.WriteLine("curTick: {0}", curTick);
             //setPosition();
-            Console.WriteLine(sequencer.Clock.Tempo);
 
             sequencer.Clock.Tempo = (int)(1000000 * (time - lastBeat));
-            Console.WriteLine(sequencer.Clock.Tempo);
             lastBeat = time;
             curTick += ppq;
+            sequencer.Stop();
             sequencer.Position = curTick;
-            Console.WriteLine("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");         
+            sequencer.Continue();s
+            //Hang(whatever);
+            if (beatCount == localBeatCount)
+            {
+                sequencer.clock.Tempo = 2000000000;  //2 billion is the largest 32 bit signed int that i am certain of
+            }
+            else
+            {
+                return;
+            }
+
+
          }
+
+        public async void Teleport()
+        {
+            await Task.Delay(50);
+            return;
+        }
+
+        public async void Hang(int millis)
+        {
+            await Task.Delay(millis);
+            return;
+        }
 
         static void VolumeChanged(float time, float volume)
         {

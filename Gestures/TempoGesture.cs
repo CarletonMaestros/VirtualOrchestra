@@ -200,7 +200,7 @@ namespace Orchestra
                                     //Console.WriteLine(counter + " " + tempo);\
                                 }
                                 
-                                Dispatch.TriggerBeat(counter);
+                                Dispatch.TriggerBeat(counter, "beat");
                                 stopwatch.Restart();
 
                                 // GET OVER IT
@@ -214,6 +214,7 @@ namespace Orchestra
                         {
                             if (prevYTwo > (prevYOne + threshold) && prevYOne > (rightHandY + threshold))
                             {
+                                //Dispatch.TriggerBeat(counter, "halfbeat");
                                 seeking = "MINIMUM";
                                 break;
                             }
