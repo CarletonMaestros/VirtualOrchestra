@@ -312,25 +312,34 @@ namespace Orchestra
             Console.WriteLine(ppq);
 
             Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
-
             IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
             foreach (Track track in tracks)
             {
                 eventsAtTicksDict = preprocessor.getInstrumentNoteTimes(track, instrumentsAtTicks, eventsAtTicksDict);
             }
-            //foreach (KeyValuePair<int, List<int[]>> kvp in eventsAtTicksDict)
-            //{
-            //    Console.WriteLine("Key = {0}", kvp.Key);
-            //    Console.WriteLine("\ti#\tp\tvel\tdur");
-            //    foreach (int[] NONevent in kvp.Value)
-            //    {
-            //        foreach (int NONsubEvent in NONevent)
-            //        {
-            //            Console.Write("\t{0}", NONsubEvent);
-            //        }
-            //        Console.WriteLine();
-            //    }
-            //}
+
+
+        //    Console.WriteLine("int[] tempArray = int[4];");
+        //    Console.WriteLine("List<int[]> tempList = new List<int[]>;");
+        //    Console.WriteLine("Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();");
+        //    foreach (KeyValuePair<int, List<int[]>> kvp in eventsAtTicksDict)
+        //    {
+                
+        //        Console.WriteLine("Key = {0}", kvp.Key);
+        //        //Console.WriteLine("\ti#\tp\tvel\tdur");
+        //        foreach (int[] NONevent in kvp.Value)
+        //        {
+        //            int iterationCount = 0;
+        //            foreach (int NONsubEvent in NONevent)
+        //            {
+        //                Console.WriteLine("tempArray[{0}] = {1}", iterationCount, NONsubEvent);
+        //                Console.Write("\t{0}", NONsubEvent);
+        //                iterationCount++;
+        //            }
+        //            Console.WriteLine();
+        //        }
+        //    }
+
         }
 
         static void Play(float time)
