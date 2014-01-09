@@ -345,42 +345,44 @@ namespace Orchestra
 
         static void Beat(float time, int beat)
         {
-            beatCount++;
+            
             int localBeatCount = beatCount;
-            float beatPercentComplete = (sequencer.Position % ppq) / (float)ppq;
+            float beatPercentComplete = (sequencer.Position - (ppq * beatCount)) / (float)ppq;
             Console.WriteLine(beatPercentComplete);
-            // Adjust clock based on how long the last beat took
-            //Console.WriteLine(sequencer.Clock.Tempo);
+            
 
             //Console.Write("Position: {0} , ", sequencer.Position); Console.WriteLine("curTick: {0}", curTick);
-            //setPosition();
+            
+            //Teleport();
+            float deltaTime = (time - lastBeat);
+            sequencer.Clock.Tempo = (int)(1000000 * deltaTime); // Adjust clock based on how long the last beat took
 
-            sequencer.Clock.Tempo = (int)(1000000 * (time - lastBeat));
             lastBeat = time;
-            curTick += ppq;
-            sequencer.Stop();
+            
             sequencer.Position = curTick;
-            sequencer.Continue();s
-            //Hang(whatever);
-            if (beatCount == localBeatCount)
-            {
-                sequencer.clock.Tempo = 2000000000;  //2 billion is the largest 32 bit signed int that i am certain of
-            }
-            else
-            {
-                return;
-            }
+            
+            //Hang(deltaTime);
+            //if (beatCount == localBeatCount)
+            //{
+            //    sequencer.clock.Tempo = 2000000000;  //2 billion is the largest 32 bit signed int that i am certain of
+            //}
+            //else
+            //{
+            //    return;
+            //}
+            beatCount++;
+            curTick += ppq;
 
 
          }
 
-        public async void Teleport()
+        static async void Teleport()
         {
             await Task.Delay(50);
             return;
         }
 
-        public async void Hang(int millis)
+        static async void Hang(int millis)
         {
             await Task.Delay(millis);
             return;
