@@ -85,6 +85,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="InstrumentHandler.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -120,15 +121,27 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\george.jpg" />
-    <Resource Include="Resources\john.jpg" />
-    <Resource Include="Resources\paul.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\MIDI\MIDI.csproj">
       <Project>{63b7c1dd-a88b-469f-b065-c95e34fde015}</Project>
       <Name>MIDI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bassguitar.jpg" />
+    <Resource Include="Resources\choir.jpg" />
+    <Resource Include="Resources\clarinet.jpg" />
+    <Resource Include="Resources\cymbals.jpg" />
+    <Resource Include="Resources\guitar.jpg" />
+    <Resource Include="Resources\keyboard.jpg" />
+    <Resource Include="Resources\ocarina.jpg" />
+    <Resource Include="Resources\organ.jpg" />
+    <Resource Include="Resources\piano.jpg" />
+    <Resource Include="Resources\sitar.jpg" />
+    <Resource Include="Resources\synthpad.jpg" />
+    <Resource Include="Resources\trumpet.jpg" />
+    <Resource Include="Resources\violin.jpg" />
+    <Resource Include="Resources\wham.jpg" />
+    <Resource Include="Resources\xylophone.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
