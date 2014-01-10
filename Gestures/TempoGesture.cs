@@ -79,6 +79,8 @@ namespace Orchestra
         public float prevXTwo;
         public float rightHandY;
         public float rightHandX;
+        public float rightHipX;
+        public float rightHipY;
         public float threshold;
         public Boolean conducting;
         public CircularQueue<string> recentEvents;
@@ -92,6 +94,7 @@ namespace Orchestra
         //public List<float> xYValue();
         //public float xAverage = 0;
         //public float yAverage = 0;
+        public float prevBeat;
 
         public TempoGesture()
         {
@@ -136,7 +139,15 @@ namespace Orchestra
                     //yAverage = yAverage / circleChecker.getLength();
                     
                 }
+                if (joint.JointType == JointType.HipRight)
+                {
+                    rightHipX = joint.Position.X;
+                    rightHipY = joint.Position.Y;
+                }
+                
             }
+
+
             if (!stop)
             {
                 switch (seeking)
@@ -199,7 +210,53 @@ namespace Orchestra
                                     long tempo = stopwatch.ElapsedMilliseconds * 1000;
                                     //Console.WriteLine(counter + " " + tempo);\
                                 }
-                                
+                                //Console.WriteLine("hand x: " + rightHandX);
+                                //Console.WriteLine("hand y: " + rightHandY);
+                                //Console.WriteLine("hip x: " + rightHipX);
+                                //Console.WriteLine("hip y: " + rightHipY);
+                                //together = rightHandX - rightHipX;
+                                //Console.WriteLine("together: " + together);
+                                if (rightHandX - rightHipX > -.1 && rightHandX - rightHipX < .15 && rightHandY - rightHipY > -.15 && rightHandY - rightHipY < .15)
+                                {
+                                    if (prevBeat == 1)
+                                    {
+                                        Console.WriteLine("REAL BEAT:   Beat 2");
+                                        prevBeat = 2;
+                                    }
+                                    else if (prevBeat == 2)
+                                    {
+                                        Console.WriteLine("REAL BEAT:   Beat 3");
+                                        prevBeat = 3;
+                                    }
+                                    else if (prevBeat == 3)
+                                    {
+                                        Console.WriteLine("REAL BEAT:   Beat 4");
+                                        prevBeat = 4;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("REAL BEAT:   Beat 1");
+                                        prevBeat = 1;
+                                    }
+                                }
+                                else if (rightHandX < 0)
+                                {
+                                    Console.WriteLine("REAL BEAT:   Beat 2");
+                                    prevBeat = 2;
+                                }
+                                else if (rightHandX > 0)
+                                {
+                                    if (prevBeat == 2)
+                                    {
+                                        Console.WriteLine("REAL BEAT:   Beat 3");
+                                        prevBeat = 3;
+                                    }
+                                    else if (prevBeat == 1)
+                                    {
+                                        Console.WriteLine("REAL BEAT:   Beat 2");
+                                        prevBeat = 2;
+                                    }
+                                }
                                 Dispatch.TriggerBeat(counter, "beat");
                                 stopwatch.Restart();
 
@@ -220,8 +277,6 @@ namespace Orchestra
                             }
                             break;
                         }
-
-
                 }
             }
             prevYTwo = prevYOne;

@@ -32,9 +32,9 @@ namespace GUI
         private Sequence seq1;
         private Sequencer seqr1;
         private OutputDevice outDevice;
-        private Storyboard johnStoryboard;
-        private Storyboard paulStoryboard;
-        private Storyboard georgeStoryboard;
+        //private Storyboard johnStoryboard;
+        //private Storyboard paulStoryboard;
+        //private Storyboard georgeStoryboard;
         private DoubleAnimation myDoubleAnimation;
         private int outDeviceID = 0;
         int[] instpos = new int[16];
@@ -93,8 +93,7 @@ namespace GUI
         private void PreProcessInstruments(Dictionary<int, int[]> instDict)
         {
             //int[] instDictVal = new int[] {1, 2, 3, 4, 5};
-            instDict.Add(0, new int[] {24, 35});
-            instDict.Add(1, new int[] {25});
+            instDict.Add(0, new int[] {25, 26, 30, 29, 31, 33, 35, 120, 112, 1, 85, 85, 52, 52, 115});
             instruments = new HashSet<int>();
             foreach (KeyValuePair<int, int[]> instrument in instDict)
             {
@@ -112,12 +111,78 @@ namespace GUI
                 Console.WriteLine(squareNumber); 
                 object item = FindName(squareNumber); // turn its name from a string into the Image
                 Image imgToPopulate = (Image)item;
+                String instName = "";
 
 
-                //One way to approach setting a image's source here:
-                var uriSource = new Uri("piano.jpg", UriKind.Relative); //whaaa, it's not throwing errors, but it's like this isn't the right path to an instrument file because the image isn't showing up.
-                Console.WriteLine(uriSource);
-                imgToPopulate.Source = new BitmapImage(uriSource);
+                // Will be replaced by an enum once we get images for every instrument
+                if ((inst > 0) & (inst < 9))
+                {
+                    instName = "piano";
+                }
+                if ((inst > 8) & (inst < 17))
+                {
+                    instName = "xylophone";
+                }
+                if ((inst > 16) & (inst < 25))
+                {
+                    instName = "organ";
+                }
+                if ((inst > 24) & (inst < 33))
+                {
+                    instName = "guitar";
+                }
+                if ((inst > 32) & (inst < 41))
+                {
+                    instName = "bassguitar";
+                }
+                if ((inst > 40) & (inst < 49))
+                {
+                    instName = "violin";
+                }
+                if ((inst > 48) & (inst < 57))
+                {
+                    instName = "choir";
+                }
+                if ((inst > 56) & (inst < 65))
+                {
+                    instName = "trumpet";
+                }
+                if ((inst > 64) & (inst < 73))
+                {
+                    instName = "clarinet";
+                }
+                if ((inst > 72) & (inst < 81))
+                {
+                    instName = "ocarina";
+                }
+                if ((inst > 80) & (inst < 89))
+                {
+                    instName = "keyboard";
+                }
+                if ((inst > 88) & (inst < 105))
+                {
+                    instName = "synthpad";
+                }
+                if ((inst > 104) & (inst < 113))
+                {
+                    instName = "sitar";
+                }
+                if ((inst > 112) & (inst < 121))
+                {
+                    instName = "cymbals";
+                }
+                if ((inst > 120) & (inst < 129))
+                {
+                    instName = "wham";
+                }
+
+                var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + instName + ".jpg";
+                Console.WriteLine(uriString);
+                BitmapImage bitIm = new BitmapImage();
+                bitIm.BeginInit();
+                bitIm.UriSource = new Uri(uriString);
+                bitIm.EndInit();
+                imgToPopulate.Source = bitIm;
 
 
                 //And another approach:
