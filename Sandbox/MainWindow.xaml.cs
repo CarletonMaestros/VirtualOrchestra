@@ -39,8 +39,8 @@ namespace Orchestra.Sandbox
             MIDI.Load();
 
             // Add event loggers
-            Dispatch.Beat += (time, beat) => Console.WriteLine("Beat {0}", beat);
-            Dispatch.VolumeChanged += (time, volume) => Console.WriteLine("Volume {0}%", (int)(volume*100));
+            //Dispatch.Beat += (time, beat) => Console.WriteLine("Beat {0}", beat);
+            //Dispatch.VolumeChanged += (time, volume) => Console.WriteLine("Volume {0}%", (int)(volume*100));
 
             // Please don't stop the muuusic
             //Dispatch.TriggerPlay(); //we do what we want.

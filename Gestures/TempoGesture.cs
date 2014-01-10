@@ -95,6 +95,7 @@ namespace Orchestra
         //public float xAverage = 0;
         //public float yAverage = 0;
         public float prevBeat;
+        public float middleBeat;
 
         public TempoGesture()
         {
@@ -220,41 +221,48 @@ namespace Orchestra
                                 {
                                     if (prevBeat == 1)
                                     {
-                                        Console.WriteLine("REAL BEAT:   Beat 2");
+                                        Console.WriteLine("Beat 2");
                                         prevBeat = 2;
+                                        middleBeat = 1;
                                     }
-                                    else if (prevBeat == 2)
+                                    else if (prevBeat == 2 && middleBeat == 0)
                                     {
-                                        Console.WriteLine("REAL BEAT:   Beat 3");
+                                        Console.WriteLine("Beat 3");
                                         prevBeat = 3;
+                                        middleBeat = 1;
                                     }
-                                    else if (prevBeat == 3)
+                                    else if (prevBeat == 3 && middleBeat == 0)
                                     {
-                                        Console.WriteLine("REAL BEAT:   Beat 4");
+                                        Console.WriteLine("Beat 4");
                                         prevBeat = 4;
+                                        middleBeat = 1;
                                     }
                                     else
                                     {
-                                        Console.WriteLine("REAL BEAT:   Beat 1");
+                                        Console.WriteLine("Beat 1");
                                         prevBeat = 1;
+                                        middleBeat = 1;
                                     }
                                 }
                                 else if (rightHandX < 0)
                                 {
-                                    Console.WriteLine("REAL BEAT:   Beat 2");
+                                    Console.WriteLine("Beat 2");
                                     prevBeat = 2;
+                                    middleBeat = 0;
                                 }
                                 else if (rightHandX > 0)
                                 {
                                     if (prevBeat == 2)
                                     {
-                                        Console.WriteLine("REAL BEAT:   Beat 3");
+                                        Console.WriteLine("Beat 3");
                                         prevBeat = 3;
+                                        middleBeat = 0;
                                     }
                                     else if (prevBeat == 1)
                                     {
-                                        Console.WriteLine("REAL BEAT:   Beat 2");
+                                        Console.WriteLine("Beat 2");
                                         prevBeat = 2;
+                                        middleBeat = 0;
                                     }
                                 }
                                 Dispatch.TriggerBeat(counter, "beat");

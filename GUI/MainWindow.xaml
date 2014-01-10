@@ -8,6 +8,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button Name="PlayButton" Content="Play" HorizontalAlignment="Left" Margin="748,487,0,0" VerticalAlignment="Top" Width="75" Click="PlayButton_Click" />
+        
         <Image x:Name="square15"
                HorizontalAlignment="Left" Height="150" Margin="82,84,0,0" VerticalAlignment="Top" Width="150"/>
         <Image x:Name="square11" 

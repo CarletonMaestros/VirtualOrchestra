@@ -46,7 +46,7 @@ namespace Orchestra
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
-            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\row.mid");
+            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
 
             // Other messages that might be useful
             //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
@@ -88,7 +88,7 @@ namespace Orchestra
                     //Console.WriteLine(midievent.MidiMessage.MessageType);
                     if (midievent.MidiMessage.MessageType == MessageType.Meta)
                     {
-                        Console.WriteLine(midievent.MidiMessage.MessageType);
+                        //Console.WriteLine(midievent.MidiMessage.MessageType);
                         track.RemoveAt(counter);
                     }
                     counter++;
@@ -361,16 +361,17 @@ namespace Orchestra
                 songStarted = true;
             }
             beatCount++;
-            
+
+            //Console.WriteLine(sequencer.Position - (ppq * beatCount) / (float)ppq);
             float beatPercentComplete = (sequencer.Position % ppq) / (float)ppq;
-            Console.WriteLine(beatPercentComplete);
+            //Console.WriteLine(beatPercentComplete);
             
             float deltaTime = (time - lastBeat); 
             sequencer.Clock.Tempo = (int)(50000/(1-beatPercentComplete)); // Adjust clock based on how long the last beat took
             Teleport();
             lastBeat = time;
             sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
-            Hang((int)(deltaTime * 1000), beatCount);
+            Hang((int)(deltaTime * 1000) - 63, beatCount);
             
 
 

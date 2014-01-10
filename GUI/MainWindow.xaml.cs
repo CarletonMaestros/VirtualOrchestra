@@ -32,7 +32,7 @@ namespace GUI
         private Sequence seq1;
         private Sequencer seqr1;
         private OutputDevice outDevice;
-        //private Storyboard johnStoryboard;
+        private Storyboard aStoryboard;
         //private Storyboard paulStoryboard;
         //private Storyboard georgeStoryboard;
         private DoubleAnimation myDoubleAnimation;
@@ -58,7 +58,7 @@ namespace GUI
 
             //johnStoryboard = new Storyboard();
             //johnStoryboard.Children.Add(myDoubleAnimation);
-            //Storyboard.SetTargetName(myDoubleAnimation, johnImage.Name);
+            //Storyboard.SetTargetName(myDoubleAnimation, square1.Name);
             //Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Image.OpacityProperty));
             //johnStoryboard.Begin(this, true);
             //johnStoryboard.Pause(this);
@@ -113,7 +113,6 @@ namespace GUI
                 Image imgToPopulate = (Image)item;
                 String instName = "";
 
-
                 // Will be replaced by an enum once we get images for every instrument
                 if ((inst > 0) & (inst < 9))
                 {
@@ -132,7 +131,7 @@ namespace GUI
                     instName = "guitar";
                 }
                 if ((inst > 32) & (inst < 41))
-                {
+                {                
                     instName = "bassguitar";
                 }
                 if ((inst > 40) & (inst < 49))
@@ -183,6 +182,7 @@ namespace GUI
                 bitIm.UriSource = new Uri(uriString);
                 bitIm.EndInit();
                 imgToPopulate.Source = bitIm;
+                //imgToPopulate.Opacity = 0.25;
 
 
                 //And another approach:
