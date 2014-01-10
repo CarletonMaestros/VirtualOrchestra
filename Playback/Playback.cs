@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Kinect;
 
-namespace Orchestra.Playback
+namespace Orchestra.Playback 
 {
     class Playback
     {

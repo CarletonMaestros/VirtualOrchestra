@@ -20,6 +20,7 @@ namespace Orchestra
         private List<int> allInstrumentsUsed = new List<int>();
         //yolO(n) time
         private List<int[]> instrChanges = new List<int[]>(); //int[17] [0-15] = inst @ chan. [16] = tick
+        private static Boolean songStarted = false;
 
         //Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
@@ -45,7 +46,7 @@ namespace Orchestra
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
-            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid");
+            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\row.mid");
 
             // Other messages that might be useful
             //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
@@ -354,33 +355,23 @@ namespace Orchestra
 
         static void Beat(float time, int beat)
         {
+            if (!songStarted)
+            {
+                Play(0);
+                songStarted = true;
+            }
+            beatCount++;
             
-            int localBeatCount = beatCount;
-            float beatPercentComplete = (sequencer.Position - (ppq * beatCount)) / (float)ppq;
+            float beatPercentComplete = (sequencer.Position % ppq) / (float)ppq;
             Console.WriteLine(beatPercentComplete);
             
-
-            //Console.Write("Position: {0} , ", sequencer.Position); Console.WriteLine("curTick: {0}", curTick);
-            
-            //Teleport();
-            float deltaTime = (time - lastBeat);
-            sequencer.Clock.Tempo = (int)(1000000 * deltaTime); // Adjust clock based on how long the last beat took
-
+            float deltaTime = (time - lastBeat); 
+            sequencer.Clock.Tempo = (int)(50000/(1-beatPercentComplete)); // Adjust clock based on how long the last beat took
+            Teleport();
             lastBeat = time;
+            sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
+            Hang((int)(deltaTime * 1000), beatCount);
             
-            sequencer.Position = curTick;
-            
-            //Hang(deltaTime);
-            //if (beatCount == localBeatCount)
-            //{
-            //    sequencer.clock.Tempo = 2000000000;  //2 billion is the largest 32 bit signed int that i am certain of
-            //}
-            //else
-            //{
-            //    return;
-            //}
-            beatCount++;
-            curTick += ppq;
 
 
          }
@@ -391,9 +382,13 @@ namespace Orchestra
             return;
         }
 
-        static async void Hang(int millis)
+        static async void Hang(int millis, int localBeatCount)
         {
             await Task.Delay(millis);
+            if (localBeatCount == beatCount)
+            {
+                sequencer.Clock.Tempo = 2000000000;
+            }
             return;
         }
 
