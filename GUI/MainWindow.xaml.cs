@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using Sanford.Multimedia.Midi;
+using ImageUtils;
 
 
 namespace GUI
@@ -28,6 +29,7 @@ namespace GUI
     public partial class MainWindow : Window
     {
         private Dictionary<int, int[]> instDict;
+        private Dictionary<int, int[]> ticksDict;
         private HashSet<int> instruments;
         private Sequence seq1;
         private Sequencer seqr1;
@@ -48,7 +50,8 @@ namespace GUI
         {
             instDict = new Dictionary<int, int[]>();
             PreProcessInstruments(instDict);
-            
+            ticksDict = new Dictionary<int, int[]>();
+
             myDoubleAnimation = new DoubleAnimation();
             myDoubleAnimation.From = 1.0;
             myDoubleAnimation.To = 0.2;
@@ -177,10 +180,14 @@ namespace GUI
                 }
 
                 var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + instName + ".jpg";
+                //var uriString = @"C:\Users\Rachel\My Documents\GitHub\VirtualOrchestra\GUI\Resources\" + instName + ".jpg";
                 Console.WriteLine(uriString);
                 BitmapImage bitIm = new BitmapImage();
                 bitIm.BeginInit();
                 bitIm.UriSource = new Uri(uriString);
+
+
+
                 bitIm.EndInit();
                 imgToPopulate.Source = bitIm;
 
@@ -198,15 +205,47 @@ namespace GUI
         }
 
 
-        private void StartTicks(Dictionary<int, List<int[]>> ticksDict)
+        private void StartTicks(Dictionary<int, int[]> ticksDict)
         {
+            //We should prolly break this into 2 functions. I'm just psuedocode vomiting. 
             //Start stopwatch to keep track of when events sh0uld happen (coming from dispatch)
+            // Dictionary is like:
+            // {AbsoluteTick1: [[instrument, pitch, velocity, note duration],[instrument, pitch, velocity, duration]], AbsoluteTick2: [[...]...]}
+            ticksDict.Add(0, new int[] { 25, 26, 30, 29 });
+            ticksDict.Add(25, new int[] { 25, 30, 29 });
+            int counter = 1;
+            bool instrumentPlaying = false;
         }
+
+            //currentTick = given by MIDI via dispath
+            // Leave instrument lit up for at least note duration. 
+            // tick = 60000 / (BPM * PPQ), so say avg tick = 2.5 millisec
+            // Check for occurrence of same instrument within key values of AbsoluteTickX + 1000 
+            // (2.5 second window for instrument to come back in)
+            
+            //for all the instruments in tickDict at a given tick
+            //{   
+            //    set instrument image transparency to 0
+
+
+                
+            //}
+            //  If tickStopwatch = currentTime + timeToPlay, increase the instrument image's transparency:
+            //ImageTransparency.ChangeOpacity(imgToPopulate, 10);
+
+                    
+
+        //}
+       
+
+
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             this.seq1 = new Sanford.Multimedia.Midi.Sequence();
             this.seqr1 = new Sanford.Multimedia.Midi.Sequencer();
+
+            //seq1.LoadAsync(@"C:\Users\Rachel\My Documents\GitHub\VirtualOrchestra\Sample MIDIs\r.mid");
             seq1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid");
 
             //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
