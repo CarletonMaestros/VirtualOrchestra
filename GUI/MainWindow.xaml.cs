@@ -30,13 +30,27 @@ namespace GUI
     {
         private Dictionary<int, int[]> instDict;
         private Dictionary<int, int[]> ticksDict;
+        private Dictionary<int, Dictionary<string, int[]>> instChangesDict;
         private HashSet<int> instruments;
         private Sequence seq1;
         private Sequencer seqr1;
         private OutputDevice outDevice;
-        private Storyboard aStoryboard;
-        //private Storyboard paulStoryboard;
-        //private Storyboard georgeStoryboard;
+        private Storyboard oneStoryboard;
+        private Storyboard twoStoryboard;
+        private Storyboard threeStoryboard;
+        private Storyboard fourStoryboard;
+        private Storyboard fiveStoryboard;
+        private Storyboard sixStoryboard;
+        private Storyboard sevenStoryboard;
+        private Storyboard eightStoryboard;
+        private Storyboard nineStoryboard;
+        private Storyboard tenStoryboard;
+        private Storyboard elevenStoryboard;
+        private Storyboard twelveStoryboard;
+        private Storyboard thirteenStoryboard;
+        private Storyboard fourteenStoryboard;
+        private Storyboard fifteenStoryboard;
+        private Storyboard sixteenStoryboard;
         private DoubleAnimation myDoubleAnimation;
         private int outDeviceID = 0;
         int[] instpos = new int[16];
@@ -51,34 +65,26 @@ namespace GUI
             instDict = new Dictionary<int, int[]>();
             PreProcessInstruments(instDict);
             ticksDict = new Dictionary<int, int[]>();
+            instChangesDict = new Dictionary<int,Dictionary<string,int[]>>
 
-            myDoubleAnimation = new DoubleAnimation();
-            myDoubleAnimation.From = 1.0;
-            myDoubleAnimation.To = 0.2;
-            myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(.2));
-            myDoubleAnimation.AutoReverse = true;
-            myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
+            //myDoubleAnimation = new DoubleAnimation();
+            //myDoubleAnimation.From = 1.0;
+            //myDoubleAnimation.To = 0.2;
+            //myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(.2));
+            //myDoubleAnimation.AutoReverse = true;
+            //myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
 
-            //johnStoryboard = new Storyboard();
-            //johnStoryboard.Children.Add(myDoubleAnimation);
+            //FIX THIS LATER
+
+
+            
+            //curStoryboard = new Storyboard();
+            //curStoryboard.Children.Add(myDoubleAnimation);
             //Storyboard.SetTargetName(myDoubleAnimation, square1.Name);
             //Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Image.OpacityProperty));
-            //johnStoryboard.Begin(this, true);
-            //johnStoryboard.Pause(this);
+            //curStoryboard.Begin(this, true);
+            //curStoryboard.Pause(this);
 
-            //paulStoryboard = new Storyboard();
-            //paulStoryboard.Children.Add(myDoubleAnimation);
-            //Storyboard.SetTargetName(myDoubleAnimation, paulImage.Name);
-            //Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Image.OpacityProperty));
-            //paulStoryboard.Begin(this, true);
-            //paulStoryboard.Pause(this);
-
-            //georgeStoryboard = new Storyboard();
-            //georgeStoryboard.Children.Add(myDoubleAnimation);
-            //Storyboard.SetTargetName(myDoubleAnimation, georgeImage.Name);
-            //Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Image.OpacityProperty));
-            //georgeStoryboard.Begin(this, true);
-            //georgeStoryboard.Pause(this);
         }
 
         public void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -96,7 +102,7 @@ namespace GUI
         private void PreProcessInstruments(Dictionary<int, int[]> instDict)
         {
             //int[] instDictVal = new int[] {1, 2, 3, 4, 5};
-            instDict.Add(0, new int[] {25, 26, 30, 29, 31, 33, 35, 120, 112, 1, 85, 85, 52, 52, 115});
+            instDict.Add(0, new int[] {34, 23, 75, 5, 112, 33, 84, 120, 112, 1, 85, 85, 52, 52, 115});
             instruments = new HashSet<int>();
             foreach (KeyValuePair<int, int[]> instrument in instDict)
             {
@@ -114,71 +120,8 @@ namespace GUI
                 Console.WriteLine(squareNumber); 
                 object item = FindName(squareNumber); // turn its name from a string into the Image
                 Image imgToPopulate = (Image)item;
-                String instName = "";
 
-                // Will be replaced by an enum once we get images for every instrument
-                if ((inst > 0) & (inst < 9))
-                {
-                    instName = "piano";
-                }
-                if ((inst > 8) & (inst < 17))
-                {
-                    instName = "xylophone";
-                }
-                if ((inst > 16) & (inst < 25))
-                {
-                    instName = "organ";
-                }
-                if ((inst > 24) & (inst < 33))
-                {
-                    instName = "guitar";
-                }
-                if ((inst > 32) & (inst < 41))
-                {                
-                    instName = "bassguitar";
-                }
-                if ((inst > 40) & (inst < 49))
-                {
-                    instName = "violin";
-                }
-                if ((inst > 48) & (inst < 57))
-                {
-                    instName = "choir";
-                }
-                if ((inst > 56) & (inst < 65))
-                {
-                    instName = "trumpet";
-                }
-                if ((inst > 64) & (inst < 73))
-                {
-                    instName = "clarinet";
-                }
-                if ((inst > 72) & (inst < 81))
-                {
-                    instName = "ocarina";
-                }
-                if ((inst > 80) & (inst < 89))
-                {
-                    instName = "keyboard";
-                }
-                if ((inst > 88) & (inst < 105))
-                {
-                    instName = "synthpad";
-                }
-                if ((inst > 104) & (inst < 113))
-                {
-                    instName = "sitar";
-                }
-                if ((inst > 112) & (inst < 121))
-                {
-                    instName = "cymbals";
-                }
-                if ((inst > 120) & (inst < 129))
-                {
-                    instName = "wham";
-                }
-
-                var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + instName + ".jpg";
+                var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
                 //var uriString = @"C:\Users\Rachel\My Documents\GitHub\VirtualOrchestra\GUI\Resources\" + instName + ".jpg";
                 Console.WriteLine(uriString);
                 BitmapImage bitIm = new BitmapImage();
@@ -189,32 +132,76 @@ namespace GUI
 
                 bitIm.EndInit();
                 imgToPopulate.Source = bitIm;
-                //imgToPopulate.Opacity = 0.25;
 
-
-                //And another approach:
-                //Image testImage = new Image();
-                //BitmapImage bitmapImage = new BitmapImage();
-                //testImage.Width = bitmapImage.DecodePixelWidth = 80;
-                //bitmapImage.UriSource = new Uri(testImage.BaseUri, "Images/myimage.png");
-
-                //testImage.Source = 
                 counter += 1;
             }
 
         }
 
 
-        private void StartTicks(Dictionary<int, int[]> ticksDict)
+        private void MakeInstChangesDict(Dictionary<int, int[][]> ticksDict, Dictionary<int, Dictionary<string, int>> instChangesDict)
         {
             //We should prolly break this into 2 functions. I'm just psuedocode vomiting. 
             //Start stopwatch to keep track of when events sh0uld happen (coming from dispatch)
             // Dictionary is like:
             // {AbsoluteTick1: [[instrument, pitch, velocity, note duration],[instrument, pitch, velocity, duration]], AbsoluteTick2: [[...]...]}
-            ticksDict.Add(0, new int[] { 25, 26, 30, 29 });
-            ticksDict.Add(25, new int[] { 25, 30, 29 });
+
             int counter = 1;
             bool instrumentPlaying = false;
+            int noteOff = 0;
+            int currentInstrument = 0;
+            Dictionary<int, int[]> noteLengthDict = new Dictionary<int, int[]>(); //to keep track of starting and stopping points for each instrument
+
+            foreach (KeyValuePair<int, int[][]> tick in ticksDict)
+            {
+                foreach (int[] note in tick.Value) // Instrument notes kind of...
+                {
+                    currentInstrument = note[0];
+                    if (noteLengthDict[currentInstrument][0] == null) {
+                        noteLengthDict[currentInstrument][0] = tick.Key; //setting the start time for an instrument
+                    }
+                    noteLengthDict[currentInstrument][1] = tick.Key + note[3]; 
+
+                    //for i in range tick.Key through tick.Key + 1000 
+                        //if tick[i]:
+                            //see if currentInstrument appears in tick[i][]
+                }
+                foreach (KeyValuePair<int, int[]> instrument in noteLengthDict) 
+                {
+                    if (tick.Key > (instrument.Value[1] + 1000))
+                    {
+                        // WILL CREATE NEW DICTIONARIES WHEN IT DOESNT HAVE TO
+                        instChangesDict[instrument.Value[0]] = new Dictionary<string,int>();
+                        instChangesDict[instrument.Value[0]]["TurnOn"] = instrument.Key;
+                        instChangesDict[instrument.Value[1]] = new Dictionary<string,int>();
+                        instChangesDict[instrument.Value[1]]["TurnOff"] = instrument.Key;
+                    }
+                }
+            }
+        }
+
+
+
+
+
+            // for each tick in ticksDict.keys():
+            //   for each instrument in each of those ticks:
+            //       instrumentOff = tick
+            //       while the instrument shows up in ticksDict[tick]: ticksDict[tick+1000]:
+            //            instrumentOff = last tick at which instrument has a note
+                        
+                        
+            
+
+
+
+
+
+
+
+
+
+
         }
 
             //currentTick = given by MIDI via dispath

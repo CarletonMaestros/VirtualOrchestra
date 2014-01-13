@@ -39,7 +39,7 @@
                HorizontalAlignment="Left" Height="150" Margin="1002,287,0,0" VerticalAlignment="Top" Width="150"/>
         <Image x:Name="square10"
                HorizontalAlignment="Left" Height="150" Margin="1180,287,0,0" VerticalAlignment="Top" Width="150"/>
-        <Image x:Name="sqaure14" 
+        <Image x:Name="square14" 
                HorizontalAlignment="Left" Height="150" Margin="1374,287,0,0" VerticalAlignment="Top" Width="150"/>
         
     </Grid>
