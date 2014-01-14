@@ -359,35 +359,50 @@ namespace Orchestra
             {
                 Play(0);
                 songStarted = true;
+                stopwatch.Restart();
+
             }
             beatCount++;
 
             //Console.WriteLine(sequencer.Position - (ppq * beatCount) / (float)ppq);
-            float beatPercentComplete = (sequencer.Position % ppq) / (float)ppq;
+            float beatPercentCompleted = (sequencer.Position % ppq) / (float)ppq;
+            float beatPercentRemaining = 1 - beatPercentCompleted;
             //Console.WriteLine(beatPercentComplete);
             
-            float deltaTime = (time - lastBeat); 
-            sequencer.Clock.Tempo = (int)(50000/(1-beatPercentComplete)); // Adjust clock based on how long the last beat took
-            Teleport();
+            float deltaTime = (time - lastBeat);
             lastBeat = time;
-            sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
-            Hang((int)(deltaTime * 1000) - 63, beatCount);
+            Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, sequencer.Position,0,0);
+            if (beatPercentCompleted > .25)
+            {
+                sequencer.Clock.Tempo = (int)(50000 / (beatPercentRemaining)); // Adjust clock based on how long the last beat took
+                Teleport(deltaTime, time);
+            }
+            else
+            {
+                sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
+            }
+            Hang((int)(deltaTime * 1000) - 63, beatCount, time);
             
 
 
          }
 
-        static async void Teleport()
+        static async void Teleport(float deltaTime, float time)
         {
             await Task.Delay(50);
+            Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, 0, sequencer.Position,0);
+            sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
             return;
         }
 
-        static async void Hang(int millis, int localBeatCount)
+        static async void Hang(int millis, int localBeatCount, float time)
         {
+            //Console.WriteLine("Slowing down in {0} ms", millis);
             await Task.Delay(millis);
             if (localBeatCount == beatCount)
             {
+                Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, 0, 0, sequencer.Position);
+                //Console.WriteLine("Hanging at {0}", sequencer.Position % ppq);
                 sequencer.Clock.Tempo = 2000000000;
             }
             return;
