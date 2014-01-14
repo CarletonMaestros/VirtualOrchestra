@@ -218,38 +218,32 @@ namespace Orchestra
                                     long tempo = stopwatch.ElapsedMilliseconds * 1000;
                                     //Console.WriteLine(counter + " " + tempo);\
                                 }
-                                //Console.WriteLine("hand x: " + rightHandX);
-                                //Console.WriteLine("hand y: " + rightHandY);
-                                //Console.WriteLine("hip x: " + rightHipX);
-                                //Console.WriteLine("hip y: " + rightHipY);
-                                //together = rightHandX - rightHipX;
-                                //Console.WriteLine("together: " + together);
                                 if (rightHandX - rightHipX > -.1 && rightHandX - rightHipX < .15 && rightHandY - rightHipY > -.15 && rightHandY - rightHipY < .15)
                                 {
                                     if (prevBeat == 1)
                                     {
-                                        Dispatch.TriggerBeat(counter, "beat");
+                                        //Dispatch.TriggerBeat(counter, "beat");
                                         Console.WriteLine("Beat 2");
                                         prevBeat = 2;
                                         middleBeat = 1;
                                     }
                                     else if (prevBeat == 2 && middleBeat == 0)
                                     {
-                                        Dispatch.TriggerBeat(counter, "beat");
+                                        //Dispatch.TriggerBeat(counter, "beat");
                                         Console.WriteLine("Beat 3");
                                         prevBeat = 3;
                                         middleBeat = 1;
                                     }
                                     else if (prevBeat == 3 && middleBeat == 0)
                                     {
-                                        Dispatch.TriggerBeat(counter, "beat");
+                                        //Dispatch.TriggerBeat(counter, "beat");
                                         Console.WriteLine("Beat 4");
                                         prevBeat = 4;
                                         middleBeat = 1;
                                     }
                                     else
                                     {
-                                        Dispatch.TriggerBeat(counter, "beat");
+                                        //Dispatch.TriggerBeat(counter, "beat");
                                         Console.WriteLine("Beat 1");
                                         prevBeat = 1;
                                         middleBeat = 1;
@@ -257,7 +251,7 @@ namespace Orchestra
                                 }
                                 else if (rightHandX < 0)
                                 {
-                                    Dispatch.TriggerBeat(counter, "beat");
+                                    //Dispatch.TriggerBeat(counter, "beat");
                                     Console.WriteLine("Beat 2");
                                     prevBeat = 2;
                                     middleBeat = 0;
@@ -266,14 +260,14 @@ namespace Orchestra
                                 {
                                     if (prevBeat == 2)
                                     {
-                                        Dispatch.TriggerBeat(counter, "beat");
+                                        //Dispatch.TriggerBeat(counter, "beat");
                                         Console.WriteLine("Beat 3");
                                         prevBeat = 3;
                                         middleBeat = 0;
                                     }
                                     else if (prevBeat == 1)
                                     {
-                                        Dispatch.TriggerBeat(counter, "beat");
+                                        //Dispatch.TriggerBeat(counter, "beat");
                                         Console.WriteLine("Beat 2");
                                         prevBeat = 2;
                                         middleBeat = 0;
@@ -281,6 +275,7 @@ namespace Orchestra
                                 }
                                 stopwatch.Restart();
                                 // GET OVER IT
+                                Dispatch.TriggerBeat(counter, "beat");
                                 seeking = "MAXIMUM";
                                 counter++;
                                 break;

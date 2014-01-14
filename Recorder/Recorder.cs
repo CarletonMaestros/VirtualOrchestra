@@ -16,6 +16,8 @@ namespace Orchestra.Recorder
         static Stopwatch stopwatch;
         static StreamWriter file;
 
+        static int sBeat;
+
         static bool InitKinect()
         {
             foreach (var potentialSensor in KinectSensor.KinectSensors)
@@ -31,8 +33,17 @@ namespace Orchestra.Recorder
 
             sensor.SkeletonStream.Enable();
             sensor.SkeletonFrameReady += SkeletonFrameReady;
+            Gestures.Load();
+            Dispatch.SkeletonMoved += SkeletonMoved;
+            Dispatch.Beat += Beat;
+            //Dispatch.Beat += (time, beat) => Console.WriteLine("Beat {0}", beat);
             sensor.Start();
             return true;
+        }
+
+        private static void Beat(float time, int beat)
+        {
+            sBeat = beat;
         }
 
         static void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
@@ -53,13 +64,13 @@ namespace Orchestra.Recorder
             {
                 if (skel.TrackingState == SkeletonTrackingState.Tracked)
                 {
-                    SkeletonMoved(skel);
+                    Dispatch.TriggerSkeletonMoved(skel);
                     break;
                 }
             }
         }
 
-        static void SkeletonMoved(Skeleton skel)
+        static void SkeletonMoved(float time, Skeleton skel)
         {
             // Jank-ass shit
             if (stopwatch == null)
@@ -79,6 +90,10 @@ namespace Orchestra.Recorder
                     JointType t = joint.JointType;
                     file.Write("," + t + ".X," + t + ".Y," + t + ".Z");
                 }
+
+                // Write beat header
+                file.Write(",Beat");
+                    
                 file.WriteLine();
             }
 
@@ -96,6 +111,7 @@ namespace Orchestra.Recorder
                     file.Write(",,,");
                 }
             }
+            file.Write(",{0}",sBeat);
             file.WriteLine();
             file.Flush();
         }

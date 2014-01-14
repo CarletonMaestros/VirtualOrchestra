@@ -24,6 +24,7 @@ namespace Orchestra
         public delegate void BeatDelegate(float time, int beat);
         public static event BeatDelegate Beat;
         public static void TriggerBeat(int beat, string type) { if (Beat != null) Beat(Time, beat); }
+        public static void TriggerBeat(float time, int beat) { if (Beat != null) Beat(time, beat); }
 
         public delegate void PlayDelegate(float time);
         public static event PlayDelegate Play;

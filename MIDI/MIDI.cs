@@ -46,7 +46,7 @@ namespace Orchestra
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
-            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
+            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\b2.mid");
 
             // Other messages that might be useful
             //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
@@ -371,7 +371,7 @@ namespace Orchestra
             
             float deltaTime = (time - lastBeat);
             lastBeat = time;
-            Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, sequencer.Position,0,0);
+            //Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, sequencer.Position,0,0);
             if (beatPercentCompleted > .25)
             {
                 sequencer.Clock.Tempo = (int)(50000 / (beatPercentRemaining)); // Adjust clock based on how long the last beat took
@@ -390,7 +390,7 @@ namespace Orchestra
         static async void Teleport(float deltaTime, float time)
         {
             await Task.Delay(50);
-            Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, 0, sequencer.Position,0);
+            //Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, 0, sequencer.Position,0);
             sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
             return;
         }
@@ -401,7 +401,7 @@ namespace Orchestra
             await Task.Delay(millis);
             if (localBeatCount == beatCount)
             {
-                Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, 0, 0, sequencer.Position);
+                //Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, 0, 0, sequencer.Position);
                 //Console.WriteLine("Hanging at {0}", sequencer.Position % ppq);
                 sequencer.Clock.Tempo = 2000000000;
             }
