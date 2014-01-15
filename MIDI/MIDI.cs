@@ -46,7 +46,7 @@ namespace Orchestra
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
-            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\b2.mid");
+            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
 
             // Other messages that might be useful
             //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
@@ -372,15 +372,20 @@ namespace Orchestra
             float deltaTime = (time - lastBeat);
             lastBeat = time;
             //Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, sequencer.Position,0,0);
-            if (beatPercentCompleted > .25)
+            Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount);
+            Console.WriteLine("DeltaTime is {0}\nSequencer position {1}\nBeatPercentComplete is {2}\nBeatPercentRemaining is {3}", deltaTime, sequencer.Position % ppq, beatPercentCompleted, beatPercentRemaining);
+            if (beatPercentCompleted < .99)
             {
+                Console.WriteLine("#TELEPORTING/nSetting Tempo to {0}", (int)(50000 / (beatPercentRemaining)));
                 sequencer.Clock.Tempo = (int)(50000 / (beatPercentRemaining)); // Adjust clock based on how long the last beat took
                 Teleport(deltaTime, time);
             }
             else
             {
+                Console.WriteLine("No teleportation, setting tempo to {0}", sequencer.Clock.Tempo = (int)(1000000 * deltaTime));
                 sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
             }
+            Console.WriteLine("Will check for hang in {0} millis", (deltaTime * 1000) - 63);
             Hang((int)(deltaTime * 1000) - 63, beatCount, time);
             
 
@@ -391,6 +396,7 @@ namespace Orchestra
         {
             await Task.Delay(50);
             //Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, 0, sequencer.Position,0);
+            Console.WriteLine("Finished Teleport\nSequencer position is {0}\nSetting Tempo to {1}", sequencer.Position % ppq, (int)(1000000 * deltaTime));
             sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
             return;
         }
@@ -399,8 +405,10 @@ namespace Orchestra
         {
             //Console.WriteLine("Slowing down in {0} ms", millis);
             await Task.Delay(millis);
+            Console.WriteLine("\nWaited {0} millis\nLocalBeatCount is {1}\nBeatCount is {2}", millis, localBeatCount, beatCount);
             if (localBeatCount == beatCount)
             {
+                Console.WriteLine("#HANGING");
                 //Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, 0, 0, sequencer.Position);
                 //Console.WriteLine("Hanging at {0}", sequencer.Position % ppq);
                 sequencer.Clock.Tempo = 2000000000;
