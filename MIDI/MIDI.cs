@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Timers;
 using Microsoft.Kinect;
 using Sanford.Multimedia.Midi;
 using System.Threading.Tasks;
@@ -28,6 +29,11 @@ namespace Orchestra
         static int curTick = 0;
         static int ppq = 0;
         static int beatCount = 0;
+        static Boolean verbose = false;
+        static Boolean graph = false;
+        static Timer timer = new Timer(1);
+
+        static int timerCounter = 0;
 
         /// <summary>
         /// Activate the MIDI player
@@ -43,6 +49,8 @@ namespace Orchestra
             sequencer.ChannelMessagePlayed += MIDIChannelMessagePlayed;
             sequencer.MetaMessagePlayed += MIDIMetaMessagePlayed;
             sequencer.Chased += MIDIChased;
+            timer.Elapsed += new ElapsedEventHandler(TimePassed);
+            timer.Enabled = true;
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
@@ -54,6 +62,21 @@ namespace Orchestra
             //this.sequencer1.Stopped += new System.EventHandler<Sanford.Multimedia.Midi.StoppedEventArgs>(this.HandleStopped);
         }
 
+        private static void TimePassed(object sender, ElapsedEventArgs e)
+        {
+            //Console.WriteLine("WTF {0}", stopwatch.ElapsedMilliseconds);
+            //TimePassChecker();
+
+        }
+
+        private static void TimePassChecker()
+        {
+            timerCounter += 1;
+            if (timerCounter % 100 == 0)
+            {
+                Console.WriteLine(stopwatch.ElapsedMilliseconds);
+            }
+        }
         //private void 
         //adds to event dictionary, and check for collisions, instead of exception, edits val at key
         //dictionary properties: keys are absolute tick values for the NON data, elements are lists of int[4] arrays containing instr#, pitch, velocity, duration in ticks
@@ -363,54 +386,47 @@ namespace Orchestra
 
             }
             beatCount++;
-
-            //Console.WriteLine(sequencer.Position - (ppq * beatCount) / (float)ppq);
+            if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
             float beatPercentCompleted = (sequencer.Position % ppq) / (float)ppq;
             float beatPercentRemaining = 1 - beatPercentCompleted;
-            //Console.WriteLine(beatPercentComplete);
-            
             float deltaTime = (time - lastBeat);
             lastBeat = time;
-            //Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, sequencer.Position,0,0);
-            Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount);
-            Console.WriteLine("DeltaTime is {0}\nSequencer position {1}\nBeatPercentComplete is {2}\nBeatPercentRemaining is {3}", deltaTime, sequencer.Position % ppq, beatPercentCompleted, beatPercentRemaining);
-            if (beatPercentCompleted < .99)
+            if (verbose) { Console.WriteLine("DeltaTime is {0}\nSequencer position {1}\nBeatPercentComplete is {2}\nBeatPercentRemaining is {3}", deltaTime, sequencer.Position % ppq, beatPercentCompleted, beatPercentRemaining); }
+            if (beatPercentCompleted < .9 && beatPercentCompleted > .1)
             {
-                Console.WriteLine("#TELEPORTING/nSetting Tempo to {0}", (int)(50000 / (beatPercentRemaining)));
-                sequencer.Clock.Tempo = (int)(50000 / (beatPercentRemaining)); // Adjust clock based on how long the last beat took
-                Teleport(deltaTime, time);
+                Teleport(deltaTime, beatPercentRemaining);
             }
             else
             {
-                Console.WriteLine("No teleportation, setting tempo to {0}", sequencer.Clock.Tempo = (int)(1000000 * deltaTime));
+                if (verbose) { Console.WriteLine("No teleportation, setting tempo to {0}", sequencer.Clock.Tempo = (int)(1000000 * deltaTime)); }
                 sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
             }
-            Console.WriteLine("Will check for hang in {0} millis", (deltaTime * 1000) - 63);
-            Hang((int)(deltaTime * 1000) - 63, beatCount, time);
+            if (verbose) { Console.WriteLine("Will check for hang in {0} millis", (deltaTime * 1000) - 10); }
+            long testtime = stopwatch.ElapsedMilliseconds;
+            Hang((int)(deltaTime * 1000) - 10, beatCount, testtime);
             
-
-
          }
 
-        static async void Teleport(float deltaTime, float time)
+        static async void Teleport(float deltaTime, float beatPercentRemaining)
         {
-            await Task.Delay(50);
-            //Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, 0, sequencer.Position,0);
-            Console.WriteLine("Finished Teleport\nSequencer position is {0}\nSetting Tempo to {1}", sequencer.Position % ppq, (int)(1000000 * deltaTime));
-            sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
+            int teleportSpeed = (int)(50000 / (beatPercentRemaining));
+            if (verbose) { Console.WriteLine("#TELEPORTING with tempo {0}", teleportSpeed); }
+            long temptime = stopwatch.ElapsedMilliseconds;
+            sequencer.Clock.Tempo = teleportSpeed;
+            await Task.Delay(new TimeSpan((Int64)(.05 * TimeSpan.TicksPerSecond)));
+            int newTempo = (int)(1000000 * (deltaTime - .05));
+            sequencer.Clock.Tempo = newTempo;
+            if (verbose) { Console.WriteLine("Finished Teleport in {0} millis\nSequencer position is {1}\nSetting Tempo to {2}", stopwatch.ElapsedMilliseconds - temptime, sequencer.Position % ppq, newTempo); }
             return;
         }
 
-        static async void Hang(int millis, int localBeatCount, float time)
+        static async void Hang(int millis, int localBeatCount, long testtime)
         {
-            //Console.WriteLine("Slowing down in {0} ms", millis);
             await Task.Delay(millis);
-            Console.WriteLine("\nWaited {0} millis\nLocalBeatCount is {1}\nBeatCount is {2}", millis, localBeatCount, beatCount);
+            if (verbose) { Console.WriteLine("\nWaited {0} millis\nLocalBeatCount is {1}\nBeatCount is {2}", stopwatch.ElapsedMilliseconds - testtime, localBeatCount, beatCount); }
             if (localBeatCount == beatCount)
             {
-                Console.WriteLine("#HANGING");
-                //Console.WriteLine("{0}\t{1}\t{2}\t{3}", stopwatch.ElapsedMilliseconds, 0, 0, sequencer.Position);
-                //Console.WriteLine("Hanging at {0}", sequencer.Position % ppq);
+                if (verbose) {Console.WriteLine("#HANGING at {0}", sequencer.Position % ppq);}
                 sequencer.Clock.Tempo = 2000000000;
             }
             return;

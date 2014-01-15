@@ -144,14 +144,14 @@ namespace Orchestra
                     //}
                     //xAverage = xAverage / circleChecker.getLength();
                     //yAverage = yAverage / circleChecker.getLength();
-                    
+
                 }
                 if (joint.JointType == JointType.HipRight)
                 {
                     rightHipX = joint.Position.X;
                     rightHipY = joint.Position.Y;
                 }
-                
+
             }
 
 
