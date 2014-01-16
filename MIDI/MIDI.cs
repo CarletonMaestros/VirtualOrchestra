@@ -26,7 +26,8 @@ namespace Orchestra
         //Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
         static double lastBeat = -1;
-        static double deltaTime = 0;
+        static double prevDeltaTime = 0;
+        static double deltaTime = double.MaxValue;
         static long lastTeleport = 0;
         static int curTick = 0;
         static int ppq = 0;
@@ -74,19 +75,47 @@ namespace Orchestra
             {
                 if (verbose) { Console.WriteLine("#HANGING at {0}", sequencer.Position % ppq); }
                 sequencer.Clock.Tempo = Int32.MaxValue; // 2 billion is very slow
-                return;
+                //if (stopwatch.ElapsedMilliseconds / 1000d > lastBeat + 2 * deltaTime - 0.05)
             }
 
             // Normal time (if not teleporting)
-            Console.WriteLine(deltaTime);
-            if (stopwatch.ElapsedMilliseconds - lastTeleport > .045)
+            else if (stopwatch.ElapsedMilliseconds - lastTeleport > .140)
             {
-                Console.WriteLine("   asdf");
+                Console.WriteLine(deltaTime);
                 sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
                 //if (verbose) { Console.WriteLine("Finished Teleport in {0} millis\nSequencer position is {1}\nSetting Tempo to {2}", stopwatch.ElapsedMilliseconds - temptime, sequencer.Position % ppq, newTempo); }
             }
 
             //if (verbose) { Console.WriteLine("\nWaited {0} millis\nLocalBeatCount is {1}\nBeatCount is {2}", stopwatch.ElapsedMilliseconds - testtime, localBeatCount, beatCount); }
+        }
+
+        static void Beat(float time, int beat)
+        {
+            time = stopwatch.ElapsedMilliseconds / 1000f;
+            if (!songStarted)
+            {
+                Play(0);
+                songStarted = true;
+                stopwatch.Restart();
+            }
+            beatCount++;
+            if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
+            float beatPercentCompleted = (sequencer.Position % ppq) / (float)ppq;
+            float beatPercentRemaining = 1 - beatPercentCompleted;
+            deltaTime = time - lastBeat;
+            //Console.WriteLine("{0}   {1}   {2}", time, time - lastBeat, deltaTime);
+            lastBeat = time;
+            if (verbose) { Console.WriteLine("DeltaTime is {0}\nSequencer position {1}\nBeatPercentComplete is {2}\nBeatPercentRemaining is {3}", deltaTime, sequencer.Position % ppq, beatPercentCompleted, beatPercentRemaining); }
+            if (beatPercentCompleted < .9 && beatPercentCompleted > .1)
+            {
+                // Teleport
+                int teleportSpeed = (int)(150000 / beatPercentRemaining);
+                if (verbose) { Console.WriteLine("#TELEPORTING with tempo {0}", teleportSpeed); }
+                sequencer.Clock.Tempo = teleportSpeed;
+                lastTeleport = stopwatch.ElapsedMilliseconds;
+            }
+            if (verbose) { Console.WriteLine("Will check for hang in {0} millis", (deltaTime * 1000) - 10); }
+            long testtime = stopwatch.ElapsedMilliseconds;
         }
 
         //static async void Hang(int millis, int localBeatCount, long testtime)
@@ -399,35 +428,6 @@ namespace Orchestra
         {
             sequencer.Stop();
         }
-
-        static void Beat(float time, int beat)
-        {
-            time = stopwatch.ElapsedMilliseconds / 1000f;
-            if (!songStarted)
-            {
-                Play(0);
-                songStarted = true;
-                stopwatch.Restart();
-            }
-            beatCount++;
-            if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
-            float beatPercentCompleted = (sequencer.Position % ppq) / (float)ppq;
-            float beatPercentRemaining = 1 - beatPercentCompleted;
-            deltaTime = time - lastBeat;
-            lastBeat = time;
-            if (verbose) { Console.WriteLine("DeltaTime is {0}\nSequencer position {1}\nBeatPercentComplete is {2}\nBeatPercentRemaining is {3}", deltaTime, sequencer.Position % ppq, beatPercentCompleted, beatPercentRemaining); }
-            if (beatPercentCompleted < .9 && beatPercentCompleted > .1)
-            {
-                // Speed up to catch up
-                int teleportSpeed = (int)(50000 / (beatPercentRemaining));
-                if (verbose) { Console.WriteLine("#TELEPORTING with tempo {0}", teleportSpeed); }
-                long temptime = stopwatch.ElapsedMilliseconds;
-                //sequencer.Clock.Tempo = teleportSpeed;
-                lastTeleport = stopwatch.ElapsedMilliseconds;
-            }
-            if (verbose) { Console.WriteLine("Will check for hang in {0} millis", (deltaTime * 1000) - 10); }
-            long testtime = stopwatch.ElapsedMilliseconds;
-         }
 
         static void VolumeChanged(float time, float volume)
         {
