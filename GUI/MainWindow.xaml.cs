@@ -30,7 +30,10 @@ namespace GUI
     {
         private Dictionary<int, int[]> instDict;
         private Dictionary<int, int[]> ticksDict;
-        private Dictionary<int, Dictionary<string, int[]>> instChangesDict;
+
+
+
+        
         private HashSet<int> instruments;
         private Sequence seq1;
         private Sequencer seqr1;
@@ -55,17 +58,53 @@ namespace GUI
         private int outDeviceID = 0;
         int[] instpos = new int[16];
 
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
+
         public void WindowLoaded(object sender, RoutedEventArgs e)
         {
             instDict = new Dictionary<int, int[]>();
-            PreProcessInstruments(instDict);
-            ticksDict = new Dictionary<int, int[]>();
-            instChangesDict = new Dictionary<int,Dictionary<string,int[]>>
+            //PreProcessInstruments(instDict);
+
+
+            
+            Dictionary<int, int[][]> ticksDict = new Dictionary<int, int[][]>();
+            int[][] jaggedArray = {
+       
+            new int[] {1, 2, 3, 4},
+            new int[] {5, 6, 7, 8},
+            new int[] {9, 10, 11, 12},
+            };
+            ticksDict.Add(0, jaggedArray);
+            int[][] jaggedArray2 = {
+       
+            new int[] {11, 12, 13, 14},
+            new int[] {15, 16, 17, 18},
+            new int[] {19, 110, 111, 112},
+            };
+            ticksDict.Add(5, jaggedArray2);
+            int[][] jaggedArray3 = {
+       
+            new int[] {11, 12, 13, 14},
+            new int[] {15, 16, 17, 18},
+            new int[] {19, 110, 111, 112},
+            };
+            ticksDict.Add(5000, jaggedArray3);
+            int[][] jaggedArray4 = {
+       
+            new int[] {11, 12, 13, 14},
+            new int[] {15, 16, 17, 18},
+            new int[] {19, 110, 111, 112},
+            };
+            ticksDict.Add(12000, jaggedArray4);
+            MakeInstChangesDict(ticksDict);
+
+
+            //instChangesDict = new Dictionary<int, Dictionary<string, int[]>>();
 
             //myDoubleAnimation = new DoubleAnimation();
             //myDoubleAnimation.From = 1.0;
@@ -101,6 +140,10 @@ namespace GUI
 
         private void PreProcessInstruments(Dictionary<int, int[]> instDict)
         {
+                        
+
+        
+
             //int[] instDictVal = new int[] {1, 2, 3, 4, 5};
             instDict.Add(0, new int[] {34, 23, 75, 5, 112, 33, 84, 120, 112, 1, 85, 85, 52, 52, 115});
             instruments = new HashSet<int>();
@@ -139,45 +182,117 @@ namespace GUI
         }
 
 
-        private void MakeInstChangesDict(Dictionary<int, int[][]> ticksDict, Dictionary<int, Dictionary<string, int>> instChangesDict)
+        private void MakeInstChangesDict(Dictionary<int, int[][]> ticksDict)
         {
             //We should prolly break this into 2 functions. I'm just psuedocode vomiting. 
             //Start stopwatch to keep track of when events sh0uld happen (coming from dispatch)
             // Dictionary is like:
             // {AbsoluteTick1: [[instrument, pitch, velocity, note duration],[instrument, pitch, velocity, duration]], AbsoluteTick2: [[...]...]}
+            Console.WriteLine("at makeinstchangedict");
+           
+            Dictionary<int, List<int>> instPlayingDict = new Dictionary<int, List<int>>(); // {Instrument: [all the ticks it plays at]}
+            Dictionary<int, Dictionary<string, List<int>>> instChangesDict = new Dictionary<int, Dictionary<string, List<int>>>();
 
-            int counter = 1;
-            bool instrumentPlaying = false;
-            int noteOff = 0;
-            int currentInstrument = 0;
-            Dictionary<int, int[]> noteLengthDict = new Dictionary<int, int[]>(); //to keep track of starting and stopping points for each instrument
+
+
 
             foreach (KeyValuePair<int, int[][]> tick in ticksDict)
             {
                 foreach (int[] note in tick.Value) // Instrument notes kind of...
                 {
-                    currentInstrument = note[0];
-                    if (noteLengthDict[currentInstrument][0] == null) {
-                        noteLengthDict[currentInstrument][0] = tick.Key; //setting the start time for an instrument
-                    }
-                    noteLengthDict[currentInstrument][1] = tick.Key + note[3]; 
+                    int instrument = note[0];
 
-                    //for i in range tick.Key through tick.Key + 1000 
-                        //if tick[i]:
-                            //see if currentInstrument appears in tick[i][]
-                }
-                foreach (KeyValuePair<int, int[]> instrument in noteLengthDict) 
-                {
-                    if (tick.Key > (instrument.Value[1] + 1000))
+                    if (!instPlayingDict.ContainsKey(instrument)) // if the instrument's not in the dictionary yet
                     {
-                        // WILL CREATE NEW DICTIONARIES WHEN IT DOESNT HAVE TO
-                        instChangesDict[instrument.Value[0]] = new Dictionary<string,int>();
-                        instChangesDict[instrument.Value[0]]["TurnOn"] = instrument.Key;
-                        instChangesDict[instrument.Value[1]] = new Dictionary<string,int>();
-                        instChangesDict[instrument.Value[1]]["TurnOff"] = instrument.Key;
+                        List<int> newInstList = new List<int>(); //make a list for its ticks
+                        instPlayingDict.Add(note[0], newInstList); // put it in the dictionary
                     }
+
+                    instPlayingDict[note[0]].Add(tick.Key);
+                       
+
                 }
+                
             }
+            // ok so we now have every tick in which an instrument plays
+            
+
+            foreach (KeyValuePair<int, List<int>> inst in instPlayingDict) //key is instrument, value is list of ticks they play at
+                { int length = inst.Value.Count -1;
+                    for (int i = 0; i < length; i++)
+                        {
+                            Console.WriteLine(inst.Value[i + 1]);
+                        Console.WriteLine(inst.Value[i]);
+                        if (inst.Value[i+1] - inst.Value[i] > 1000)
+
+                            {
+                                if (!instChangesDict.ContainsKey(i + 1)) //if the dict doesnt have the tick as a key yet
+                                {
+                                    Dictionary<String, List<int>> subDict  = new Dictionary<String, List<int>>();
+                                    List<int> newInstList = new List<int>();
+                                    subDict.Add("TurnOn", newInstList);
+                                    subDict.Add("TurnOff", newInstList);
+                                    instChangesDict.Add(inst.Value[i + 1], subDict); // put it in the dictionary
+
+                                }
+                                instChangesDict[inst.Value[i + 1]]["TurnOn"].Add(inst.Key);
+                                instChangesDict[inst.Value[i]]["TurnOff"].Add(inst.Key);
+                           }
+                        }
+            }
+
+
+            foreach (KeyValuePair<int, Dictionary<string, List<int>>> inst in instChangesDict)
+            {
+                
+                Console.WriteLine("Key:");
+                
+                Console.WriteLine(inst.Key);
+                Console.WriteLine("Value:");
+                
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //    foreach (int[] note in tick.Value) // Instrument notes kind of...
+            //    {
+            //        currentInstrument = note[0];
+            //        if (noteLengthDict[currentInstrument][0] == null) { //if there's no value for a start time
+            //            noteLengthDict[currentInstrument][0] = tick.Key; //setting the start time for an instrument
+            //        }
+            //        noteLengthDict[currentInstrument][1] = tick.Key + note[3]; //end time is startTime+duration
+
+            //    }
+            //    foreach (KeyValuePair<int, int[]> instrument in noteLengthDict)
+            //    {
+            //        int startTick = instChangesDict[instrument.Value[0]]; 
+            //        if (tick.Key > (instrument.Value[1] + 1000))
+            //        {
+            //            int value = 0;
+            //            // WILL CREATE NEW DICTIONARIES WHEN IT DOESNT HAVE TO
+            //            if (instChangesDict.TryGetValue(tick.Key, out value)) //if the startTime isn't a key in the dictionary yet
+                           
+            //            {
+            //                instChangesDict[instrument.Value[0]] = new Dictionary<string, int>();
+            //            }
+            //            instChangesDict[instrument.Value[0]]["TurnOn"] = instrument.Key;
+            //            instChangesDict[instrument.Value[1]] = new Dictionary<string,int>();
+            //            instChangesDict[instrument.Value[1]]["TurnOff"] = instrument.Key;
+            //        }
+            //    }
+            //}
         }
 
 
@@ -202,7 +317,7 @@ namespace GUI
 
 
 
-        }
+        
 
             //currentTick = given by MIDI via dispath
             // Leave instrument lit up for at least note duration. 
