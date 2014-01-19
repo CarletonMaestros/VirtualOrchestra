@@ -63,40 +63,48 @@ namespace GUI
         public void WindowLoaded(object sender, RoutedEventArgs e)
         {
             instDict = new Dictionary<int, int[]>();
-            //PreProcessInstruments(instDict);
+            PreProcessInstruments(instDict);
 
 
             
             Dictionary<int, int[][]> ticksDict = new Dictionary<int, int[][]>();
             int[][] jaggedArray = {
        
-            new int[] {1, 2, 3, 4},
-            new int[] {5, 6, 7, 8},
-            new int[] {9, 10, 11, 12},
+            new int[] {2, 2, 3, 4},
+            new int[] {3, 6, 7, 8},
+            new int[] {5, 10, 11, 12},
             };
             ticksDict.Add(0, jaggedArray);
             int[][] jaggedArray2 = {
        
-            new int[] {11, 12, 13, 14},
-            new int[] {15, 16, 17, 18},
-            new int[] {19, 110, 111, 112},
+            new int[] {2, 12, 13, 14},
+            new int[] {3, 16, 17, 18},
+            new int[] {5, 110, 111, 112},
             };
             ticksDict.Add(5, jaggedArray2);
             int[][] jaggedArray3 = {
        
-            new int[] {11, 12, 13, 14},
-            new int[] {15, 16, 17, 18},
-            new int[] {19, 110, 111, 112},
+            new int[] {2, 12, 13, 14},
+            new int[] {3, 16, 17, 18},
+            new int[] {5, 110, 111, 112},
             };
             ticksDict.Add(5000, jaggedArray3);
+            int[][] jaggedArray5 = {
+       
+            new int[] {2, 12, 13, 14},
+            new int[] {3, 16, 17, 18},
+            new int[] {5, 110, 111, 112},
+            };
+            ticksDict.Add(5400, jaggedArray5);            
             int[][] jaggedArray4 = {
        
-            new int[] {11, 12, 13, 14},
-            new int[] {15, 16, 17, 18},
-            new int[] {19, 110, 111, 112},
+            new int[] {2, 12, 13, 14},
+            new int[] {3, 16, 17, 18},
+            new int[] {5, 110, 111, 112},
             };
             ticksDict.Add(12000, jaggedArray4);
             MakeInstChangesDict(ticksDict);
+
 
 
             //instChangesDict = new Dictionary<int, Dictionary<string, int[]>>();
@@ -169,6 +177,20 @@ namespace GUI
         }
 
 
+
+ //       private void TestMakeInstChangesDict(Dictionary<int, int[][]> ticksDict)
+//        { int counter = 0;
+//            while counter < 
+        
+        
+        
+        
+        
+ //       }
+
+
+
+
         private void MakeInstChangesDict(Dictionary<int, int[][]> ticksDict)
         {
             //We should prolly break this into 2 functions. I'm just psuedocode vomiting. 
@@ -177,7 +199,7 @@ namespace GUI
             // {AbsoluteTick1: [[instrument, pitch, velocity, note duration],[instrument, pitch, velocity, duration]], AbsoluteTick2: [[...]...]}
             Console.WriteLine("at makeinstchangedict");
 
-            Dictionary<int, List<int>> instPlayingDict = new Dictionary<int, List<int>>(); // {Instrument: [all the ticks it plays at]}
+            Dictionary<int, List<int[]>> instPlayingDict = new Dictionary<int, List<int[]>>(); // {Instrument: [all the ticks it plays at]}
             Dictionary<int, Dictionary<string, List<int>>> instChangesDict = new Dictionary<int, Dictionary<string, List<int>>>();
 
             foreach (KeyValuePair<int, int[][]> tick in ticksDict)
@@ -189,11 +211,11 @@ namespace GUI
 
                     if (!instPlayingDict.ContainsKey(instrument)) // if the instrument's not in the dictionary yet
                     {
-                        List<int> newInstList = new List<int>(); //make a list for its ticks
+                        List<int[]> newInstList = new List<int[]>(); //make a list for its ticks
                         instPlayingDict.Add(note[0], newInstList); // put it in the dictionary
                     }
-
-                    instPlayingDict[note[0]].Add(tick.Key);
+                    int[] tempArr = new int[] {tick.Key, (tick.Key + note[3])};
+                    instPlayingDict[note[0]].Add(tempArr);
 
                 }
 
@@ -201,35 +223,44 @@ namespace GUI
             // ok so we now have every tick in which an instrument plays
 
 
-            foreach (KeyValuePair<int, List<int>> inst in instPlayingDict) //key is instrument, value is list of ticks they play at
+            foreach (KeyValuePair<int, List<int[]>> inst in instPlayingDict) //key is instrument, value is list of ticks they play at
             {
                 int length = inst.Value.Count - 1;
+                //always have a turnOn at the insttrument's first note
+                if (!instChangesDict.ContainsKey(inst.Value[0][0]))
+                {
+                    Dictionary<String, List<int>> subDict0 = new Dictionary<String, List<int>>();
+                    List<int> newInstList0 = new List<int>();
+                    subDict0.Add("TurnOn", newInstList0);
+                    instChangesDict.Add(inst.Value[0][0], subDict0);
+                }
+                instChangesDict[inst.Value[0][0]]["TurnOn"].Add(inst.Key);
                 for (int i = 0; i < length; i++)
                 {
                     Console.WriteLine(inst.Value[i + 1]);
                     Console.WriteLine(inst.Value[i]);
-                    if (inst.Value[i + 1] - inst.Value[i] > 1000)
+                    if ((inst.Value[i + 1][0] - inst.Value[i][1]) > 1000)
                     {
-                        if (!instChangesDict.ContainsKey(inst.Value[i + 1])) //if the dict doesnt have the tick as a key yet
+                        if (!instChangesDict.ContainsKey(inst.Value[i + 1][0])) //if the dict doesnt have the tick as a key yet
                         {
                             Dictionary<String, List<int>> subDict = new Dictionary<String, List<int>>();
                             List<int> newInstList = new List<int>();
+                            List<int> newInstList2 = new List<int>();
                             subDict.Add("TurnOn", newInstList);
-                            subDict.Add("TurnOff", newInstList);
-                            instChangesDict.Add(inst.Value[i + 1], subDict); // put it in the dictionary
+                            subDict.Add("TurnOff", newInstList2);
+                            instChangesDict.Add(inst.Value[i + 1][0], subDict); // put it in the dictionary
                         }
-                        if (!instChangesDict.ContainsKey(inst.Value[i])) //if the dict doesnt have the tick as a key yet
+                        if (!instChangesDict.ContainsKey(inst.Value[i][1])) //if the dict doesnt have the tick as a key yet
                         {
                             Dictionary<String, List<int>> subDict2 = new Dictionary<String, List<int>>();
-                            List<int> newInstList2 = new List<int>();
-                            subDict2.Add("TurnOn", newInstList2);
-                            subDict2.Add("TurnOff", newInstList2);
-                            instChangesDict.Add(inst.Value[i], subDict2);
+                            List<int> newInstList3 = new List<int>();
+                            List<int> newInstList4 = new List<int>();
+                            subDict2.Add("TurnOn", newInstList3);
+                            subDict2.Add("TurnOff", newInstList4);
+                            instChangesDict.Add(inst.Value[i][1], subDict2);
                         }
-                        Dictionary<String, List<int>> tempDict = instChangesDict[inst.Value[i + 1]];
-                        tempDict["TurnOn"].Add(inst.Key);
-                        //instChangesDict[inst.Value[i + 1]]["TurnOn"].Add(inst.Key);
-                        instChangesDict[inst.Value[i]]["TurnOff"].Add(inst.Key);
+                        instChangesDict[inst.Value[i + 1][0]]["TurnOn"].Add(inst.Key);
+                        instChangesDict[inst.Value[i][1]]["TurnOff"].Add(inst.Key);
                     }
                 }
             }
@@ -335,89 +366,7 @@ namespace GUI
 
         private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
-            outDevice.Send(e.Message);
-            if (e.Message.Command == ChannelCommand.ProgramChange)
-            {
-                Console.Write("Changing Midi Channel ");
-                Console.Write(e.Message.MidiChannel);
-                Console.Write(" to ");
-                Console.WriteLine((GeneralMidiInstrument)e.Message.Data1);
-                instpos[e.Message.MidiChannel] = e.Message.Data1;
-            }
-            if (e.Message.Command == ChannelCommand.NoteOn)
-            {
-                Console.Write("Playing note on ");
-                Console.WriteLine((GeneralMidiInstrument)instpos[e.Message.MidiChannel]);
-                //    if (instpos[e.Message.MidiChannel] == 24)
-                //    {
-
-                //        this.Dispatcher.Invoke((Action)(() =>
-                //        {
-                //            if (johnStoryboard.GetIsPaused(this) == true)
-                //            {
-                //                johnStoryboard.Resume(this);
-                //            }
-                //        }));
-                //    }
-
-                //    if (instpos[e.Message.MidiChannel] == 35)
-                //    {
-                //        this.Dispatcher.Invoke((Action)(() =>
-                //        {
-                //            if (paulStoryboard.GetIsPaused(this) == true)
-                //            {
-                //                paulStoryboard.Resume(this);
-                //            }
-                //        }));
-                //    }
-                //    if (instpos[e.Message.MidiChannel] == 25)
-                //    {
-                //        this.Dispatcher.Invoke((Action)(() =>
-                //        {
-                //            if (georgeStoryboard.GetIsPaused(this) == true)
-                //            {
-                //                georgeStoryboard.Resume(this);
-                //            }
-                //        }));
-                //    }
-                //}
-            }
-            if (e.Message.Command == ChannelCommand.NoteOff)
-            {
-                Console.Write("Stopping note on ");
-                Console.WriteLine((GeneralMidiInstrument)instpos[e.Message.MidiChannel]);
-            //    if (instpos[e.Message.MidiChannel] == 24)
-            //    {
-            //        this.Dispatcher.Invoke((Action)(() =>
-            //        {
-            //            if (johnStoryboard.GetIsPaused(this) == false)
-            //            {
-            //                johnStoryboard.Pause(this);
-            //            }
-            //        }));
-            //    }
-            //    if (instpos[e.Message.MidiChannel] == 35)
-            //    {
-            //        this.Dispatcher.Invoke((Action)(() =>
-            //        {
-            //            if (paulStoryboard.GetIsPaused(this) == false)
-            //            {
-            //                paulStoryboard.Pause(this);
-            //            }
-            //        }));
-            //    }
-            //    if (instpos[e.Message.MidiChannel] == 25)
-            //    {
-            //        this.Dispatcher.Invoke((Action)(() =>
-            //        {
-            //            if (georgeStoryboard.GetIsPaused(this) == false)
-            //            {
-            //                georgeStoryboard.Pause(this);
-            //            }
-            //        }));
-            //    }
-            //}
-            }
+            outDevice.Send(e.Message);            
         }
 
         private void HandleChased(object sender, ChasedEventArgs e)
