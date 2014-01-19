@@ -16,6 +16,8 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using Sanford.Multimedia.Midi;
 using ImageUtils;
+using System.Diagnostics;
+using System.Timers;
 
 
 namespace GUI
@@ -29,7 +31,8 @@ namespace GUI
     public partial class MainWindow : Window
     {
         private Dictionary<int, int[]> instDict;
-        private Dictionary<int, int[]> ticksDict;        
+        private Dictionary<int, int[]> ticksDict;
+        private Dictionary<int, Dictionary<string, List<int>>> instChangesDict;
         private List<int> instruments;
         private Sequence seq1;
         private Sequencer seqr1;
@@ -51,6 +54,7 @@ namespace GUI
         private Storyboard SB15;
         private Storyboard SB16;
         private int outDeviceID = 0;
+        private int currTick = 0;
         int[] instpos = new int[16];
 
 
@@ -61,7 +65,7 @@ namespace GUI
 
 
         public void WindowLoaded(object sender, RoutedEventArgs e)
-        {
+        {           
             instDict = new Dictionary<int, int[]>();
             PreProcessInstruments(instDict);
 
@@ -74,7 +78,7 @@ namespace GUI
             new int[] {3, 6, 7, 8},
             new int[] {5, 10, 11, 12},
             };
-            ticksDict.Add(0, jaggedArray);
+            ticksDict.Add(1, jaggedArray);
             int[][] jaggedArray2 = {
        
             new int[] {2, 12, 13, 14},
@@ -88,22 +92,23 @@ namespace GUI
             new int[] {3, 16, 17, 18},
             new int[] {5, 110, 111, 112},
             };
-            ticksDict.Add(5000, jaggedArray3);
+            ticksDict.Add(2000, jaggedArray3);
             int[][] jaggedArray5 = {
        
             new int[] {2, 12, 13, 14},
             new int[] {3, 16, 17, 18},
             new int[] {5, 110, 111, 112},
             };
-            ticksDict.Add(5400, jaggedArray5);            
+            ticksDict.Add(2400, jaggedArray5);            
             int[][] jaggedArray4 = {
        
             new int[] {2, 12, 13, 14},
             new int[] {3, 16, 17, 18},
             new int[] {5, 110, 111, 112},
             };
-            ticksDict.Add(12000, jaggedArray4);
-            MakeInstChangesDict(ticksDict);
+            ticksDict.Add(3500, jaggedArray4);
+            instChangesDict = MakeInstChangesDict(ticksDict);
+
 
 
 
@@ -178,26 +183,52 @@ namespace GUI
 
 
 
- //       private void TestMakeInstChangesDict(Dictionary<int, int[][]> ticksDict)
-//        { int counter = 0;
-//            while counter < 
+        private void StartStopwatch()
+        { 
+            Timer aTimer = new System.Timers.Timer(10);
+            aTimer.Elapsed += new ElapsedEventHandler(TestPlayback);
+            aTimer.Enabled = true;
+
+
+        }
+
+        private void TestPlayback(object source, ElapsedEventArgs e)
+        {
+            currTick++;
+            if (instChangesDict.ContainsKey(currTick))
+            {
+
+                Console.WriteLine("\nCurrent tick:  {0}", currTick);
+                System.Console.WriteLine("Turning On: ");
+                foreach (int thing in instChangesDict[currTick]["TurnOn"])
+                {
+                    Console.WriteLine(thing);
+                    //Console.WriteLine(instChangesDict[currTick]["TurnOn"][i].ToString());
+                }
+
+                System.Console.WriteLine("Turning Off: ");
+                if (instChangesDict[currTick].ContainsKey("TurnOff"))
+                {
+                    foreach (int thing in instChangesDict[currTick]["TurnOff"])
+                    {
+                        Console.WriteLine(thing);
+                        //Console.WriteLine(instChangesDict[currTick]["TurnOn"][i].ToString());
+                    }
+                }
+            }
+            
+        }
         
-        
-        
-        
-        
- //       }
 
 
 
-
-        private void MakeInstChangesDict(Dictionary<int, int[][]> ticksDict)
+        private Dictionary<int, Dictionary<string, List<int>>> MakeInstChangesDict(Dictionary<int, int[][]> ticksDict)
         {
             //We should prolly break this into 2 functions. I'm just psuedocode vomiting. 
             //Start stopwatch to keep track of when events sh0uld happen (coming from dispatch)
             // Dictionary is like:
             // {AbsoluteTick1: [[instrument, pitch, velocity, note duration],[instrument, pitch, velocity, duration]], AbsoluteTick2: [[...]...]}
-            Console.WriteLine("at makeinstchangedict");
+
 
             Dictionary<int, List<int[]>> instPlayingDict = new Dictionary<int, List<int[]>>(); // {Instrument: [all the ticks it plays at]}
             Dictionary<int, Dictionary<string, List<int>>> instChangesDict = new Dictionary<int, Dictionary<string, List<int>>>();
@@ -237,8 +268,7 @@ namespace GUI
                 instChangesDict[inst.Value[0][0]]["TurnOn"].Add(inst.Key);
                 for (int i = 0; i < length; i++)
                 {
-                    Console.WriteLine(inst.Value[i + 1]);
-                    Console.WriteLine(inst.Value[i]);
+
                     if ((inst.Value[i + 1][0] - inst.Value[i][1]) > 1000)
                     {
                         if (!instChangesDict.ContainsKey(inst.Value[i + 1][0])) //if the dict doesnt have the tick as a key yet
@@ -265,75 +295,18 @@ namespace GUI
                 }
             }
 
-
-            foreach (KeyValuePair<int, Dictionary<string, List<int>>> inst in instChangesDict)
-            {
-
-                Console.WriteLine("Key:");
-
-                Console.WriteLine(inst.Key);
-                Console.WriteLine("Value:");
-
-            }
-        }
-            //    foreach (int[] note in tick.Value) // Instrument notes kind of...
-            //    {
-            //        currentInstrument = note[0];
-            //        if (noteLengthDict[currentInstrument][0] == null) { //if there's no value for a start time
-            //            noteLengthDict[currentInstrument][0] = tick.Key; //setting the start time for an instrument
-            //        }
-            //        noteLengthDict[currentInstrument][1] = tick.Key + note[3]; //end time is startTime+duration
-            //    }
-            //    foreach (KeyValuePair<int, int[]> instrument in noteLengthDict)
-            //    {
-            //        int startTick = instChangesDict[instrument.Value[0]]; 
-            //        if (tick.Key > (instrument.Value[1] + 1000))
-            //        {
-            //            int value = 0;
-            //            // WILL CREATE NEW DICTIONARIES WHEN IT DOESNT HAVE TO
-            //            if (instChangesDict.TryGetValue(tick.Key, out value)) //if the startTime isn't a key in the dictionary yet                          
-            //            {
-            //                instChangesDict[instrument.Value[0]] = new Dictionary<string, int>();
-            //            }
-            //            instChangesDict[instrument.Value[0]]["TurnOn"] = instrument.Key;
-            //            instChangesDict[instrument.Value[1]] = new Dictionary<string,int>();
-            //            instChangesDict[instrument.Value[1]]["TurnOff"] = instrument.Key;
-            //        }
-            //    }
-            //}
-        
-
-
-            // for each tick in ticksDict.keys():
-            //   for each instrument in each of those ticks:
-            //       instrumentOff = tick
-            //       while the instrument shows up in ticksDict[tick]: ticksDict[tick+1000]:
-            //            instrumentOff = last tick at which instrument has a note
-            //currentTick = given by MIDI via dispath
-            // Leave instrument lit up for at least note duration. 
-            // tick = 60000 / (BPM * PPQ), so say avg tick = 2.5 millisec
-            // Check for occurrence of same instrument within key values of AbsoluteTickX + 1000 
-            // (2.5 second window for instrument to come back in)
             
-            //for all the instruments in tickDict at a given tick
-            //{   
-            //    set instrument image transparency to 0
 
+            return instChangesDict;
+        }
 
-                
-            //}
-            //  If tickStopwatch = currentTime + timeToPlay, increase the instrument image's transparency:
-            //ImageTransparency.ChangeOpacity(imgToPopulate, 10);
-
-                    
-
-        //}
        
 
 
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
+            StartStopwatch();
             this.seq1 = new Sanford.Multimedia.Midi.Sequence();
             this.seqr1 = new Sanford.Multimedia.Midi.Sequencer();
 
