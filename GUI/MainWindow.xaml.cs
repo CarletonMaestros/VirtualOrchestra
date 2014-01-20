@@ -70,7 +70,7 @@ namespace GUI
             PreProcessInstruments(instDict);
 
 
-            
+            //entries are [instr, pitch, velocity, duration]
             Dictionary<int, int[][]> ticksDict = new Dictionary<int, int[][]>();
             int[][] jaggedArray = {
        
@@ -179,9 +179,25 @@ namespace GUI
                 counter += 1;
             }
 
+            CompositionTarget.Rendering += UpdateRectangles;
         }
 
+        private void GeneratePianoRoll()
+        {
+            Rectangle rect = new Rectangle { Width = 400, Height = 400, Fill = Brushes.Red }; ;
+            Point newPoint = new Point(0,0);
+            Canvas.SetTop(rect, newPoint.Y);
+            Canvas.SetLeft(rect, newPoint.X);
+            CompositionTarget.Rendering += UpdateRectangles;
+        }
 
+        protected void UpdateRectangles(object sender, EventArgs e)
+        {
+            Rectangle rect = new Rectangle { Width = 400, Height = 400, Fill = Brushes.Red }; ;
+            Point newPoint = new Point(0, 0);
+            Canvas.SetTop(rect, newPoint.Y);
+            Canvas.SetLeft(rect, newPoint.X);
+        }
 
         private void StartStopwatch()
         { 
