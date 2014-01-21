@@ -1,12 +1,13 @@
 ﻿<Window x:Class="GUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="575" Width="1600" Loaded="WindowLoaded">
-    <Grid>
+        Title="MainWindow" Height="852.975" Width="1600" Loaded="WindowLoaded">
+    <Grid Margin="0,0,0,20">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="381*"/>
+            <ColumnDefinition Width="415*"/>
         </Grid.ColumnDefinitions>
-        <Button Name="PlayButton" Content="Play" HorizontalAlignment="Left" Margin="748,487,0,0" VerticalAlignment="Top" Width="75" Click="PlayButton_Click" />
+        <Button Name="PlayButton" Content="Play" HorizontalAlignment="Left" Margin="748,487,0,0" VerticalAlignment="Top" Width="75" Click="PlayButton_Click" Grid.ColumnSpan="2" />
         
         <Image x:Name="square15"
                HorizontalAlignment="Left" Height="150" Margin="82,84,0,0" VerticalAlignment="Top" Width="150"/>
@@ -15,15 +16,15 @@
         <Image x:Name="square7" 
                HorizontalAlignment="Left" Height="150" Margin="455,84,0,0" VerticalAlignment="Top" Width="150"/>
         <Image x:Name="square1" 
-               HorizontalAlignment="Left" Height="150" Margin="636,84,0,0" VerticalAlignment="Top" Width="150"/>
+               HorizontalAlignment="Left" Height="150" Margin="636,84,0,0" VerticalAlignment="Top" Width="150" Grid.ColumnSpan="2"/>
         <Image x:Name="square2" 
-               HorizontalAlignment="Left" Height="150" Margin="816,84,0,0" VerticalAlignment="Top" Width="150"/>
+               HorizontalAlignment="Left" Height="150" Margin="54,84,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
         <Image x:Name="square8" 
-               HorizontalAlignment="Left" Height="150" Margin="1002,84,0,0" VerticalAlignment="Top" Width="150"/>
+               HorizontalAlignment="Left" Height="150" Margin="240,84,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
         <Image x:Name="square12"
-               HorizontalAlignment="Left" Height="150" Margin="1180,84,0,0" VerticalAlignment="Top" Width="150"/>
+               HorizontalAlignment="Left" Height="150" Margin="418,84,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
         <Image x:Name="square16" 
-               HorizontalAlignment="Left" Height="150" Margin="1374,84,0,0" VerticalAlignment="Top" Width="150"/>
+               HorizontalAlignment="Left" Height="150" Margin="612,84,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
         <Image x:Name="square13" 
                HorizontalAlignment="Left" Height="150" Margin="82,287,0,0" VerticalAlignment="Top" Width="150"/>
         <Image x:Name="square9" 
@@ -31,16 +32,26 @@
         <Image x:Name="square5" 
                HorizontalAlignment="Left" Height="150" Margin="455,287,0,0" VerticalAlignment="Top" Width="150"/>
         <Image x:Name="square3"
-               HorizontalAlignment="Left" Height="150" Margin="636,287,0,0" VerticalAlignment="Top" Width="150"/>
+               HorizontalAlignment="Left" Height="150" Margin="636,287,0,0" VerticalAlignment="Top" Width="150" Grid.ColumnSpan="2"/>
         <Image x:Name="square4"
-               HorizontalAlignment="Left" Height="150" Margin="816,287,0,0" VerticalAlignment="Top" Width="150"/>
+               HorizontalAlignment="Left" Height="150" Margin="54,287,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
         <Image x:Name="square6" 
-               HorizontalAlignment="Left" Height="150" Margin="1002,287,0,0" VerticalAlignment="Top" Width="150"/>
+               HorizontalAlignment="Left" Height="150" Margin="240,287,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
         <Image x:Name="square10"
-               HorizontalAlignment="Left" Height="150" Margin="1180,287,0,0" VerticalAlignment="Top" Width="150"/>
+               HorizontalAlignment="Left" Height="150" Margin="418,287,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
         <Image x:Name="square14" 
-               HorizontalAlignment="Left" Height="150" Margin="1374,287,0,0" VerticalAlignment="Top" Width="150"/>
+               HorizontalAlignment="Left" Height="150" Margin="612,287,0,0" VerticalAlignment="Top" Width="150" Grid.Column="1"/>
+        
+        
+        
+        <!--<Border Background="Pink" Width="20" Height="20" CornerRadius="20" x:Name="myBorder">
+            <Border.RenderTransform>
+                <TranslateTransform X="-130" Y="-20" />
+            </Border.RenderTransform>
+        </Border>-->
+        <Canvas x:Name="PianoRoll" Grid.ColumnSpan="2" Margin="10,554,10,10"/>
         
     </Grid>
+
        
 </Window>

@@ -57,6 +57,7 @@ namespace GUI
         private int currTick = 0;
         int[] instpos = new int[16];
 
+        private float beatsPerSecond = 2; //will be set dynamically
 
         public MainWindow()
         {
@@ -179,16 +180,19 @@ namespace GUI
                 counter += 1;
             }
 
-            CompositionTarget.Rendering += UpdateRectangles;
+            GeneratePianoRoll();
+            // CompositionTarget.Rendering += UpdateRectangles;
         }
 
         private void GeneratePianoRoll()
         {
-            Rectangle rect = new Rectangle { Width = 400, Height = 400, Fill = Brushes.Red }; ;
-            Point newPoint = new Point(0,0);
+            Rectangle rect = new Rectangle { Width = 400, Height = 400, Fill = Brushes.Red };
+            Point newPoint = new Point(100,0);
             Canvas.SetTop(rect, newPoint.Y);
             Canvas.SetLeft(rect, newPoint.X);
-            CompositionTarget.Rendering += UpdateRectangles;
+
+            PianoRoll.ClipToBounds = true;
+            PianoRoll.Children.Add(rect);
         }
 
         protected void UpdateRectangles(object sender, EventArgs e)
@@ -197,6 +201,7 @@ namespace GUI
             Point newPoint = new Point(0, 0);
             Canvas.SetTop(rect, newPoint.Y);
             Canvas.SetLeft(rect, newPoint.X);
+
         }
 
         private void StartStopwatch()

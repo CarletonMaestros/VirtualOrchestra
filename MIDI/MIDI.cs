@@ -81,7 +81,7 @@ namespace Orchestra
             // Normal time (if not teleporting)
             else if (stopwatch.ElapsedMilliseconds - lastTeleport > .140)
             {
-                Console.WriteLine(deltaTime);
+                //Console.WriteLine(deltaTime);
                 sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
                 //if (verbose) { Console.WriteLine("Finished Teleport in {0} millis\nSequencer position is {1}\nSetting Tempo to {2}", stopwatch.ElapsedMilliseconds - temptime, sequencer.Position % ppq, newTempo); }
             }
@@ -99,22 +99,22 @@ namespace Orchestra
                 stopwatch.Restart();
             }
             beatCount++;
-            if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
+            //if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
             float beatPercentCompleted = (sequencer.Position % ppq) / (float)ppq;
             float beatPercentRemaining = 1 - beatPercentCompleted;
             deltaTime = time - lastBeat;
             //Console.WriteLine("{0}   {1}   {2}", time, time - lastBeat, deltaTime);
             lastBeat = time;
-            if (verbose) { Console.WriteLine("DeltaTime is {0}\nSequencer position {1}\nBeatPercentComplete is {2}\nBeatPercentRemaining is {3}", deltaTime, sequencer.Position % ppq, beatPercentCompleted, beatPercentRemaining); }
+            //if (verbose) { Console.WriteLine("DeltaTime is {0}\nSequencer position {1}\nBeatPercentComplete is {2}\nBeatPercentRemaining is {3}", deltaTime, sequencer.Position % ppq, beatPercentCompleted, beatPercentRemaining); }
             if (beatPercentCompleted < .9 && beatPercentCompleted > .1)
             {
                 // Teleport
                 int teleportSpeed = (int)(150000 / beatPercentRemaining);
-                if (verbose) { Console.WriteLine("#TELEPORTING with tempo {0}", teleportSpeed); }
+                //if (verbose) { Console.WriteLine("#TELEPORTING with tempo {0}", teleportSpeed); }
                 sequencer.Clock.Tempo = teleportSpeed;
                 lastTeleport = stopwatch.ElapsedMilliseconds;
             }
-            if (verbose) { Console.WriteLine("Will check for hang in {0} millis", (deltaTime * 1000) - 10); }
+            //if (verbose) { Console.WriteLine("Will check for hang in {0} millis", (deltaTime * 1000) - 10); }
             long testtime = stopwatch.ElapsedMilliseconds;
         }
 
@@ -385,8 +385,8 @@ namespace Orchestra
 
 
             //proving we can extract tempo
-            Console.Write("Sequencer division: "); 
-            Console.WriteLine(ppq);
+            //Console.Write("Sequencer division: "); 
+            //Console.WriteLine(ppq);
 
             Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
             IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
