@@ -23,9 +23,12 @@ namespace Orchestra.Sandbox
         private DrawingGroup drawingGroup;
         private DrawingImage imageSource;
 
+        private GUIWindow guiWindow = new GUIWindow();
+
         public MainWindow()
         {
             InitializeComponent();
+            guiWindow.Show();
         }
 
         private void WindowLoaded(object sender, RoutedEventArgs e)

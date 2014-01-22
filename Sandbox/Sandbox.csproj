@@ -141,6 +141,10 @@
       <Project>{30440ea9-6e96-4b4c-9057-814ec231b9f9}</Project>
       <Name>Gestures</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GUI\GUI.csproj">
+      <Project>{e305192d-66cd-4662-b546-285edfbf7b23}</Project>
+      <Name>GUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MIDI\MIDI.csproj">
       <Project>{63b7c1dd-a88b-469f-b065-c95e34fde015}</Project>
       <Name>MIDI</Name>

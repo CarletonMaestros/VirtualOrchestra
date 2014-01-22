@@ -23,7 +23,8 @@ namespace Orchestra
         private List<int[]> instrChanges = new List<int[]>(); //int[17] [0-15] = inst @ chan. [16] = tick
         private static Boolean songStarted = false;
 
-        //Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
+        static Dictionary<int, int[]> instrumentsAtTicks;
+        static Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
         static double lastBeat = -1;
         static double prevDeltaTime = 0;
@@ -371,14 +372,29 @@ namespace Orchestra
             return eventsAtTicksDict;
         }
 
+        public Dictionary<int, int[]> arrayToDict(int[,] instrumentChangesArray)
+        {
+            Dictionary<int, int[]> instrumentDict = new Dictionary<int, int[]>();
+            for (int i=0; i < instrumentChangesArray.GetLength(0); i++)
+            {
+                int[] tempArray = new int[16];
+                for (int j = 0; j < 16; j++)
+                {
+                    tempArray[j] = instrumentChangesArray[i,j];
+                }
+                instrumentDict.Add(instrumentChangesArray[i, 16], tempArray);
+            }
+            return instrumentDict;
+        }
+
         public static void LoadSong(string file)
         {
             sequence.Load(file);
-            Dispatch.TriggerSongLoaded();
+            
 
             MIDI preprocessor = new MIDI();
             preprocessor.stripMetaMessages(sequencer.Sequence);
-            int[,] instrumentsAtTicks = preprocessor.populateInstrChanges(sequencer.Sequence);
+            int[,] instrumentsAtTicksArray = preprocessor.populateInstrChanges(sequencer.Sequence);
             List<int> allInstrumentsUsed = preprocessor.allInstrumentsUsed;
             ppq = sequencer.Sequence.Division;
 
@@ -388,34 +404,14 @@ namespace Orchestra
             //Console.Write("Sequencer division: "); 
             //Console.WriteLine(ppq);
 
-            Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
             IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
             foreach (Track track in tracks)
             {
-                eventsAtTicksDict = preprocessor.getInstrumentNoteTimes(track, instrumentsAtTicks, eventsAtTicksDict);
+                eventsAtTicksDict = preprocessor.getInstrumentNoteTimes(track, instrumentsAtTicksArray, eventsAtTicksDict);
             }
-
-
-        //    Console.WriteLine("int[] tempArray = int[4];");
-        //    Console.WriteLine("List<int[]> tempList = new List<int[]>;");
-        //    Console.WriteLine("Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();");
-        //    foreach (KeyValuePair<int, List<int[]>> kvp in eventsAtTicksDict)
-        //    {
-                
-        //        Console.WriteLine("Key = {0}", kvp.Key);
-        //        //Console.WriteLine("\ti#\tp\tvel\tdur");
-        //        foreach (int[] NONevent in kvp.Value)
-        //        {
-        //            int iterationCount = 0;
-        //            foreach (int NONsubEvent in NONevent)
-        //            {
-        //                Console.WriteLine("tempArray[{0}] = {1}", iterationCount, NONsubEvent);
-        //                Console.Write("\t{0}", NONsubEvent);
-        //                iterationCount++;
-        //            }
-        //            Console.WriteLine();
-        //        }
-        //    }
+            instrumentsAtTicks = preprocessor.arrayToDict(instrumentsAtTicksArray);
+            SongData song = new SongData{ppq=ppq, beatsPerMeasure=4, eventsAtTicksDict=eventsAtTicksDict, instrumentsAtTicks=instrumentsAtTicks};
+            Dispatch.TriggerSongLoaded(song);
 
         }
 
@@ -464,90 +460,3 @@ namespace Orchestra
         }
     }
 }
-
-
-
-
-
-
-
-
-//IEnumerable<MidiEvent> midievents = allTracksMerged.Iterator();
-//foreach (MidiEvent midievent in midievents)
-//{
-//    int[] eventData = new int[5];
-//    //eventData[0] =
-//    Console.Write("{0:X}, {1}, {2} {3}", midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
-//    switch (midievent.MidiMessage.Status)
-//    {
-//        case 3:
-//            {
-//                foreach (byte b in midievent.MidiMessage.GetBytes()) Console.Write((char)b);
-//                break;
-//            }
-//        default:
-//            {
-//                foreach (byte b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X}, {1}", b, " ");
-//                break;
-//            }
-//    }
-//    Console.WriteLine(" ");
-//}
-
-
-
-//Print track data
-//Console.WriteLine("______________________________________________________________________________________");
-//Console.Write("Sequencer division: ");
-//Console.WriteLine(sequencer.Sequence.Division);
-//int x ;
-//IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
-//foreach (var track in tracks)
-//{
-//    Console.WriteLine("______________________________________________________________________________________");
-//    IEnumerable<MidiEvent> midievents = track.Iterator();
-//    //MessageDispatcher md = new MessageDispatcher();
-//    //int tickNumber = new int();
-//    //ChannelChaser cc = new ChannelChaser();
-//    //IEnumerable<int> dispathEvents = track.DispatcherIterator(md);
-//    //IEnumerable<int> tickEvents = track.TickIterator(tickNumber, cc, md);
-
-//    foreach (MidiEvent midievent in midievents)
-//    {
-
-//        //if (midievent.MidiMessage.MessageType == MessageType.Meta)
-//        //{
-//        //    Console.WriteLine(midievent.MidiMessage.MetaType);
-//        //}
-//        Console.Write("{0:X}, {1}, {2} {3}", midievent.MidiMessage.Status, midievent.DeltaTicks, midievent.AbsoluteTicks, "bytes: ");
-//        switch (midievent.MidiMessage.Status)
-//        {
-//            case 3:
-//                {
-//                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write((char)b);
-//                    break;
-//                }
-//            default:
-//                {
-//                    foreach (var b in midievent.MidiMessage.GetBytes()) Console.Write("{0:X} ", b);
-//                    break;
-//                }
-//        }
-//        Console.WriteLine(" ");
-
-
-//    }
-//}
-
-//Track allTracksMerged = new Track();
-
-//IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
-//foreach (Track track in tracks)
-//{
-//    if (track == tracks.First())
-//    {
-//        allTracksMerged = track;
-//        continue;
-//    }
-//    allTracksMerged.Merge(track);
-//}

@@ -14,13 +14,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
-using Sanford.Multimedia.Midi;
 using ImageUtils;
 using System.Diagnostics;
 using System.Timers;
 
 
-namespace GUI
+namespace Orchestra
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -28,15 +27,12 @@ namespace GUI
     ///         Image flute = new Image();
 
 
-    public partial class MainWindow : Window
+    public partial class GUIWindow : Window
     {
         private Dictionary<int, int[]> instDict;
         private Dictionary<int, int[]> ticksDict;
         private Dictionary<int, Dictionary<string, List<int>>> instChangesDict;
         private List<int> instruments;
-        private Sequence seq1;
-        private Sequencer seqr1;
-        private OutputDevice outDevice;
         private Storyboard SB1;
         private Storyboard SB2;
         private Storyboard SB3;
@@ -66,8 +62,7 @@ namespace GUI
         private SolidColorBrush[] colorByChannel = new SolidColorBrush[16] { Brushes.Aqua, Brushes.Beige, Brushes.Blue, Brushes.BlueViolet, Brushes.Brown, Brushes.Chartreuse, Brushes.Crimson, Brushes.Red, Brushes.Salmon, Brushes.Silver, Brushes.Yellow, Brushes.Turquoise, Brushes.Violet, Brushes.Black, Brushes.Aquamarine, Brushes.Orange };
         private Dictionary<int, List<int[]>> testDict = new Dictionary<int, List<int[]>>();
 
-
-        public MainWindow()
+        public GUIWindow()
         {
             InitializeComponent();
         }
@@ -76,6 +71,7 @@ namespace GUI
         public void WindowLoaded(object sender, RoutedEventArgs e)
         {           
             instDict = new Dictionary<int, int[]>();
+
 
             PreProcessInstruments(instDict);
 
@@ -142,18 +138,20 @@ namespace GUI
             //curStoryboard.Begin(this, true);
             //curStoryboard.Pause(this);
 
+            Dispatch.SongLoaded += SongLoaded;
+
+        }
+
+        private void SongLoaded(SongData song)
+        {
         }
 
         public void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            seqr1.Stop();
         }
 
         private void HandleLoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            var x = seq1.GetLength();
-            seqr1.Sequence = seq1;
-            seqr1.Start();
         }
 
         private void PreProcessInstruments(Dictionary<int, int[]> instDict)
@@ -383,55 +381,7 @@ namespace GUI
                 }
             }
 
-            
-
             return instChangesDict;
-        }
-
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
-        {
-            StartStopwatch();
-            this.seq1 = new Sanford.Multimedia.Midi.Sequence();
-            this.seqr1 = new Sanford.Multimedia.Midi.Sequencer();
-
-            //seq1.LoadAsync(@"C:\Users\Rachel\My Documents\GitHub\VirtualOrchestra\Sample MIDIs\r.mid");
-            seq1.LoadAsync(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid");
-
-            //sequencer1.Stop() followed by sequencer1.Continue could be used to handle changing tempo
-            //also, perhaps sequencer1.position could be used (ticks)
-            //sequence1.GetLength()
-
-            if (OutputDevice.DeviceCount == 0)
-            {
-                Console.WriteLine("No MIDI output devices available.");
-            }
-            else
-            {
-                try
-                {
-                    outDevice = new OutputDevice(outDeviceID);
-                    seq1.LoadCompleted += HandleLoadCompleted;
-                }
-                catch (Exception ex)
-                {
-                    Console.Write(ex.Message, "Error!");
-                }
-            }
-            seqr1.ChannelMessagePlayed += HandleChannelMessagePlayed;
-            seqr1.Chased += HandleChased;
-        }
-
-        private void HandleChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
-        {
-            outDevice.Send(e.Message);            
-        }
-
-        private void HandleChased(object sender, ChasedEventArgs e)
-        {
-            foreach (ChannelMessage message in e.Messages)
-            {
-                outDevice.Send(message);
-            }
         }
     }
 }
