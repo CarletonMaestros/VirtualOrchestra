@@ -57,7 +57,15 @@ namespace GUI
         private int currTick = 0;
         int[] instpos = new int[16];
 
-        private float beatsPerSecond = 2; //will be set dynamically
+        // private float beatsPerSecond = 2; //will be set dynamically
+        private int ticksPerBeat = 50;
+        private int beatsPerMeasure = 4;
+        private int lastPopulate = Int32.MinValue; //tick value where most recent piano roll population occurred, starts low to trigger piano roll population
+        private int noteHeightResolution = 24; //number of notes that fit vertically into the canvas
+
+        private SolidColorBrush[] colorByChannel = new SolidColorBrush[16] { Brushes.Aqua, Brushes.Beige, Brushes.Blue, Brushes.BlueViolet, Brushes.Brown, Brushes.Chartreuse, Brushes.Crimson, Brushes.Red, Brushes.Salmon, Brushes.Silver, Brushes.Yellow, Brushes.Turquoise, Brushes.Violet, Brushes.Black, Brushes.Aquamarine, Brushes.Orange };
+        private Dictionary<int, List<int[]>> testDict = new Dictionary<int, List<int[]>>();
+
 
         public MainWindow()
         {
@@ -68,6 +76,7 @@ namespace GUI
         public void WindowLoaded(object sender, RoutedEventArgs e)
         {           
             instDict = new Dictionary<int, int[]>();
+
             PreProcessInstruments(instDict);
 
 
@@ -180,28 +189,87 @@ namespace GUI
                 counter += 1;
             }
 
-            GeneratePianoRoll();
-            // CompositionTarget.Rendering += UpdateRectangles;
+            
+            ///
+            //PopulatePianoRoll();
+
+            //double height = PianoRoll.ActualHeight / 24;
+            //double width = 150 / TicksPerPixel;
+            //Rectangle noteRect = new Rectangle { Width = width, Height = height, Fill = colorByChannel[1 % 16] };
+            //noteRect.Tag = currTick;
+            //double xPos = ((int)noteRect.Tag - currTick) / TicksPerPixel;
+            //double yPos = PianoRoll.ActualHeight - ((12 % noteHeightResolution) / 24d * PianoRoll.ActualHeight); //high notes are low Y, because pixel numbering starts at top left
+            //Canvas.SetLeft(noteRect, xPos);
+            //Canvas.SetTop(noteRect, yPos);
+            //PianoRoll.Children.Add(noteRect);
+            //PianoRoll.ClipToBounds = true;
+            ///
         }
 
-        private void GeneratePianoRoll()
+        private void PopulatePianoRoll()
         {
-            Rectangle rect = new Rectangle { Width = 400, Height = 400, Fill = Brushes.Red };
-            Point newPoint = new Point(100,0);
-            Canvas.SetTop(rect, newPoint.Y);
-            Canvas.SetLeft(rect, newPoint.X);
-
-            PianoRoll.ClipToBounds = true;
-            PianoRoll.Children.Add(rect);
+            if (currTick - lastPopulate > ticksPerBeat * beatsPerMeasure)
+            {
+                nextNoteBatch();
+            }
         }
 
-        protected void UpdateRectangles(object sender, EventArgs e)
+        private void nextNoteBatch()
         {
-            Rectangle rect = new Rectangle { Width = 400, Height = 400, Fill = Brushes.Red }; ;
-            Point newPoint = new Point(0, 0);
-            Canvas.SetTop(rect, newPoint.Y);
-            Canvas.SetLeft(rect, newPoint.X);
+            for (int ticks = currTick; ticks < ticksPerBeat * (beatsPerMeasure * 2); ticks++)
+            {
+                if (testDict.ContainsKey(currTick))
+                {
+                    foreach (int[] note in testDict[currTick])
+                    {
+                        double height = PianoRoll.ActualHeight / 24;
+                        double width = note[3] / TicksPerPixel;
+                        Rectangle noteRect = new Rectangle { Width = width, Height = height, Fill = colorByChannel[note[0] % 16] };
+                        noteRect.Tag = currTick;
+                        double xPos = ((int)noteRect.Tag - currTick) / TicksPerPixel;
+                        double yPos = PianoRoll.ActualHeight - ((note[1] % noteHeightResolution) / 24d * PianoRoll.ActualHeight); //high notes are low Y, because pixel numbering starts at top left
+                        Canvas.SetLeft(noteRect, xPos);
+                        Canvas.SetTop(noteRect, yPos);
+                        PianoRoll.Children.Add(noteRect);
+                    }
+                    testDict.Remove(currTick);
+                }
+            }
+            lastPopulate = currTick;
+        }
 
+        public int TicksInPianoRoll
+        {
+            get { return ticksPerBeat * beatsPerMeasure; }
+        }
+
+        public double TicksPerPixel
+        {
+            get { return TicksInPianoRoll / PianoRoll.ActualWidth; }
+        }
+
+        protected void UpdateRectangles()
+        {
+            List<Rectangle> markedChildren = new List<Rectangle>();
+            foreach (Rectangle child in PianoRoll.Children)
+            {
+                double newPos = calculateNewPos(child);
+                Canvas.SetLeft(child, newPos);
+                if (newPos + child.ActualWidth < 0)
+                {
+                    markedChildren.Add(child);
+                }
+            }
+            foreach (Rectangle child in markedChildren)
+            {
+                PianoRoll.Children.Remove(child);
+            }
+        }
+
+        private double calculateNewPos(Rectangle child)
+        {
+            double pixelPosition = ((int)child.Tag - currTick)/ TicksPerPixel;
+            return pixelPosition;
         }
 
         private void StartStopwatch()
@@ -209,13 +277,15 @@ namespace GUI
             Timer aTimer = new System.Timers.Timer(10);
             aTimer.Elapsed += new ElapsedEventHandler(TestPlayback);
             aTimer.Enabled = true;
-
-
         }
 
         private void TestPlayback(object source, ElapsedEventArgs e)
         {
             currTick++;
+            ///
+            Dispatcher.Invoke((Action)(() => UpdateRectangles()));
+            PopulatePianoRoll();
+            ///
             if (instChangesDict.ContainsKey(currTick))
             {
 
@@ -240,9 +310,6 @@ namespace GUI
             
         }
         
-
-
-
         private Dictionary<int, Dictionary<string, List<int>>> MakeInstChangesDict(Dictionary<int, int[][]> ticksDict)
         {
             //We should prolly break this into 2 functions. I'm just psuedocode vomiting. 
@@ -320,10 +387,6 @@ namespace GUI
 
             return instChangesDict;
         }
-
-       
-
-
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
