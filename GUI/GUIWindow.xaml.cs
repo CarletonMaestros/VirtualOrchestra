@@ -54,13 +54,19 @@ namespace Orchestra
         int[] instpos = new int[16];
 
         // private float beatsPerSecond = 2; //will be set dynamically
-        private int ticksPerBeat = 50;
-        private int beatsPerMeasure = 4;
-        private int lastPopulate = Int32.MinValue; //tick value where most recent piano roll population occurred, starts low to trigger piano roll population
-        private int noteHeightResolution = 24; //number of notes that fit vertically into the canvas
+        
+        //private int beatsPerMeasure = 4;
+        private int lastPopulate = -100000; //tick value where most recent piano roll population occurred, starts low to trigger piano roll population
+        private int noteHeightResolution = 32; //number of notes that fit vertically into the canvas
 
+        //private LinearGradientBrush[] colorByChannel = new LinearGradientBrush[16] { LinearGradientBrush(.Aqua, Brushes.Beige, Brushes.Blue, Brushes.BlueViolet, Brushes.Brown, Brushes.Chartreuse, Brushes.Crimson, Brushes.Red, Brushes.Salmon, Brushes.Silver, Brushes.Yellow, Brushes.Turquoise, Brushes.Violet, Brushes.Black, Brushes.Aquamarine, Brushes.Orange };
+       
         private SolidColorBrush[] colorByChannel = new SolidColorBrush[16] { Brushes.Aqua, Brushes.Beige, Brushes.Blue, Brushes.BlueViolet, Brushes.Brown, Brushes.Chartreuse, Brushes.Crimson, Brushes.Red, Brushes.Salmon, Brushes.Silver, Brushes.Yellow, Brushes.Turquoise, Brushes.Violet, Brushes.Black, Brushes.Aquamarine, Brushes.Orange };
-        private Dictionary<int, List<int[]>> testDict = new Dictionary<int, List<int[]>>();
+
+        private int ticksPerBeat;
+        private int beatsPerMeasure;
+        private Dictionary<int, List<int[]>> eventsAtTicksDict;
+        private Dictionary<int, int[]> instrumentsAtTicks;
 
         public GUIWindow()
         {
@@ -117,7 +123,6 @@ namespace Orchestra
 
 
 
-
             //instChangesDict = new Dictionary<int, Dictionary<string, int[]>>();
 
             //myDoubleAnimation = new DoubleAnimation();
@@ -139,11 +144,17 @@ namespace Orchestra
             //curStoryboard.Pause(this);
 
             Dispatch.SongLoaded += SongLoaded;
+            Dispatch.TickInfo += TickTriggered;
 
         }
 
         private void SongLoaded(SongData song)
         {
+            ticksPerBeat = song.ppq;
+            beatsPerMeasure = song.beatsPerMeasure;
+            eventsAtTicksDict = song.eventsAtTicksDict;
+            instrumentsAtTicks = song.instrumentsAtTicks;
+            PianoRoll.ClipToBounds = true;
         }
 
         public void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -186,22 +197,6 @@ namespace Orchestra
 
                 counter += 1;
             }
-
-            
-            ///
-            //PopulatePianoRoll();
-
-            //double height = PianoRoll.ActualHeight / 24;
-            //double width = 150 / TicksPerPixel;
-            //Rectangle noteRect = new Rectangle { Width = width, Height = height, Fill = colorByChannel[1 % 16] };
-            //noteRect.Tag = currTick;
-            //double xPos = ((int)noteRect.Tag - currTick) / TicksPerPixel;
-            //double yPos = PianoRoll.ActualHeight - ((12 % noteHeightResolution) / 24d * PianoRoll.ActualHeight); //high notes are low Y, because pixel numbering starts at top left
-            //Canvas.SetLeft(noteRect, xPos);
-            //Canvas.SetTop(noteRect, yPos);
-            //PianoRoll.Children.Add(noteRect);
-            //PianoRoll.ClipToBounds = true;
-            ///
         }
 
         private void PopulatePianoRoll()
@@ -214,23 +209,24 @@ namespace Orchestra
 
         private void nextNoteBatch()
         {
-            for (int ticks = currTick; ticks < ticksPerBeat * (beatsPerMeasure * 2); ticks++)
+            for (int ticks = currTick; ticks < currTick + ticksPerBeat * (beatsPerMeasure * 2); ticks++)
             {
-                if (testDict.ContainsKey(currTick))
+                if (eventsAtTicksDict.ContainsKey(ticks))
                 {
-                    foreach (int[] note in testDict[currTick])
+                    foreach (int[] note in eventsAtTicksDict[ticks])
                     {
-                        double height = PianoRoll.ActualHeight / 24;
+                        double height = PianoRoll.ActualHeight / noteHeightResolution;
                         double width = note[3] / TicksPerPixel;
-                        Rectangle noteRect = new Rectangle { Width = width, Height = height, Fill = colorByChannel[note[0] % 16] };
-                        noteRect.Tag = currTick;
+                        if (note[0] < 0) { note[0] = 0; }
+                        Rectangle noteRect = new Rectangle { Width = width, Height = height, Fill = colorByChannel[note[0] % 15], Opacity = note[2]/127d , Stroke = Brushes.Black, StrokeThickness = 4 };
+                        noteRect.Tag = ticks;
                         double xPos = ((int)noteRect.Tag - currTick) / TicksPerPixel;
-                        double yPos = PianoRoll.ActualHeight - ((note[1] % noteHeightResolution) / 24d * PianoRoll.ActualHeight); //high notes are low Y, because pixel numbering starts at top left
+                        double yPos = PianoRoll.ActualHeight - ((note[1] % noteHeightResolution) / (double)noteHeightResolution * PianoRoll.ActualHeight); //high notes are low Y, because pixel numbering starts at top left
                         Canvas.SetLeft(noteRect, xPos);
                         Canvas.SetTop(noteRect, yPos);
                         PianoRoll.Children.Add(noteRect);
                     }
-                    testDict.Remove(currTick);
+                    eventsAtTicksDict.Remove(ticks);
                 }
             }
             lastPopulate = currTick;
@@ -277,12 +273,18 @@ namespace Orchestra
             aTimer.Enabled = true;
         }
 
+        private void TickTriggered(int tick){
+            currTick = tick;
+            Dispatcher.Invoke((Action)(() => UpdateRectangles()));
+            //UpdateRectangles();
+            PopulatePianoRoll();
+        }
+
         private void TestPlayback(object source, ElapsedEventArgs e)
         {
             currTick++;
             ///
-            Dispatcher.Invoke((Action)(() => UpdateRectangles()));
-            PopulatePianoRoll();
+
             ///
             if (instChangesDict.ContainsKey(currTick))
             {
@@ -380,7 +382,6 @@ namespace Orchestra
                     }
                 }
             }
-
             return instChangesDict;
         }
     }

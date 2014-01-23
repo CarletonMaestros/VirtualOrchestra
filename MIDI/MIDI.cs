@@ -49,6 +49,7 @@ namespace Orchestra
             Dispatch.Play += Play;
             Dispatch.Beat += Beat;
             Dispatch.VolumeChanged += VolumeChanged;
+            Dispatch.SkeletonMoved += SkeletonMoved;
 
             // Subscribe to MIDI events
             sequencer.ChannelMessagePlayed += MIDIChannelMessagePlayed;
@@ -59,12 +60,17 @@ namespace Orchestra
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
-            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
+            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid");
 
             // Other messages that might be useful
             //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
             //this.sequencer1.SysExMessagePlayed += new System.EventHandler<Sanford.Multimedia.Midi.SysExMessageEventArgs>(this.HandleSysExMessagePlayed);
             //this.sequencer1.Stopped += new System.EventHandler<Sanford.Multimedia.Midi.StoppedEventArgs>(this.HandleStopped);
+        }
+
+        private static void SkeletonMoved(float time, Skeleton skeleton)
+        {
+            Dispatch.TriggerTickInfo(sequencer.Position);
         }
 
         private static void TimePassed(object sender, ElapsedEventArgs e)
@@ -305,7 +311,7 @@ namespace Orchestra
                             int absNON_NOD = NONdata_NOD[0];
                             int velNON_NOD = NONdata_NOD[1];
                             int dur = absNOFF_NOD - absNON_NOD;
-                            int instr = -1;
+                            int instr = -1; //deal with it hopfully/
                             //CALCULATE current instrument
                             for (int i = 0; i < instrumentsAtTicks.GetLength(0); ++i)
                             {
