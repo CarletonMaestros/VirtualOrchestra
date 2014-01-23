@@ -182,13 +182,13 @@ namespace Orchestra
             foreach (int inst in instruments) 
             {
                 var squareNumber = "square" + counter.ToString(); //get the correct image to populate's name. I changed the image names to what's on that sheet of paper.
-                Console.WriteLine(squareNumber); 
+                //Console.WriteLine(squareNumber); 
                 object item = FindName(squareNumber); // turn its name from a string into the Image
                 Image imgToPopulate = (Image)item;
 
                 var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
                 //var uriString = @"C:\Users\Rachel\My Documents\GitHub\VirtualOrchestra\GUI\Resources\" + instName + ".jpg";
-                Console.WriteLine(uriString);
+                //Console.WriteLine(uriString);
                 BitmapImage bitIm = new BitmapImage();
                 bitIm.BeginInit();
                 bitIm.UriSource = new Uri(uriString);
@@ -289,20 +289,20 @@ namespace Orchestra
             if (instChangesDict.ContainsKey(currTick))
             {
 
-                Console.WriteLine("\nCurrent tick:  {0}", currTick);
-                System.Console.WriteLine("Turning On: ");
+                //Console.WriteLine("\nCurrent tick:  {0}", currTick);
+                //System.Console.WriteLine("Turning On: ");
                 foreach (int thing in instChangesDict[currTick]["TurnOn"])
                 {
-                    Console.WriteLine(thing);
+                    //Console.WriteLine(thing);
                     //Console.WriteLine(instChangesDict[currTick]["TurnOn"][i].ToString());
                 }
 
-                System.Console.WriteLine("Turning Off: ");
+                //System.Console.WriteLine("Turning Off: ");
                 if (instChangesDict[currTick].ContainsKey("TurnOff"))
                 {
                     foreach (int thing in instChangesDict[currTick]["TurnOff"])
                     {
-                        Console.WriteLine(thing);
+                        //Console.WriteLine(thing);
                         //Console.WriteLine(instChangesDict[currTick]["TurnOn"][i].ToString());
                     }
                 }

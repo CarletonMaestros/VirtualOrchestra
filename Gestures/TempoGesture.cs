@@ -190,8 +190,8 @@ namespace Orchestra
                         if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01))
                         {
                             //Console.WriteLine("Start with " + stopwatch.ElapsedMilliseconds + " in the pre-start beat.");
-                            Console.WriteLine("START");
-                            Console.WriteLine("PICK-UP");
+                            //Console.WriteLine("START");
+                            //Console.WriteLine("PICK-UP");
                             Dispatch.TriggerBeat(counter, "beat");
                             seeking = "MINIMUM";
                             break;
@@ -200,7 +200,7 @@ namespace Orchestra
                     }
                     case "MINIMUM":
                     {
-                        Console.WriteLine("Right hand:      " + rightHandX);
+                        //Console.WriteLine("Right hand:      " + rightHandX);
                         //Console.WriteLine("Right hip:       " + rightHipX);
                         if (rightHandX > .35)
                         {
@@ -218,18 +218,6 @@ namespace Orchestra
                                 long firstTempo = stopwatch.ElapsedMilliseconds * 1000 / 2;
                                 //Console.WriteLine(counter + " " + firstTempo);
                                 //Dispatch.TriggerPlay(); // FIXME!!!/.
-
-
-
-
-
-
-
-
-
-
-
-
                             }
                             else
                             {
@@ -241,28 +229,28 @@ namespace Orchestra
                                 if (prevBeat == 1)
                                 {
                                     //Dispatch.TriggerBeat(counter, "beat");
-                                    Console.WriteLine("Beat 2");
+                                    //Console.WriteLine("Beat 2");
                                     prevBeat = 2;
                                     middleBeat = 1;
                                 }
                                 else if (prevBeat == 2 && middleBeat == 0)
                                 {
                                     //Dispatch.TriggerBeat(counter, "beat");
-                                    Console.WriteLine("Beat 3");
+                                    //Console.WriteLine("Beat 3");
                                     prevBeat = 3;
                                     middleBeat = 1;
                                 }
                                 else if (prevBeat == 3 && middleBeat == 0)
                                 {
                                     //Dispatch.TriggerBeat(counter, "beat");
-                                    Console.WriteLine("Beat 4");
+                                    //Console.WriteLine("Beat 4");
                                     prevBeat = 4;
                                     middleBeat = 1;
                                 }
                                 else
                                 {
                                     //Dispatch.TriggerBeat(counter, "beat");
-                                    Console.WriteLine("Beat 1");
+                                    //Console.WriteLine("Beat 1");
                                     prevBeat = 1;
                                     middleBeat = 1;
                                 }
@@ -270,7 +258,7 @@ namespace Orchestra
                             else if (rightHandX < 0)
                             {
                                 //Dispatch.TriggerBeat(counter, "beat");
-                                Console.WriteLine("Beat 2");
+                                //Console.WriteLine("Beat 2");
                                 prevBeat = 2;
                                 middleBeat = 0;
                             }
@@ -279,14 +267,14 @@ namespace Orchestra
                                 if (prevBeat == 2)
                                 {
                                     //Dispatch.TriggerBeat(counter, "beat");
-                                    Console.WriteLine("Beat 3");
+                                    //Console.WriteLine("Beat 3");
                                     prevBeat = 3;
                                     middleBeat = 0;
                                 }
                                 else if (prevBeat == 1)
                                 {
                                     //Dispatch.TriggerBeat(counter, "beat");
-                                    Console.WriteLine("Beat 2");
+                                    //Console.WriteLine("Beat 2");
                                     prevBeat = 2;
                                     middleBeat = 0;
                                 }

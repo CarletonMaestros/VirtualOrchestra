@@ -78,7 +78,7 @@ namespace Orchestra
             // Stop if we've lost direction
             // one clock is 15.6 milliseconds
             //Console.WriteLine("{0}   {1}   {2}", stopwatch.ElapsedMilliseconds/1000d, lastBeat, deltaTime);
-            if (stopwatch.ElapsedMilliseconds/1000d > lastBeat + deltaTime - 0.05)
+            if (stopwatch.ElapsedMilliseconds/1000d > lastBeat + deltaTime + 1)
             {
                 if (verbose) { Console.WriteLine("#HANGING at {0}", sequencer.Position % ppq); }
                 sequencer.Clock.Tempo = Int32.MaxValue; // 2 billion is very slow

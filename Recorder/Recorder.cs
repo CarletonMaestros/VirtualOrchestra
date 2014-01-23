@@ -91,8 +91,8 @@ namespace Orchestra.Recorder
                     file.Write("," + t + ".X," + t + ".Y," + t + ".Z");
                 }
 
-                // Write beat header
-                file.Write(",Beat");
+                //// Write beat header
+                //file.Write(",Beat");
                     
                 file.WriteLine();
             }
@@ -111,7 +111,7 @@ namespace Orchestra.Recorder
                     file.Write(",,,");
                 }
             }
-            file.Write(",{0}",sBeat);
+            //file.Write(",{0}",sBeat);
             file.WriteLine();
             file.Flush();
         }
