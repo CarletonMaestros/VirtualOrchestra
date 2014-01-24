@@ -81,7 +81,7 @@ namespace Orchestra
                         }
                         else if (aboveHip == true && yAverage != 0 && xAverage != 0)
                         {
-                            if (yAverage - leftWristY > -.1 && xAverage - leftWristY < .1 && yAverage - leftWristX > -.1 && xAverage - leftWristX < .1)
+                            if (yAverage - leftWristY > -.1 && yAverage - leftWristY < .1 && xAverage - leftWristX > -.1 && xAverage - leftWristX < .1)
                             {
                                 yAverage = (yAverage + leftWristY) / 2;
                                 xAverage = (xAverage + leftWristX) / 2;

@@ -30,6 +30,10 @@ namespace Orchestra
         public static void TriggerBeat(int beat, string type) { if (Beat != null) Beat(Time, beat); }
         public static void TriggerBeat(float time, int beat) { if (Beat != null) Beat(time, beat); }
 
+        public delegate void StopDelegate(float time);
+        public static event StopDelegate Stop;
+        public static void TriggerStop() { if (Stop != null) Stop(Time); }
+
         public delegate void PlayDelegate(float time);
         public static event PlayDelegate Play;
         public static void TriggerPlay() { if (Play != null) Play(Time); }

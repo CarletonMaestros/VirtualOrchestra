@@ -151,7 +151,6 @@ namespace Orchestra
                     rightHipX = joint.Position.X;
                     rightHipY = joint.Position.Y;
                 }
-
             }
 
 
@@ -202,10 +201,6 @@ namespace Orchestra
                     {
                         //Console.WriteLine("Right hand:      " + rightHandX);
                         //Console.WriteLine("Right hip:       " + rightHipX);
-                        if (rightHandX > .35)
-                        {
-                            seeking = "STOP";
-                        }
                         if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
                         {
                             if (counter == 5)
@@ -224,7 +219,7 @@ namespace Orchestra
                                 long tempo = stopwatch.ElapsedMilliseconds * 1000;
                                 //Console.WriteLine(counter + " " + tempo);\
                             }
-                            if (rightHandX - rightHipX > -.1 && rightHandX - rightHipX < .15 && rightHandY - rightHipY > -.15 && rightHandY - rightHipY < .15)
+                            if (rightHandX - rightHipX > -.1 && rightHandX - rightHipX < .15 && Math.Abs(rightHandY - rightHipY) < .15)
                             {
                                 if (prevBeat == 1)
                                 {
@@ -296,12 +291,6 @@ namespace Orchestra
                             seeking = "MINIMUM";
                             break;
                         }
-                        break;
-                    }
-                    case "STOP":
-                    {
-                        Console.WriteLine("STOP MUSIC");
-                        seeking = "STILL"; 
                         break;
                     }
                 }

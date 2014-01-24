@@ -21,11 +21,6 @@ using System.Timers;
 
 namespace Orchestra
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    ///         Image flute = new Image();
-
 
     public partial class GUIWindow : Window
     {
@@ -61,7 +56,7 @@ namespace Orchestra
 
         //private LinearGradientBrush[] colorByChannel = new LinearGradientBrush[16] { LinearGradientBrush(.Aqua, Brushes.Beige, Brushes.Blue, Brushes.BlueViolet, Brushes.Brown, Brushes.Chartreuse, Brushes.Crimson, Brushes.Red, Brushes.Salmon, Brushes.Silver, Brushes.Yellow, Brushes.Turquoise, Brushes.Violet, Brushes.Black, Brushes.Aquamarine, Brushes.Orange };
        
-        private SolidColorBrush[] colorByChannel = new SolidColorBrush[16] { Brushes.Aqua, Brushes.Beige, Brushes.Blue, Brushes.BlueViolet, Brushes.Brown, Brushes.Chartreuse, Brushes.Crimson, Brushes.Red, Brushes.Salmon, Brushes.Silver, Brushes.Yellow, Brushes.Turquoise, Brushes.Violet, Brushes.Black, Brushes.Aquamarine, Brushes.Orange };
+        private SolidColorBrush[] colorByChannel = new SolidColorBrush[16] { Brushes.Aqua, Brushes.RoyalBlue, Brushes.Blue, Brushes.BlueViolet, Brushes.Brown, Brushes.Chartreuse, Brushes.Crimson, Brushes.Red, Brushes.Salmon, Brushes.Silver, Brushes.Yellow, Brushes.White, Brushes.Violet, Brushes.Black, Brushes.Aquamarine, Brushes.Orange };
 
         private int ticksPerBeat;
         private int beatsPerMeasure;
@@ -80,6 +75,7 @@ namespace Orchestra
 
 
             PreProcessInstruments(instDict);
+            //MakeInstChangesDict();
 
 
             //entries are [instr, pitch, velocity, duration]
@@ -119,7 +115,7 @@ namespace Orchestra
             new int[] {5, 110, 111, 112},
             };
             ticksDict.Add(3500, jaggedArray4);
-            instChangesDict = MakeInstChangesDict(ticksDict);
+            //instChangesDict = MakeInstChangesDict(ticksDict);
 
 
 
@@ -167,7 +163,7 @@ namespace Orchestra
 
         private void PreProcessInstruments(Dictionary<int, int[]> instDict)
         {
-            instDict.Add(0, new int[] {34, 23, 75, 5, 112, 33, 84, 120, 112, 1, 85, 85, 52, 52, 115});
+            
             instruments = new List<int>();
             foreach (KeyValuePair<int, int[]> instrument in instDict)
             {
@@ -218,7 +214,7 @@ namespace Orchestra
                         double height = PianoRoll.ActualHeight / noteHeightResolution;
                         double width = note[3] / TicksPerPixel;
                         if (note[0] < 0) { note[0] = 0; }
-                        Rectangle noteRect = new Rectangle { Width = width, Height = height, Fill = colorByChannel[note[0] % 15], Opacity = note[2]/127d , Stroke = Brushes.Black, StrokeThickness = 4 };
+                        Rectangle noteRect = new Rectangle { Width = width, Height = height, Fill = colorByChannel[note[0] % 14], Opacity = note[2]/127d , Stroke = Brushes.Black, StrokeThickness = 4 };
                         noteRect.Tag = ticks;
                         double xPos = ((int)noteRect.Tag - currTick) / TicksPerPixel;
                         double yPos = PianoRoll.ActualHeight - ((note[1] % noteHeightResolution) / (double)noteHeightResolution * PianoRoll.ActualHeight); //high notes are low Y, because pixel numbering starts at top left
@@ -266,51 +262,51 @@ namespace Orchestra
             return pixelPosition;
         }
 
-        private void StartStopwatch()
-        { 
-            Timer aTimer = new System.Timers.Timer(10);
-            aTimer.Elapsed += new ElapsedEventHandler(TestPlayback);
-            aTimer.Enabled = true;
-        }
+        //private void StartStopwatch()
+        //{ 
+        //    Timer aTimer = new System.Timers.Timer(10);
+        //    aTimer.Elapsed += new ElapsedEventHandler(TestPlayback);
+        //    aTimer.Enabled = true;
+        //}
 
         private void TickTriggered(int tick){
             currTick = tick;
             Dispatcher.Invoke((Action)(() => UpdateRectangles()));
             //UpdateRectangles();
+            //TestPlayback(currTick);
             PopulatePianoRoll();
         }
 
-        private void TestPlayback(object source, ElapsedEventArgs e)
+        private void TestPlayback(int currTick)
         {
-            currTick++;
             ///
 
             ///
             if (instChangesDict.ContainsKey(currTick))
             {
 
-                //Console.WriteLine("\nCurrent tick:  {0}", currTick);
-                //System.Console.WriteLine("Turning On: ");
+                Console.WriteLine("\nCurrent tick:  {0}", currTick);
+                System.Console.WriteLine("Turning On: ");
                 foreach (int thing in instChangesDict[currTick]["TurnOn"])
                 {
-                    //Console.WriteLine(thing);
-                    //Console.WriteLine(instChangesDict[currTick]["TurnOn"][i].ToString());
+                    Console.WriteLine(thing);
+                    Console.WriteLine(instChangesDict[currTick]["TurnOn"][thing].ToString());
                 }
 
-                //System.Console.WriteLine("Turning Off: ");
+                System.Console.WriteLine("Turning Off: ");
                 if (instChangesDict[currTick].ContainsKey("TurnOff"))
                 {
                     foreach (int thing in instChangesDict[currTick]["TurnOff"])
                     {
-                        //Console.WriteLine(thing);
-                        //Console.WriteLine(instChangesDict[currTick]["TurnOn"][i].ToString());
+                        Console.WriteLine(thing);
+                        Console.WriteLine(instChangesDict[currTick]["TurnOn"][thing].ToString());
                     }
                 }
             }
             
         }
         
-        private Dictionary<int, Dictionary<string, List<int>>> MakeInstChangesDict(Dictionary<int, int[][]> ticksDict)
+        private Dictionary<int, Dictionary<string, List<int>>> MakeInstChangesDict()
         {
             //We should prolly break this into 2 functions. I'm just psuedocode vomiting. 
             //Start stopwatch to keep track of when events sh0uld happen (coming from dispatch)
@@ -321,7 +317,7 @@ namespace Orchestra
             Dictionary<int, List<int[]>> instPlayingDict = new Dictionary<int, List<int[]>>(); // {Instrument: [all the ticks it plays at]}
             Dictionary<int, Dictionary<string, List<int>>> instChangesDict = new Dictionary<int, Dictionary<string, List<int>>>();
 
-            foreach (KeyValuePair<int, int[][]> tick in ticksDict)
+            foreach (KeyValuePair<int, List<int[]>> tick in eventsAtTicksDict)
             {
                 foreach (int[] note in tick.Value) // Instrument notes kind of...
                 {
