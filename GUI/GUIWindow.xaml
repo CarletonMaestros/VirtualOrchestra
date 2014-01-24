@@ -56,7 +56,7 @@
                 <TranslateTransform X="-130" Y="-20" />
             </Border.RenderTransform>
         </Border>-->
-        <Canvas x:Name="PianoRoll" Grid.ColumnSpan="2" Margin="91,382,-148,35" Background="Gray"/>
+        <Canvas x:Name="PianoRoll" Grid.ColumnSpan="2" Margin="103,366,-158,51" Background="LightGray"/>
         <!--<Separator Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="100" Margin="252,361,0,0" VerticalAlignment="Top" Width="1089"/>-->
 
     </Grid>

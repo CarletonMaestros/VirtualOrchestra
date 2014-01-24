@@ -289,7 +289,7 @@ namespace Orchestra
                         int abs = midievent.AbsoluteTicks;
                         Tuple<int, int> key = new Tuple<int, int>(channel, pitch);
 
-                        int[] data = new int[2] { abs, vel };
+                        int[] data = new int[3] { abs, vel, channel };
 
                         if (!noteDurationData.ContainsKey(key))
                         {
@@ -324,7 +324,7 @@ namespace Orchestra
                                     instr = instrumentsAtTicks[i, channelNOFF_NOD]; //added this case because I was wrong in the previous comment.
                                 }
                             }
-                            int[] eventdata = new int[4] { instr, pitchNOFF_NOD, velNON_NOD, dur }; //to be added to the dictionary of lists of lists
+                            int[] eventdata = new int[5] { instr, pitchNOFF_NOD, velNON_NOD, dur, channelNOFF_NOD }; //to be added to the dictionary of lists of lists
                             eventsAtTicksDict = addToDictHandleCollisions(absNON_NOD, eventdata, eventsAtTicksDict);
                             //pretend nothing happened. To be clear, in this try block, we are killing the duplicated note and restarting with a new note.
                             noteDurationData.Add(key, data);
@@ -360,7 +360,7 @@ namespace Orchestra
                                     instr = instrumentsAtTicks[i, channelNOFF]; //added this case because I was wrong in the previous comment.
                                 }
                             }
-                            int[] eventdata = new int[4] { instr, pitchNOFF, velNON, dur };
+                            int[] eventdata = new int[5] { instr, pitchNOFF, velNON, dur, channelNOFF };
                             eventsAtTicksDict = addToDictHandleCollisions(absNON, eventdata, eventsAtTicksDict);
                         }
                         else
