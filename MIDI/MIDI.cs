@@ -13,32 +13,35 @@ namespace Orchestra
 {
     public class MIDI
     {
+        // Options
+        static Boolean verbose = false;
+
+        // Supporting variables
         static Stopwatch stopwatch = new Stopwatch();
+        static Timer timer = new Timer(1);
+        static OutputDevice outDevice = new OutputDevice(0);
+
+        // Per song variables
         static Sequence sequence = new Sanford.Multimedia.Midi.Sequence();
         static Sequencer sequencer = new Sanford.Multimedia.Midi.Sequencer();
-        static OutputDevice outDevice = new OutputDevice(0);
-        private int[] curChannelInstruments = new int[16]; //keeps track of what instruments are on what channel
-        private List<int> allInstrumentsUsed = new List<int>();
-        //yolO(n) time
-        private List<int[]> instrChanges = new List<int[]>(); //int[17] [0-15] = inst @ chan. [16] = tick
-        private static Boolean songStarted = false;
-
+        static int ppq = 0;
+        static int[] curChannelInstruments = new int[16]; //keeps track of what instruments are on what channel
+        static List<int> allInstrumentsUsed = new List<int>();
+        static List<int[]> instrChanges = new List<int[]>(); //int[17] [0-15] = inst @ chan. [16] = tick
         static Dictionary<int, int[]> instrumentsAtTicks;
         static Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
-        static double lastBeat = -1;
-        static double prevDeltaTime = 0;
-        static double deltaTime = double.MaxValue;
-        static long lastTeleport = 0;
-        static int curTick = 0;
-        static int ppq = 0;
-        static int beatCount = 0;
-        static Boolean verbose = false;
-        static Boolean graph = false;
-        static Timer timer = new Timer(1);
-        
+        // Volatile Variables
+        private static Boolean songStarted = false;
+        static double lastBeatStart = -1;
+        static double lastBeatDuration = double.MaxValue;
+        static int beatCount = -1; //So that we can increment immediately and start at 0
 
-        static int timerCounter = 0;
+        // Properties
+        static double Time { get { return stopwatch.ElapsedMilliseconds / 1000d; } }
+        static double TimeSinceLastBeat { get { return Time - lastBeatStart; } }
+        static double LastBPS { get { return 1d / lastBeatDuration; } }
+        static double Offset { get { return 1d * sequencer.Position / ppq - beatCount - Math.Min(1, TimeSinceLastBeat / lastBeatDuration); } }
 
         /// <summary>
         /// Activate the MIDI player
@@ -55,92 +58,65 @@ namespace Orchestra
             sequencer.ChannelMessagePlayed += MIDIChannelMessagePlayed;
             sequencer.MetaMessagePlayed += MIDIMetaMessagePlayed;
             sequencer.Chased += MIDIChased;
-            timer.Elapsed += new ElapsedEventHandler(TimePassed);
-            timer.Enabled = true;
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
             LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid");
 
-            // Other messages that might be useful
-            //this.sequencer1.PlayingCompleted += new System.EventHandler(PlayingCompleted);
-            //this.sequencer1.SysExMessagePlayed += new System.EventHandler<Sanford.Multimedia.Midi.SysExMessageEventArgs>(this.HandleSysExMessagePlayed);
-            //this.sequencer1.Stopped += new System.EventHandler<Sanford.Multimedia.Midi.StoppedEventArgs>(this.HandleStopped);
+            // Initialize timer
+            timer.Elapsed += new ElapsedEventHandler(TimePassed);
+            timer.Enabled = true;
         }
 
-        private static void SkeletonMoved(float time, Skeleton skeleton)
+        /// <summary>
+        /// Clock interrupt every 15.6 milliseconds (WARNING: artifact (but so far reliable))
+        /// </summary>
+        static void TimePassed(object sender, ElapsedEventArgs e)
         {
-            Dispatch.TriggerTickInfo(sequencer.Position);
+            if (TimeSinceLastBeat / lastBeatDuration > 1.75)
+            {
+                sequencer.Clock.Tempo = int.MaxValue;
+            }
+            else
+            {
+                double bps = LastBPS;
+                sequencer.Clock.Tempo = (int)(Math.Min(int.MaxValue,1000000/LastBPS));
+            }
         }
 
-        private static void TimePassed(object sender, ElapsedEventArgs e)
-        {
-            // Stop if we've lost direction
-            // one clock is 15.6 milliseconds
-            //Console.WriteLine("{0}   {1}   {2}", stopwatch.ElapsedMilliseconds/1000d, lastBeat, deltaTime);
-            if (stopwatch.ElapsedMilliseconds/1000d > lastBeat + deltaTime + 1)
-            {
-                if (verbose) { Console.WriteLine("#HANGING at {0}", sequencer.Position % ppq); }
-                sequencer.Clock.Tempo = Int32.MaxValue; // 2 billion is very slow
-                //if (stopwatch.ElapsedMilliseconds / 1000d > lastBeat + 2 * deltaTime - 0.05)
-            }
-
-            // Normal time (if not teleporting)
-            else if (stopwatch.ElapsedMilliseconds - lastTeleport > .140)
-            {
-                //Console.WriteLine(deltaTime);
-                sequencer.Clock.Tempo = (int)(1000000 * deltaTime);
-                //if (verbose) { Console.WriteLine("Finished Teleport in {0} millis\nSequencer position is {1}\nSetting Tempo to {2}", stopwatch.ElapsedMilliseconds - temptime, sequencer.Position % ppq, newTempo); }
-            }
-
-            //if (verbose) { Console.WriteLine("\nWaited {0} millis\nLocalBeatCount is {1}\nBeatCount is {2}", stopwatch.ElapsedMilliseconds - testtime, localBeatCount, beatCount); }
-        }
-
+        /// <summary>
+        /// Beat gesture triggered
+        /// </summary>
         static void Beat(float time, int beat)
         {
-            time = stopwatch.ElapsedMilliseconds / 1000f;
+            //if (beat != 1) return;
+            // Update variables
+            beatCount++;
+            lastBeatDuration = Time - lastBeatStart;
+            lastBeatStart = Time;
+            if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
+
+            // TEMPORARY: Start song on first beat
             if (!songStarted)
             {
                 Play(0);
                 songStarted = true;
                 stopwatch.Restart();
             }
-            beatCount++;
-            //if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
-            float beatPercentCompleted = (sequencer.Position % ppq) / (float)ppq;
-            float beatPercentRemaining = 1 - beatPercentCompleted;
-            deltaTime = time - lastBeat;
-            //Console.WriteLine("{0}   {1}   {2}", time, time - lastBeat, deltaTime);
-            lastBeat = time;
-            //if (verbose) { Console.WriteLine("DeltaTime is {0}\nSequencer position {1}\nBeatPercentComplete is {2}\nBeatPercentRemaining is {3}", deltaTime, sequencer.Position % ppq, beatPercentCompleted, beatPercentRemaining); }
-            if (beatPercentCompleted < .9 && beatPercentCompleted > .1)
-            {
-                // Teleport
-                int teleportSpeed = (int)(150000 / beatPercentRemaining);
-                //if (verbose) { Console.WriteLine("#TELEPORTING with tempo {0}", teleportSpeed); }
-                sequencer.Clock.Tempo = teleportSpeed;
-                lastTeleport = stopwatch.ElapsedMilliseconds;
-            }
-            //if (verbose) { Console.WriteLine("Will check for hang in {0} millis", (deltaTime * 1000) - 10); }
-            long testtime = stopwatch.ElapsedMilliseconds;
         }
 
-        //static async void Hang(int millis, int localBeatCount, long testtime)
-        //{
-        //    await Task.Delay(millis);
-        //    if (verbose) { Console.WriteLine("\nWaited {0} millis\nLocalBeatCount is {1}\nBeatCount is {2}", stopwatch.ElapsedMilliseconds - testtime, localBeatCount, beatCount); }
-        //    if (localBeatCount == beatCount)
-        //    {
-        //        if (verbose) { Console.WriteLine("#HANGING at {0}", sequencer.Position % ppq); }
-        //        sequencer.Clock.Tempo = Int32.MaxValue; // 2 billion is very slow
-        //    }
-        //    return;
-        //}
+        /// <summary>
+        /// Inform the GUI of the sequencer position.
+        /// </summary>
+        private static void SkeletonMoved(float time, Skeleton skeleton)
+        {
+            Dispatch.TriggerTickInfo(sequencer.Position);
+        }
 
         //private void 
         //adds to event dictionary, and check for collisions, instead of exception, edits val at key
         //dictionary properties: keys are absolute tick values for the NON data, elements are lists of int[4] arrays containing instr#, pitch, velocity, duration in ticks
-        private Dictionary<int, List<int[]>> addToDictHandleCollisions(int key, int[] eventData, Dictionary<int, List<int[]>> eventsAtTicksDict)
+        static Dictionary<int, List<int[]>> addToDictHandleCollisions(int key, int[] eventData, Dictionary<int, List<int[]>> eventsAtTicksDict)
         {
             List<int[]> keyValHolder = new List<int[]>();
             if (eventsAtTicksDict.ContainsKey(key))
@@ -159,7 +135,7 @@ namespace Orchestra
             }
         }
         //removes tempo meta messages
-        private void stripMetaMessages(Sequence sequence)
+        static void stripMetaMessages(Sequence sequence)
         {
             IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
             foreach (Track track in tracks)
@@ -179,7 +155,7 @@ namespace Orchestra
             }
         }
         // populates instrChanges
-        private int[,] populateInstrChanges(Sequence sequence)
+        static int[,] populateInstrChanges(Sequence sequence)
         {
             IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
             foreach (Track track in tracks)
@@ -224,7 +200,7 @@ namespace Orchestra
         /*
          * Merges the irresponsibly-generated instr-change data
          */
-        private int[,] mergeInstrChangeData()
+        static int[,] mergeInstrChangeData()
         {
             List<int> uniqueDeltaEvents = new List<int>();
             foreach (int[] deltaEvent in instrChanges)
@@ -264,7 +240,7 @@ namespace Orchestra
             return instrChangesArray;
         }
 
-        private Dictionary<int, List<int[]>> getInstrumentNoteTimes(Track track, int[,] instrumentsAtTicks, Dictionary<int, List<int[]>> eventsAtTicksDict)
+        static Dictionary<int, List<int[]>> getInstrumentNoteTimes(Track track, int[,] instrumentsAtTicks, Dictionary<int, List<int[]>> eventsAtTicksDict)
         {
             //Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
 
@@ -378,7 +354,7 @@ namespace Orchestra
             return eventsAtTicksDict;
         }
 
-        public Dictionary<int, int[]> arrayToDict(int[,] instrumentChangesArray)
+        static Dictionary<int, int[]> arrayToDict(int[,] instrumentChangesArray)
         {
             Dictionary<int, int[]> instrumentDict = new Dictionary<int, int[]>();
             for (int i=0; i < instrumentChangesArray.GetLength(0); i++)
@@ -397,25 +373,16 @@ namespace Orchestra
         {
             sequence.Load(file);
             
-
-            MIDI preprocessor = new MIDI();
-            preprocessor.stripMetaMessages(sequencer.Sequence);
-            int[,] instrumentsAtTicksArray = preprocessor.populateInstrChanges(sequencer.Sequence);
-            List<int> allInstrumentsUsed = preprocessor.allInstrumentsUsed;
+            stripMetaMessages(sequencer.Sequence);
+            int[,] instrumentsAtTicksArray = populateInstrChanges(sequencer.Sequence);
             ppq = sequencer.Sequence.Division;
-
-
-
-            //proving we can extract tempo
-            //Console.Write("Sequencer division: "); 
-            //Console.WriteLine(ppq);
 
             IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
             foreach (Track track in tracks)
             {
-                eventsAtTicksDict = preprocessor.getInstrumentNoteTimes(track, instrumentsAtTicksArray, eventsAtTicksDict);
+                eventsAtTicksDict = getInstrumentNoteTimes(track, instrumentsAtTicksArray, eventsAtTicksDict);
             }
-            instrumentsAtTicks = preprocessor.arrayToDict(instrumentsAtTicksArray);
+            instrumentsAtTicks = arrayToDict(instrumentsAtTicksArray);
             SongData song = new SongData{ppq=ppq, beatsPerMeasure=4, eventsAtTicksDict=eventsAtTicksDict, instrumentsAtTicks=instrumentsAtTicks};
             Dispatch.TriggerSongLoaded(song);
 

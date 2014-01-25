@@ -29,7 +29,7 @@ namespace Orchestra.Sandbox
         {
             InitializeComponent();
             guiWindow.Show();
-            Hide();
+            //Hide();
         }
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
