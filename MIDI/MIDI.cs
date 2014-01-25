@@ -33,15 +33,17 @@ namespace Orchestra
 
         // Volatile Variables
         private static Boolean songStarted = false;
-        static double lastBeatStart = -1;
-        static double lastBeatDuration = double.MaxValue;
         static int beatCount = -1; //So that we can increment immediately and start at 0
+        static double[] lastBeatStarts = { -5, -4, -3, -2, -1 };
 
         // Properties
         static double Time { get { return stopwatch.ElapsedMilliseconds / 1000d; } }
-        static double TimeSinceLastBeat { get { return Time - lastBeatStart; } }
-        static double LastBPS { get { return 1d / lastBeatDuration; } }
-        static double Offset { get { return 1d * sequencer.Position / ppq - beatCount - Math.Min(1, TimeSinceLastBeat / lastBeatDuration); } }
+        static double TimeSinceLastBeat { get { return Time - LastBeatStart; } }
+        static double LastBPS { get { return 1d / LastBeatDuration; } }
+        static double Last4BPS { get { return 4 / (lastBeatStarts[lastBeatStarts.Length - 1] - lastBeatStarts[lastBeatStarts.Length - 5]); } }
+        static double LastBeatStart { get { return lastBeatStarts[lastBeatStarts.Length - 1]; } }
+        static double LastBeatDuration { get { return lastBeatStarts[lastBeatStarts.Length - 1] - lastBeatStarts[lastBeatStarts.Length - 2]; } }
+        static double Offset { get { return 1d * sequencer.Position / ppq - beatCount - Math.Min(1, TimeSinceLastBeat / LastBeatDuration); } }
 
         /// <summary>
         /// Activate the MIDI player
@@ -73,14 +75,16 @@ namespace Orchestra
         /// </summary>
         static void TimePassed(object sender, ElapsedEventArgs e)
         {
-            if (TimeSinceLastBeat / lastBeatDuration > 1.75)
+            if (TimeSinceLastBeat / LastBeatDuration > 1.75)
             {
                 sequencer.Clock.Tempo = int.MaxValue;
             }
             else
             {
                 double bps = LastBPS;
-                sequencer.Clock.Tempo = (int)(Math.Min(int.MaxValue,1000000/LastBPS));
+                foreach (var beat in lastBeatStarts) Console.Write(beat+" ");
+                Console.WriteLine();
+                sequencer.Clock.Tempo = (int)(Math.Min(int.MaxValue,1000000/Last4BPS));
             }
         }
 
@@ -89,11 +93,14 @@ namespace Orchestra
         /// </summary>
         static void Beat(float time, int beat)
         {
-            //if (beat != 1) return;
-            // Update variables
+            // Update last beat starts
             beatCount++;
-            lastBeatDuration = Time - lastBeatStart;
-            lastBeatStart = Time;
+            for (int i = 0; i < lastBeatStarts.Length-1; ++i)
+            {
+                lastBeatStarts[i] = lastBeatStarts[i + 1];
+            }
+            lastBeatStarts[lastBeatStarts.Length - 1] = Time;
+
             if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
 
             // TEMPORARY: Start song on first beat

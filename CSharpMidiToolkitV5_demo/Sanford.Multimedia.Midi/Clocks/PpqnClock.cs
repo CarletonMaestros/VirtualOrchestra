@@ -134,6 +134,8 @@ namespace Sanford.Multimedia.Midi
 
         protected int GenerateTicks()
         {
+            if (tempo == int.MaxValue) return 0;
+
             int ticks = (fractionalTicks + periodResolution) / tempo;
             fractionalTicks += periodResolution - ticks * tempo;
 
