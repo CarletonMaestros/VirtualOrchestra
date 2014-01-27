@@ -128,7 +128,7 @@
       <Project>{63b7c1dd-a88b-469f-b065-c95e34fde015}</Project>
       <Name>MIDI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.csproj">
+    <ProjectReference Include="..\CSharpMidiToolkitV5_demo\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.csproj">
       <Project>{4269c72a-8d3a-4737-8f89-72eaa33ea9e1}</Project>
       <Name>Sanford.Multimedia.Midi</Name>
     </ProjectReference>

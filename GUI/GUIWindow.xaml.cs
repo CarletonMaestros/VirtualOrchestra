@@ -71,10 +71,8 @@ namespace Orchestra
 
         public void WindowLoaded(object sender, RoutedEventArgs e)
         {           
-            instDict = new Dictionary<int, int[]>();
 
 
-            PreProcessInstruments(instDict);
             //MakeInstChangesDict();
 
 
@@ -151,6 +149,7 @@ namespace Orchestra
             eventsAtTicksDict = song.eventsAtTicksDict;
             instrumentsAtTicks = song.instrumentsAtTicks;
             PianoRoll.ClipToBounds = true;
+            PreProcessInstruments(instrumentsAtTicks);
         }
 
         public void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -184,7 +183,7 @@ namespace Orchestra
 
                 var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
                 //var uriString = @"C:\Users\Rachel\My Documents\GitHub\VirtualOrchestra\GUI\Resources\" + instName + ".jpg";
-                //Console.WriteLine(uriString);
+                Console.WriteLine(uriString);
                 BitmapImage bitIm = new BitmapImage();
                 bitIm.BeginInit();
                 bitIm.UriSource = new Uri(uriString);
