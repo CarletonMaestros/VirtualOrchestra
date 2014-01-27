@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gestures", "Gestures\Gestur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recorder", "Recorder\Recorder.csproj", "{361619D9-0CF1-4E6B-878F-FF6A60FE0639}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playback", "Playback\Playback.csproj", "{82C6D2EC-0972-4A19-8529-6D6B1A245A20}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OxyplotDemo", "OxyplotDemo\OxyplotDemo.csproj", "{13B4AE2C-26CD-4644-B198-8E8D14155ACD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{E305192D-66CD-4662-B546-285EDFBF7B23}"
@@ -20,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatTester", "BeatTester\BeatTester.csproj", "{CEBA0254-F160-445D-A289-88587981CED9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sanford.Multimedia.Midi", "CSharpMidiToolkitV5_demo\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.csproj", "{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playback", "Playback\Playback.csproj", "{F588CB20-8CF9-44A4-AECE-74F01B42DF53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +43,6 @@ Global
 		{361619D9-0CF1-4E6B-878F-FF6A60FE0639}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{361619D9-0CF1-4E6B-878F-FF6A60FE0639}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{361619D9-0CF1-4E6B-878F-FF6A60FE0639}.Release|Any CPU.Build.0 = Release|Any CPU
-		{82C6D2EC-0972-4A19-8529-6D6B1A245A20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{82C6D2EC-0972-4A19-8529-6D6B1A245A20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{82C6D2EC-0972-4A19-8529-6D6B1A245A20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{82C6D2EC-0972-4A19-8529-6D6B1A245A20}.Release|Any CPU.Build.0 = Release|Any CPU
 		{13B4AE2C-26CD-4644-B198-8E8D14155ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{13B4AE2C-26CD-4644-B198-8E8D14155ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13B4AE2C-26CD-4644-B198-8E8D14155ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -67,6 +63,10 @@ Global
 		{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F588CB20-8CF9-44A4-AECE-74F01B42DF53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F588CB20-8CF9-44A4-AECE-74F01B42DF53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F588CB20-8CF9-44A4-AECE-74F01B42DF53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F588CB20-8CF9-44A4-AECE-74F01B42DF53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

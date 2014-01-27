@@ -82,8 +82,6 @@ namespace Orchestra
             else
             {
                 double bps = LastBPS;
-                foreach (var beat in lastBeatStarts) Console.Write(beat+" ");
-                Console.WriteLine();
                 sequencer.Clock.Tempo = (int)(Math.Min(int.MaxValue,1000000/Last4BPS));
             }
         }
