@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeatTester", "BeatTester\Be
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sanford.Multimedia.Midi", "CSharpMidiToolkitV5_demo\Sanford.Multimedia.Midi\Sanford.Multimedia.Midi.csproj", "{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playback2", "Playback2\Playback2.csproj", "{F588CB20-8CF9-44A4-AECE-74F01B42DF53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4269C72A-8D3A-4737-8F89-72EAA33EA9E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F588CB20-8CF9-44A4-AECE-74F01B42DF53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F588CB20-8CF9-44A4-AECE-74F01B42DF53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F588CB20-8CF9-44A4-AECE-74F01B42DF53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F588CB20-8CF9-44A4-AECE-74F01B42DF53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,30 +21,10 @@ using System.Timers;
 
 namespace Orchestra
 {
-
     public partial class GUIWindow : Window
     {
-        private Dictionary<int, int[]> instDict;
-        private Dictionary<int, int[]> ticksDict;
         private Dictionary<int, Dictionary<string, List<int>>> instChangesDict;
         private List<int> instruments;
-        private Storyboard SB1;
-        private Storyboard SB2;
-        private Storyboard SB3;
-        private Storyboard SB4;
-        private Storyboard SB5;
-        private Storyboard SB6;
-        private Storyboard SB7;
-        private Storyboard SB8;
-        private Storyboard SB9;
-        private Storyboard SB10;
-        private Storyboard SB11;
-        private Storyboard SB12;
-        private Storyboard SB13;
-        private Storyboard SB14;
-        private Storyboard SB15;
-        private Storyboard SB16;
-        private int outDeviceID = 0;
         private int currTick = 0;
         int[] instpos = new int[16];
 
@@ -61,81 +41,16 @@ namespace Orchestra
         private int ticksPerBeat;
         private int beatsPerMeasure;
         private Dictionary<int, List<int[]>> eventsAtTicksDict;
-        private Dictionary<int, int[]> instrumentsAtTicks;
 
         public GUIWindow()
         {
             InitializeComponent();
         }
 
-
         public void WindowLoaded(object sender, RoutedEventArgs e)
         {           
 
-
-            //MakeInstChangesDict();
-
-
             //entries are [instr, pitch, velocity, duration]
-            Dictionary<int, int[][]> ticksDict = new Dictionary<int, int[][]>();
-            int[][] jaggedArray = {
-       
-            new int[] {2, 2, 3, 4},
-            new int[] {3, 6, 7, 8},
-            new int[] {5, 10, 11, 12},
-            };
-            ticksDict.Add(1, jaggedArray);
-            int[][] jaggedArray2 = {
-       
-            new int[] {2, 12, 13, 14},
-            new int[] {3, 16, 17, 18},
-            new int[] {5, 110, 111, 112},
-            };
-            ticksDict.Add(5, jaggedArray2);
-            int[][] jaggedArray3 = {
-       
-            new int[] {2, 12, 13, 14},
-            new int[] {3, 16, 17, 18},
-            new int[] {5, 110, 111, 112},
-            };
-            ticksDict.Add(2000, jaggedArray3);
-            int[][] jaggedArray5 = {
-       
-            new int[] {2, 12, 13, 14},
-            new int[] {3, 16, 17, 18},
-            new int[] {5, 110, 111, 112},
-            };
-            ticksDict.Add(2400, jaggedArray5);            
-            int[][] jaggedArray4 = {
-       
-            new int[] {2, 12, 13, 14},
-            new int[] {3, 16, 17, 18},
-            new int[] {5, 110, 111, 112},
-            };
-            ticksDict.Add(3500, jaggedArray4);
-            //instChangesDict = MakeInstChangesDict(ticksDict);
-
-
-
-            //instChangesDict = new Dictionary<int, Dictionary<string, int[]>>();
-
-            //myDoubleAnimation = new DoubleAnimation();
-            //myDoubleAnimation.From = 1.0;
-            //myDoubleAnimation.To = 0.2;
-            //myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(.2));
-            //myDoubleAnimation.AutoReverse = true;
-            //myDoubleAnimation.RepeatBehavior = RepeatBehavior.Forever;
-
-            //FIX THIS LATER
-
-
-            
-            //curStoryboard = new Storyboard();
-            //curStoryboard.Children.Add(myDoubleAnimation);
-            //Storyboard.SetTargetName(myDoubleAnimation, square1.Name);
-            //Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(Image.OpacityProperty));
-            //curStoryboard.Begin(this, true);
-            //curStoryboard.Pause(this);
 
             Dispatch.SongLoaded += SongLoaded;
             Dispatch.TickInfo += TickTriggered;
@@ -147,9 +62,8 @@ namespace Orchestra
             ticksPerBeat = song.ppq;
             beatsPerMeasure = song.beatsPerMeasure;
             eventsAtTicksDict = song.eventsAtTicksDict;
-            instrumentsAtTicks = song.instrumentsAtTicks;
             PianoRoll.ClipToBounds = true;
-            PreProcessInstruments(instrumentsAtTicks);
+            instChangesDict = MakeInstChangesDict();
         }
 
         public void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -304,13 +218,13 @@ namespace Orchestra
             }
             
         }
-        
+
         private Dictionary<int, Dictionary<string, List<int>>> MakeInstChangesDict()
         {
             //We should prolly break this into 2 functions. I'm just psuedocode vomiting. 
             //Start stopwatch to keep track of when events sh0uld happen (coming from dispatch)
             // Dictionary is like:
-            // {AbsoluteTick1: [[instrument, pitch, velocity, note duration],[instrument, pitch, velocity, duration]], AbsoluteTick2: [[...]...]}
+            // {AbsoluteTick1: [[instrument, pitch, velocity, note duration],[instrument, pitch, velocity, duration, channel]], AbsoluteTick2: [[...]...]}
 
 
             Dictionary<int, List<int[]>> instPlayingDict = new Dictionary<int, List<int[]>>(); // {Instrument: [all the ticks it plays at]}
