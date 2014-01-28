@@ -61,9 +61,14 @@ namespace Orchestra
         {
             for (int i = 0; i < 16; i++)
             {
+                var squareNumber = "square" + (i+1).ToString(); //get the correct image to populate's name. I changed the image names to what's on that sheet of paper.
+                //Console.WriteLine(squareNumber); 
+                object item = FindName(squareNumber); // turn its name from a string into the Image
+                Image imgToPopulate = (Image)item;
+
                 ChannelHandler temp = new ChannelHandler();
                 channels[i] = temp;
-                channels[i].squareIndex = i + 1;
+                channels[i].channelImage = imgToPopulate;
             }
             ticksPerBeat = song.ppq;
             beatsPerMeasure = song.beatsPerMeasure;
@@ -139,7 +144,7 @@ namespace Orchestra
                         Canvas.SetLeft(noteRect, xPos);
                         Canvas.SetTop(noteRect, yPos);
                         PianoRoll.Children.Add(noteRect);
-                        channels[note[4]].EventData.Add(new int[] { currTick, note[3], note[0], note[2]});
+                        channels[note[4]].EventData.Add(new int[] { ticks, note[3], note[0], note[2]});
                     }
                     eventsAtTicksDict.Remove(ticks);
                 }
@@ -180,24 +185,22 @@ namespace Orchestra
             
             foreach (ChannelHandler channel in channels) 
             {
+                bool escapedAtContinue = false;
                 List<int[]> markedChildren = new List<int[]>();
                 foreach (int[] note in channel.EventData)
                 {
                     if ((note[0] + note[1]) < currTick)
                     {
                         markedChildren.Add(note);
+                        escapedAtContinue = true;
                         continue;
                     }
                     if ((note[0] < currTick) && (currTick < (note[0] + note[1])))
                     {
+                        escapedAtContinue = false;
                         if (note[2] != channel.prevInst)
                         {
                             channel.prevInst = note[2];
-
-                            var squareNumber = "square" + channel.squareIndex.ToString(); //get the correct image to populate's name. I changed the image names to what's on that sheet of paper.
-                            //Console.WriteLine(squareNumber); 
-                            object item = FindName(squareNumber); // turn its name from a string into the Image
-                            Image imgToPopulate = (Image)item;
 
                             var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
                             //var uriString = @"C:\Users\Rachel\My Documents\GitHub\VirtualOrchestra\GUI\Resources\" + instName + ".jpg";
@@ -206,32 +209,24 @@ namespace Orchestra
                             bitIm.BeginInit();
                             bitIm.UriSource = new Uri(uriString);
                             bitIm.EndInit();
-                            imgToPopulate.Source = bitIm;
-                            imgToPopulate.Opacity = calcOpacity(note[3], ((currTick - note[0]) / note[1]));
+                            channel.channelImage.Source = bitIm;
+                            channel.channelImage.Opacity = calcOpacity(note[3], ((note[0] + note[1]) - currTick) / (double)note[1]);
                             break;
                         }
                         else
                         {
-                            var squareNumber = "square" + channel.squareIndex.ToString(); //get the correct image to populate's name. I changed the image names to what's on that sheet of paper.
-                            //Console.WriteLine(squareNumber); 
-                            object item = FindName(squareNumber); // turn its name from a string into the Image
-                            Image imgToPopulate = (Image)item;
-
-                            imgToPopulate.Opacity = calcOpacity(note[3], ((currTick - note[0]) / note[1]));
+                            channel.channelImage.Opacity = calcOpacity(note[3], ((note[0] + note[1]) - currTick) / (double)note[1]);
                             break;
                         }
                     }
                     else
                     {
-                        var squareNumber = "square" + channel.squareIndex.ToString(); //get the correct image to populate's name. I changed the image names to what's on that sheet of paper.
-                        //Console.WriteLine(squareNumber); 
-                        object item = FindName(squareNumber); // turn its name from a string into the Image
-                        Image imgToPopulate = (Image)item;
-
-                        imgToPopulate.Opacity = 0;
+                        escapedAtContinue = false;
+                        channel.channelImage.Opacity = 0;
                         break;
                     }
                 }
+                if (escapedAtContinue) { channel.channelImage.Opacity = 0; }
                 foreach (int[] child in markedChildren)
                 {
                     channel.EventData.Remove(child);
@@ -239,9 +234,11 @@ namespace Orchestra
             }
         }
 
-        private double calcOpacity(int velocity, double percentcomplete)
+        private double calcOpacity(int velocity, double percentRemaining)
         {
-            return 1d;
+            double correctedVelocity = velocity / 127d;
+
+            return velocity * percentRemaining;
         }
 
         private double calculateNewPos(Rectangle child)

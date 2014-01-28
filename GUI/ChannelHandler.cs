@@ -24,6 +24,6 @@ namespace Orchestra
     {
         public List<int[]> EventData = new List<int[]>();
         public int prevInst = 0;
-        public int squareIndex = 0;
+        public Image channelImage;
     }
 }
