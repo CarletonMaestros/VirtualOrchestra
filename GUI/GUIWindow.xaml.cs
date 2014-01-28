@@ -60,7 +60,6 @@ namespace Orchestra
 
         public void VolumeChanged(float time, float volume)
         {
-            Console.WriteLine(volume);
             VolumeGauge.Opacity = (volume);
             VolumeGauge.Height = volume * 478;
         }

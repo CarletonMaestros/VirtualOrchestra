@@ -52,6 +52,7 @@ namespace Orchestra
         {
             // Subscribe to dispatch events
             Dispatch.Play += Play;
+            Dispatch.Stop += Stop;
             Dispatch.Beat += Beat;
             Dispatch.VolumeChanged += VolumeChanged;
             Dispatch.SkeletonMoved += SkeletonMoved;
@@ -63,7 +64,7 @@ namespace Orchestra
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
-            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid");
+            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.mid");
 
             // Initialize timer
             timer.Elapsed += new ElapsedEventHandler(TimePassed);
@@ -398,7 +399,7 @@ namespace Orchestra
             sequencer.Start();
         }
 
-        static void Pause(float time)
+        static void Stop(float time)
         {
             sequencer.Stop();
         }
