@@ -238,7 +238,7 @@ namespace Orchestra
         {
             double correctedVelocity = velocity / 127d;
 
-            return velocity * percentRemaining;
+            return correctedVelocity * percentRemaining;
         }
 
         private double calculateNewPos(Rectangle child)
