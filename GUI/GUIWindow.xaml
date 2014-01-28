@@ -57,7 +57,15 @@
             </Border.RenderTransform>
         </Border>-->
         <Canvas x:Name="PianoRoll" Grid.ColumnSpan="2" Margin="103,366,-158,51" Background="LightGray"/>
-        <!--<Separator Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="100" Margin="252,361,0,0" VerticalAlignment="Top" Width="1089"/>-->
+        <Rectangle x:Name ="VolumeGauge"  HorizontalAlignment="Left" Height="478" Margin="23,0,0,51" Stroke="Black" VerticalAlignment="Bottom" Width="26">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+                <GradientStop Color="Red" Offset="0"/>
+                <GradientStop Color="Goldenrod" Offset="0.567"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+            </Rectangle>
+                <!--<Separator Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="100" Margin="252,361,0,0" VerticalAlignment="Top" Width="1089"/>-->
 
     </Grid>
 

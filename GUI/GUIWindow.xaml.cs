@@ -54,7 +54,15 @@ namespace Orchestra
 
             Dispatch.SongLoaded += SongLoaded;
             Dispatch.TickInfo += TickTriggered;
+            Dispatch.VolumeChanged += VolumeChanged;
 
+        }
+
+        public void VolumeChanged(float time, float volume)
+        {
+            Console.WriteLine(volume);
+            VolumeGauge.Opacity = (volume);
+            VolumeGauge.Height = volume * 478;
         }
 
         private void SongLoaded(SongData song)
@@ -188,7 +196,7 @@ namespace Orchestra
                 bool escapedAtContinue = false;
                 List<int[]> markedChildren = new List<int[]>();
                 foreach (int[] note in channel.EventData)
-                {
+                { 
                     if ((note[0] + note[1]) < currTick)
                     {
                         markedChildren.Add(note);
@@ -219,6 +227,7 @@ namespace Orchestra
                             break;
                         }
                     }
+
                     else
                     {
                         escapedAtContinue = false;
