@@ -85,6 +85,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ChannelHandler.cs" />
     <Compile Include="ImageTransparency.cs" />
     <Compile Include="InstrumentEnumerator.cs" />
     <Compile Include="GUIWindow.xaml.cs">
