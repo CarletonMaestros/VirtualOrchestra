@@ -11,6 +11,7 @@ namespace Orchestra
         float leftWristY = 0;
         float leftWristX = 0;
         Boolean aboveHip = false;
+        Boolean outsideBox = true;
         float startValueX = 0;
         float startValueY = 0;
         float changeInYVal = 0;
@@ -49,6 +50,7 @@ namespace Orchestra
                     if (leftWristY > joint.Position.Y)
                     {
                         aboveHip = true;
+                        outsideBox = false;
                     }
                     else
                     {
@@ -98,7 +100,7 @@ namespace Orchestra
                     }
                     else if (aboveHip == true && startValueY != 0 && startValueX != 0)
                     {
-                        if ((startValueX - leftWristX) < .1 && (startValueX - leftWristX) > -.1) // if wrist is within the acceptable "box" of x-ranges
+                        if ((startValueX - leftWristX) < .1 && (startValueX - leftWristX) > -.1 && outsideBox == false) // if wrist is within the acceptable "box" of x-ranges
                         {
                             changeInYVal += (leftWristY - prevYValue);
                             if (increaseToDecrease == 0 && leftWristY - prevYValue > 0) //hand is moving up now
@@ -129,6 +131,7 @@ namespace Orchestra
                             int intVolume = (int)volume;
                             Dispatch.TriggerVolumeChanged(intVolume / 127f);
                         }
+                        else { outsideBox = true; }
                     }
                 }
             }

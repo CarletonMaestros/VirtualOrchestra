@@ -21,13 +21,9 @@ namespace Orchestra
         public float prevLeftXOne;
         public float prevLeftXTwo;
         public float hipRightY;
-        public float counter1;
-        public float counter2;
-        public float counter3;
-        public float startValueY;
-        public float startValueX;
-        public float xAverage;
-        public float yAverage;
+        public float counter;
+        public Boolean start = false;
+        public Boolean stop = false;
 
         public StopGesture()
         {
@@ -56,64 +52,17 @@ namespace Orchestra
                 }
                 if (joint.JointType == JointType.HipRight) { hipRightY = joint.Position.Y; }
             }
-            if (counter3 == 15)
-            {
-                //Console.WriteLine("Left hand - right hand: {0}", Math.Abs(leftHandY - rightHandY));
-                //Console.WriteLine("Right hand Y : {0}", rightHandY);
-            }
-            else { counter3 += 1; }
-            if (Math.Abs(leftHandY - rightHandY) < .1 && rightHandY - hipRightY > .15)
-            {
-                //Console.WriteLine("here");
-                if (counter1 < 10)
+            if (Math.Abs(leftHandY - rightHandY) < .1 && rightHandY - hipRightY > .5) { start = true; }
+            if (Math.Abs(leftHandY - rightHandY) < .1 && start == true && stop == false)
+            {          
+                if (rightHandX >= prevRightXOne && leftHandX <= prevLeftXOne && rightHandY <= prevRightYOne && leftHandY <= prevLeftYOne) { counter += 1; }
+                if (counter >= 6 && Math.Abs(rightHandX - prevRightXTwo) < .1 && Math.Abs(leftHandX - prevLeftXTwo) < .1 && Math.Abs(rightHandY - prevRightYTwo) < .1 && Math.Abs(leftHandY - prevLeftYTwo) < .1)
                 {
-                    if (rightHandY < prevRightYTwo && leftHandY < prevLeftYTwo) 
-                    {
-                        if (rightHandX + leftHandX > prevRightXTwo + prevLeftXTwo)
-                        { 
-                            counter1 += 1;
-                            //Console.WriteLine(counter1);
-                        }
-                    }
+                    Console.WriteLine("STOP");
+                    stop = true;
+                    counter = 0;
+                    Dispatch.TriggerStop();
                 }
-                else
-                {
-                    if (rightHandX + leftHandX > prevRightXTwo + prevLeftXTwo)
-                    {
-                        //Console.WriteLine("yay!");
-                        if (counter2 == 10)
-                        {
-                            startValueY = yAverage;
-                            startValueX = xAverage;
-                            counter2 += 1;
-                            Console.WriteLine("STOP");
-                        }
-                        else if (counter2 < 10)
-                        {
-                            if (yAverage == 0 && xAverage == 0)
-                            {
-                                counter2 += 1;
-                                yAverage = leftHandY;
-                                xAverage = leftHandX;
-                            }
-                            else
-                            {
-                                if (yAverage - leftHandY > -.1 && yAverage - leftHandY < .1 && xAverage - leftHandY > -.1 && xAverage - leftHandX < .1)
-                                {
-                                    yAverage = (yAverage + leftHandY) / 2;
-                                    xAverage = (xAverage + leftHandX) / 2;
-                                    counter2 += 1;
-                                }
-                                else
-                                {
-                                    yAverage = leftHandY;
-                                    xAverage = leftHandX;
-                                    counter2 = 0;
-                                }
-                            }
-                        }
-                    }
-                }               
             }
             prevRightXTwo = prevRightXOne;
             prevRightYTwo = prevRightYOne;
