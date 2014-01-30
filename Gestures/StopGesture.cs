@@ -58,7 +58,6 @@ namespace Orchestra
                 if (rightHandX >= prevRightXOne && leftHandX <= prevLeftXOne && rightHandY <= prevRightYOne && leftHandY <= prevLeftYOne) { counter += 1; }
                 if (counter >= 6 && Math.Abs(rightHandX - prevRightXTwo) < .1 && Math.Abs(leftHandX - prevLeftXTwo) < .1 && Math.Abs(rightHandY - prevRightYTwo) < .1 && Math.Abs(leftHandY - prevLeftYTwo) < .1)
                 {
-                    Console.WriteLine("STOP");
                     stop = true;
                     counter = 0;
                     Dispatch.TriggerStop();

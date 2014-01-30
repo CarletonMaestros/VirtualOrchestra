@@ -61,6 +61,7 @@ namespace Orchestra
             sequencer.ChannelMessagePlayed += MIDIChannelMessagePlayed;
             sequencer.MetaMessagePlayed += MIDIMetaMessagePlayed;
             sequencer.Chased += MIDIChased;
+            sequencer.Stopped += Stopped;
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
@@ -69,6 +70,14 @@ namespace Orchestra
             // Initialize timer
             timer.Elapsed += new ElapsedEventHandler(TimePassed);
             timer.Enabled = true;
+        }
+
+        private static void Stopped(object sender, StoppedEventArgs e)
+        {
+            foreach (ChannelMessage message in e.Messages)
+            {
+                outDevice.Send(message);
+            }
         }
 
         /// <summary>
