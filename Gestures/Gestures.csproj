@@ -7,7 +7,7 @@
     <ProjectGuid>{30440EA9-6E96-4B4C-9057-814EC231B9F9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Orchestra.Gestures</RootNamespace>
+    <RootNamespace>Orchestra</RootNamespace>
     <AssemblyName>Gestures</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TempoVolume.cs" />
     <Compile Include="TempoGestureII.cs" />
     <Compile Include="Gestures.cs" />
     <Compile Include="TempoGesture.cs" />

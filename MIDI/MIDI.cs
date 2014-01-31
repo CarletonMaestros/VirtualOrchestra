@@ -34,7 +34,7 @@ namespace Orchestra
         // Volatile Variables
         private static Boolean songStarted = false;
         static int beatCount = -1; //So that we can increment immediately and start at 0
-        static double[] lastBeatStarts = { -5, -4, -3, -2, -1 };
+        static double[] lastBeatStarts = { -1, -1, -1, -1, -1 };
 
         // Properties
         static double Time { get { return stopwatch.ElapsedMilliseconds / 1000d; } }
@@ -85,7 +85,7 @@ namespace Orchestra
         /// </summary>
         static void TimePassed(object sender, ElapsedEventArgs e)
         {
-            if (TimeSinceLastBeat / LastBeatDuration > 1.75)
+            if (TimeSinceLastBeat / LastBeatDuration > 1.75 || lastBeatStarts[0] < 0)
             {
                 sequencer.Clock.Tempo = int.MaxValue;
             }
