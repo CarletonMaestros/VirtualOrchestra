@@ -29,6 +29,7 @@ namespace Orchestra
         public StopGesture()
         {
             Dispatch.SkeletonMoved += SkeletonMoved;
+            Dispatch.Start += Start;
         }
 
         ~StopGesture()
@@ -77,6 +78,11 @@ namespace Orchestra
             prevLeftXOne = leftHandX;
             prevLeftYOne = leftHandY;
         }
-        
+
+        private void Start(float time)
+        {
+            start = false;
+            stop = false;
+        }
     }
 }

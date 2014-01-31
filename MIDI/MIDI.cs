@@ -51,7 +51,7 @@ namespace Orchestra
         public static void Load()
         {
             // Subscribe to dispatch events
-            Dispatch.Play += Play;
+            Dispatch.Start += Start;
             Dispatch.Stop += Stop;
             Dispatch.Beat += Beat;
             Dispatch.VolumeChanged += VolumeChanged;
@@ -92,6 +92,8 @@ namespace Orchestra
             else
             {
                 double bps = LastBPS;
+                if ((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)) < 0)
+                    Console.WriteLine((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)));
                 sequencer.Clock.Tempo = (int)(Math.Min(int.MaxValue,1000000/Last4BPS));
             }
         }
@@ -110,14 +112,6 @@ namespace Orchestra
             lastBeatStarts[lastBeatStarts.Length - 1] = Time;
 
             if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
-
-            // TEMPORARY: Start song on first beat
-            if (!songStarted)
-            {
-                Play(0);
-                songStarted = true;
-                stopwatch.Restart();
-            }
         }
 
         /// <summary>
@@ -399,13 +393,25 @@ namespace Orchestra
             }
             instrumentsAtTicks = arrayToDict(instrumentsAtTicksArray);
             SongData song = new SongData{ppq=ppq, beatsPerMeasure=4, eventsAtTicksDict=eventsAtTicksDict, instrumentsAtTicks=instrumentsAtTicks};
+
+            sequencer.Start();
+            sequencer.Stop();
+            stopwatch.Restart();
+
             Dispatch.TriggerSongLoaded(song);
 
         }
 
-        static void Play(float time)
+        static void Start(float time)
         {
-            sequencer.Start();
+            if (lastBeatStarts[0] > 0)
+            {
+                for (int i = 0; i < lastBeatStarts.Length; ++i)
+                {
+                    lastBeatStarts[i] += Time - lastBeatStarts[lastBeatStarts.Length - 1];
+                }
+            }
+            sequencer.Continue();
         }
 
         static void Stop(float time)

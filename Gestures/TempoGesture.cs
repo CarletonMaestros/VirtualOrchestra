@@ -101,7 +101,6 @@ namespace Orchestra
 
         public TempoGesture()
         {
-            Dispatch.SkeletonMoved += this.SkeletonMoved;
             recentEvents = new CircularQueue<string>(20);
             stopwatch = new Stopwatch();
             counter = 0;
@@ -111,6 +110,14 @@ namespace Orchestra
             framesInFirstBeat = 0;
             testingCounter = 0;
             //circleChecker = new CircularQueue<List<float>>(30);
+
+            Dispatch.SkeletonMoved += SkeletonMoved;
+            Dispatch.Stop += Stopped;
+        }
+
+        private void Stopped(float time)
+        {
+            seeking = "STILL";
         }
 
         ~TempoGesture()
@@ -195,6 +202,7 @@ namespace Orchestra
                             //Console.WriteLine("PICK-UP");
                             //Dispatch.TriggerBeat(counter, "beat");
                             seeking = "MINIMUM";
+                            Dispatch.TriggerStart();
                             break;
                         }
                         break;
