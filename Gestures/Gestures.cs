@@ -20,6 +20,7 @@ namespace Orchestra
             gestures.Add(new VolumeGesture());
             gestures.Add(new TempoGesture());
             gestures.Add(new StopGesture());
+            gestures.Add(new TempoVolume());
         }
     }
 }
