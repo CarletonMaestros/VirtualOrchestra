@@ -65,7 +65,8 @@ namespace Orchestra
 
             // Initialize MIDI
             sequencer.Sequence = sequence;
-            LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
+            LoadSong(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\r.mid");
+            //LoadSong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid");
 
             // Initialize timer
             timer.Elapsed += new ElapsedEventHandler(TimePassed);
@@ -92,6 +93,8 @@ namespace Orchestra
             else
             {
                 double bps = LastBPS;
+                if ((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)) < 0)
+                    Console.WriteLine((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)));
                 sequencer.Clock.Tempo = (int)(Math.Min(int.MaxValue,1000000/Last4BPS));
             }
         }

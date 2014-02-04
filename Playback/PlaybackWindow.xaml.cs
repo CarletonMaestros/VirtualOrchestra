@@ -49,7 +49,7 @@ namespace Orchestra
 
         static async void ReadCSV()
         {
-            string filename = @"C:\Users\admin\Desktop\TempoGesture1.csv";
+            string filename = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample Dances\TempoGesture1.csv";
 
             // Parse CSV
             var rows = File.ReadAllLines(filename)

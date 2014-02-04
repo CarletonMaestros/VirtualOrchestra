@@ -97,8 +97,7 @@ namespace Orchestra
         public float prevBeat;
         public float middleBeat;
         public int testingCounter;
-        public Boolean started;
-        public Boolean aboveHip = false;
+        public int startingFour = 0;
 
         public TempoGesture()
         {
@@ -164,7 +163,7 @@ namespace Orchestra
             }
 
 
-            if (!stop && rightHandY - rightHipY > -.1)
+            if (!stop)
             {
                 switch (seeking)
                 {
@@ -196,14 +195,13 @@ namespace Orchestra
                             framesInFirstBeat++;
                             break;
                         }
-                        if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
+                        if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01))
                         {
                             //Console.WriteLine("Start with " + stopwatch.ElapsedMilliseconds + " in the pre-start beat.");
                             //Console.WriteLine("START");
                             //Console.WriteLine("PICK-UP");
                             //Dispatch.TriggerBeat(counter, "beat");
                             seeking = "MINIMUM";
-                            started = true;
                             Dispatch.TriggerStart();
                             break;
                         }
@@ -211,7 +209,7 @@ namespace Orchestra
                     }
                     case "MINIMUM":
                     {
-                        if (started == false && prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
+                        if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
                         {
                             //Console.WriteLine("Right hand:      " + rightHandX);
                             //Console.WriteLine("Right hip:       " + rightHipX);
@@ -280,10 +278,7 @@ namespace Orchestra
                                 }
                             }
                             // GET OVER IT
-                            // This would be the payback for messing with our comments. Cheers.
                             stopwatch.Restart();
-                            //Console.WriteLine("HI");
-                            //if (start == true) { start = false; Console.WriteLine(start); }
                             Dispatch.TriggerBeat(counter, "beat");
                             seeking = "MAXIMUM";
                             counter++;
