@@ -61,7 +61,7 @@ namespace Orchestra
         public void VolumeChanged(float time, float volume)
         {
             VolumeGauge.Opacity = (volume);
-            VolumeGauge.Height = volume * 478;
+            VolumeGauge.Height = volume * 405;
         }
 
         private void SongLoaded(SongData song)
