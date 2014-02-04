@@ -92,6 +92,8 @@ namespace Orchestra
             else
             {
                 double bps = LastBPS;
+                if ((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)) < 0)
+                    Console.WriteLine((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)));
                 sequencer.Clock.Tempo = (int)(Math.Min(int.MaxValue,1000000/Last4BPS));
             }
         }

@@ -61,7 +61,7 @@ namespace Orchestra
         public void VolumeChanged(float time, float volume)
         {
             VolumeGauge.Opacity = (volume);
-            VolumeGauge.Height = volume * 405;
+            VolumeGauge.Height = volume * PianoRoll.ActualHeight;
         }
 
         private void SongLoaded(SongData song)
@@ -81,6 +81,7 @@ namespace Orchestra
             beatsPerMeasure = song.beatsPerMeasure;
             eventsAtTicksDict = song.eventsAtTicksDict;
             PianoRoll.ClipToBounds = true;
+            VolumeGauge.ClipToBounds = true;
         }
 
         public void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -112,8 +113,8 @@ namespace Orchestra
                 object item = FindName(squareNumber); // turn its name from a string into the Image
                 Image imgToPopulate = (Image)item;
 
-                var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
-                //var uriString = @"C:\Users\Rachel\My Documents\GitHub\VirtualOrchestra\GUI\Resources\" + instName + ".jpg";
+                //var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
+                var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
                 Console.WriteLine(uriString);
                 BitmapImage bitIm = new BitmapImage();
                 bitIm.BeginInit();
@@ -209,8 +210,8 @@ namespace Orchestra
                         {
                             channel.prevInst = note[2];
 
-                            var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
-                            //var uriString = @"C:\Users\Rachel\My Documents\GitHub\VirtualOrchestra\GUI\Resources\" + instName + ".jpg";
+                            //var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
+                            var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
                             Console.WriteLine(uriString);
                             BitmapImage bitIm = new BitmapImage();
                             bitIm.BeginInit();

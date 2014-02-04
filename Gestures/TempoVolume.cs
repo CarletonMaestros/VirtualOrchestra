@@ -24,6 +24,10 @@ namespace Orchestra
         public int stillFramesCount;
         public int framesInFirstBeat;
         public int startMarker = 0;
+        public Boolean stop = false;
+        public float prevBeat;
+        public float middleBeat;
+        public int startingFour = 0;
         public List<float> maxX = new List<float>();
         public List<float> maxY = new List<float>();
         public List<float> minX = new List<float>();
@@ -46,7 +50,7 @@ namespace Orchestra
         {
             foreach (var i in a)
             {
-                Console.WriteLine(" " + i);
+                Console.WriteLine(" ", i);
             }
         }
 
@@ -124,24 +128,23 @@ namespace Orchestra
                         {
                             long tempo = stopwatch.ElapsedMilliseconds * 1000;
                         }
-                        //Beat 1 and 4
                         if (rightHandX - rightHipX > -.1 && rightHandX - rightHipX < .15 && Math.Abs(rightHandY - rightHipY) < .15)
                         {
                             minY.Add(rightHandY);
                             if (minY.Count == 4) { minY.RemoveAt(0); }
                         }
-                        //Beat 2
                         else if (rightHandX < 0)
                         {
                             minX.Add(rightHandX);
                             if (minX.Count == 4) { minX.RemoveAt(0); }
                         }
-                        //Beat 3
                         else if (rightHandX > 0)
                         {
                             maxX.Add(rightHandX);
+
                             if (maxX.Count == 4) { maxX.RemoveAt(0); }
                         }
+                        //Dispatch.TriggerBeat(counter, "beat");
                         stopwatch.Restart();
                         seeking = "MAXIMUM";
                         counter++;
@@ -169,14 +172,13 @@ namespace Orchestra
             //        //if (volume > 0) { volume -= (Math.Abs(maxX.ElementAt(2) / maxX.ElementAt(0)) * volume / 127); }
             //        if (volume > 0) { volume -= (5 * volume / 127); }
             //        volumeChanged = true;
-            //        //Console.WriteLine("volumeDown: " + volume);
             //    }
             //    if (maxX.ElementAt(2) > maxX.ElementAt(0) * 1.1 && minX.ElementAt(2) < minX.ElementAt(0) * 1.1 && maxY.ElementAt(2) > maxY.ElementAt(0) * 1.1)
             //    {
+            //        Console.WriteLine("{0}", Math.Abs(maxX.ElementAt(2) / maxX.ElementAt(0)));
             //        //if (volume < 127) { volume += (Math.Abs(maxX.ElementAt(2) / maxX.ElementAt(0)) * (127 - volume) / 127); }
             //        if (volume < 127) { volume += (5 * (127 - volume) / 127); }
             //        volumeChanged = true;
-            //        //Console.WriteLine("volumeUp: " + volume);
             //    }
             //    //if (volumeChanged == true)
             //    //{
@@ -188,12 +190,6 @@ namespace Orchestra
             //    //    maxY.Insert(2, maxY.ElementAt(0));
             //    //    volumeChanged = false;
             //    //}
-            //    //Console.WriteLine("Max X: ");
-            //    //printArray<float>(maxX);
-            //    //Console.WriteLine("Min X: ");
-            //    //printArray<float>(minX);
-            //    //Console.WriteLine("Max Y: ");
-            //    //printArray<float>(maxY);
             //    int intVolume = (int)volume;
             //    Dispatch.TriggerVolumeChanged(intVolume / 127f);
             //}

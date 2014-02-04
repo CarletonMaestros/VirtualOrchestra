@@ -38,10 +38,6 @@ namespace Orchestra
         public static event StopDelegate Stop;
         public static void TriggerStop() { if (Stop != null) Stop(Time); }
 
-        public delegate void BeatVolumeChangedDelegate(float time, int beat, float volume);
-        public static event BeatVolumeChangedDelegate BeatVolume;
-        public static void TriggerBeatVolumeChanged(float time, int beat, float volume) { if (BeatVolume != null) BeatVolume(time, beat, volume); }
-
         private static Stopwatch stopwatch = new Stopwatch();
 
         private static float Time 
