@@ -69,10 +69,17 @@ namespace Orchestra
             for (int i = 0; i < 16; i++)
             {
                 var squareNumber = "square" + (i+1).ToString(); //get the correct image to populate's name. I changed the image names to what's on that sheet of paper.
+                var rectNumber = "rect" + (i + 1).ToString(); //get the correct rect to populate's name. I changed the rect names to what's on that sheet of paper.
                 //Console.WriteLine(squareNumber); 
-                object item = FindName(squareNumber); // turn its name from a string into the Image
-                Image imgToPopulate = (Image)item;
 
+                object rectangle = FindName(rectNumber);
+                Canvas rect = (Canvas)rectangle;
+                rect.Background = colorByChannel[i];
+
+                object item = FindName(squareNumber); // turn its name from a string into the Image
+                
+                Image imgToPopulate = (Image)item;
+                
                 ChannelHandler temp = new ChannelHandler();
                 channels[i] = temp;
                 channels[i].channelImage = imgToPopulate;
@@ -114,7 +121,7 @@ namespace Orchestra
                 Image imgToPopulate = (Image)item;
 
                 //var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
-                var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
+                var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".png";
                 Console.WriteLine(uriString);
                 BitmapImage bitIm = new BitmapImage();
                 bitIm.BeginInit();
@@ -210,7 +217,7 @@ namespace Orchestra
                         {
                             channel.prevInst = note[2];
 
-                            var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
+                            var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".png";
                             //var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
                             Console.WriteLine(uriString);
                             BitmapImage bitIm = new BitmapImage();

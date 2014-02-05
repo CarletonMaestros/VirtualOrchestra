@@ -77,6 +77,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SongSelect.xaml.cs">
+      <DependentUpon>SongSelect.xaml</DependentUpon>
+    </Compile>
     <Page Include="GUIWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -92,6 +95,10 @@
       <DependentUpon>GUIWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SongSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -266,6 +273,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Conductor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AlbumArt.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\MountainKing.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

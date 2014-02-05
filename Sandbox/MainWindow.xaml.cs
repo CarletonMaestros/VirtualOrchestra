@@ -24,10 +24,12 @@ namespace Orchestra.Sandbox
         private DrawingImage imageSource;
 
         private GUIWindow guiWindow = new GUIWindow();
+        private SongSelectWindow songWindow = new SongSelectWindow();
 
         public MainWindow()
         {
             InitializeComponent();
+            //songWindow.Show();
             guiWindow.Show();
             //Hide();
         }
