@@ -27,6 +27,7 @@ namespace Orchestra
         private List<int> instruments;
         private int currTick = 0;
         private ChannelHandler[] channels = new ChannelHandler[16];
+        public static string songFile = "";
 
 
         // private float beatsPerSecond = 2; //will be set dynamically
@@ -120,8 +121,8 @@ namespace Orchestra
                 object item = FindName(squareNumber); // turn its name from a string into the Image
                 Image imgToPopulate = (Image)item;
 
-                //var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
-                var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".png";
+                var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
+                //var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".png";
                 Console.WriteLine(uriString);
                 BitmapImage bitIm = new BitmapImage();
                 bitIm.BeginInit();

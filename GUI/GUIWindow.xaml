@@ -128,7 +128,7 @@
                     <ColumnDefinition Width="8*"/>
             </Grid.ColumnDefinitions>
             <Canvas x:Name="PianoRoll"  Margin="10,62,68,30" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="1" Grid.Column="1" />
-        <Canvas x:Name ="VolumeGauge" Margin="36,0,24,30" Height="250"  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Column="0"  Grid.ColumnSpan="1"  RenderTransformOrigin="0.5,0.5" >
+        <Canvas x:Name ="VolumeGauge" Margin="36,0,24,30"   HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Column="0"  Grid.ColumnSpan="1"  RenderTransformOrigin="0.5,0.5" >
             <Canvas.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="-1"/>

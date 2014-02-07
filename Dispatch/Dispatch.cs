@@ -38,6 +38,11 @@ namespace Orchestra
         public static event StopDelegate Stop;
         public static void TriggerStop() { if (Stop != null) Stop(Time); }
 
+        public delegate void SongSelectedDelegate(string songFile);
+        public static event SongSelectedDelegate SongSelected;
+        public static void TriggerSongSelected(string songFile) { if (SongSelected != null) SongSelected(songFile); }
+
+
         private static Stopwatch stopwatch = new Stopwatch();
 
         private static float Time 

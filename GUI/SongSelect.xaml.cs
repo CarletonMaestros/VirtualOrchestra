@@ -19,20 +19,26 @@ namespace Orchestra
     /// </summary>
     public partial class SongSelectWindow : Window
     {
+        public string songFile;
+
         public SongSelectWindow()
         {
             InitializeComponent();
         }
 
-        private void ListBoxItem_Selected_1(object sender, RoutedEventArgs e)
+        public void ListBoxItem_Selected_1(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
             ParaAnd.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
+            //newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Radiohead.jpg");
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Radiohead.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid";
+            //songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\r.mid";
+            Dispatch.TriggerSongSelected(songFile); 
         }
 
         private void ParaAndLoop(object sender, RoutedEventArgs e)
@@ -49,6 +55,8 @@ namespace Orchestra
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Madonna.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\m.mid";
+            Dispatch.TriggerSongSelected(songFile); 
         }
 
         private void ListBoxItem_Selected_3(object sender, RoutedEventArgs e)
@@ -60,6 +68,8 @@ namespace Orchestra
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Skrillex.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid";
+            Dispatch.TriggerSongSelected(songFile); 
         }
 
         private void ScarMonLoop(object sender, RoutedEventArgs e)
@@ -76,6 +86,8 @@ namespace Orchestra
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Beethoven.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\b2.mid";
+            Dispatch.TriggerSongSelected(songFile); 
         }
 
         private void ListBoxItem_Selected_5(object sender, RoutedEventArgs e)
@@ -86,6 +98,8 @@ namespace Orchestra
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\MountainKing.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\g.mid";
+            Dispatch.TriggerSongSelected(songFile); 
         }
 
         private void ListBoxItem_Selected_6(object sender, RoutedEventArgs e)
@@ -96,6 +110,8 @@ namespace Orchestra
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Daftpunk.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\d.mid";
+            Dispatch.TriggerSongSelected(songFile); 
         }
 
         private void ListBoxItem_Selected_7(object sender, RoutedEventArgs e)
@@ -106,6 +122,8 @@ namespace Orchestra
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Beatles.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\b.mid";
+            Dispatch.TriggerSongSelected(songFile); 
         }
 
         private void ListBoxItem_Selected_8(object sender, RoutedEventArgs e)
@@ -116,6 +134,8 @@ namespace Orchestra
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Kanye.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\k.mid";
+            Dispatch.TriggerSongSelected(songFile); 
         }
 
         private void StopAllMusic()
@@ -130,6 +150,13 @@ namespace Orchestra
             {
                 ScarMon.Stop();
             }
+        }
+
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            var guiWindow = new GUIWindow();
+            guiWindow.Show();
+            this.Close();
         }
     }
 }

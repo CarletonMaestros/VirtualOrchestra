@@ -30,7 +30,8 @@ namespace Orchestra.Sandbox
         {
             InitializeComponent();
             //songWindow.Show();
-            guiWindow.Show();
+            //guiWindow.Show();
+            songWindow.Show();
             //Hide();
         }
 
