@@ -159,7 +159,7 @@ namespace Orchestra
                 return eventsAtTicksDict;
             }
         }
-        //removes tempo meta messages
+        //removes all meta messages
         static void stripMetaMessages(Sequence sequence)
         {
             IEnumerable<Track> tracks = sequencer.Sequence.AsEnumerable();
@@ -172,8 +172,10 @@ namespace Orchestra
                     //Console.WriteLine(midievent.MidiMessage.MessageType);
                     if (midievent.MidiMessage.MessageType == MessageType.Meta)
                     {
-                        //Console.WriteLine(midievent.MidiMessage.MessageType);
-                        track.RemoveAt(counter);
+                        if (!(midievent.MidiMessage.Status == 0x2F)) //if not end of track message
+                        {
+                            track.RemoveAt(counter);
+                        }
                     }
                     counter++;
                 }
@@ -326,7 +328,10 @@ namespace Orchestra
                                 }
                             }
                             int[] eventdata = new int[5] { instr, pitchNOFF_NOD, velNON_NOD, dur, channelNOFF_NOD }; //to be added to the dictionary of lists of lists
-                            eventsAtTicksDict = addToDictHandleCollisions(absNON_NOD, eventdata, eventsAtTicksDict);
+                            if (!(NONdata_NOD[1] == 0))
+                            {
+                                eventsAtTicksDict = addToDictHandleCollisions(absNON_NOD, eventdata, eventsAtTicksDict);
+                            }
                             //pretend nothing happened. To be clear, in this try block, we are killing the duplicated note and restarting with a new note.
                             noteDurationData.Add(key, data);
 

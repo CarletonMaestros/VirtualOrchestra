@@ -172,6 +172,42 @@ namespace Orchestra
             RockAmadeus.Play();
         }
 
+        private void ListBoxItem_Selected_9(object sender, RoutedEventArgs e)
+        {
+            StopAllMusic();
+            Always.Play();
+            BitmapImage newIm = new BitmapImage();
+            newIm.BeginInit();
+            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\unicorn.jpg");
+            newIm.EndInit();
+            PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\always.mid";
+        }
+
+        private void AlwaysLoop(object sender, RoutedEventArgs e)
+        {
+            Always.Position = TimeSpan.Zero;
+            Always.Play();
+        }
+
+        private void ListBoxItem_Selected_10(object sender, RoutedEventArgs e)
+        {
+            StopAllMusic();
+            AirG.Play();
+            BitmapImage newIm = new BitmapImage();
+            newIm.BeginInit();
+            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Bach.jpg");
+            newIm.EndInit();
+            PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\airgstr.mid";
+        }
+
+        private void AirGLoop(object sender, RoutedEventArgs e)
+        {
+            AirG.Position = TimeSpan.Zero;
+            AirG.Play();
+        }
+
         private void StopAllMusic()
         {
             bool parAndPause = ParaAnd.CanPause;
@@ -213,6 +249,16 @@ namespace Orchestra
             if (mtKingPause == true)
             {
                 MtKing.Stop();
+            }
+            bool alwaysPause = Always.CanPause;
+            if (alwaysPause == true)
+            {
+                Always.Stop();
+            }
+            bool airGPause = AirG.CanPause;
+            if (airGPause == true)
+            {
+                AirG.Stop();
             }
 
         }

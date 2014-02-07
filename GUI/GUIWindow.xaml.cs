@@ -133,7 +133,6 @@ namespace Orchestra
                             note[0] = 128;
                         }
                         //entries are [ticks, duration, instr, velocity]
-                        Console.WriteLine("{0} , {1}", note[2], note[3]);
 
                         channels[note[4]].EventData.Add(new int[] { ticks, note[3], note[0], note[2]});
                     }

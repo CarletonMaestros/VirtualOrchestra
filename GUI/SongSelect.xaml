@@ -17,15 +17,19 @@
         <MediaElement Name="GetLucky" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\daft.wav" LoadedBehavior="Manual" MediaEnded="GetLuckyLoop" />
         <MediaElement Name="HardDay" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.wav" LoadedBehavior="Manual" MediaEnded="HardDayLoop" />
         <MediaElement Name="RockAmadeus" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rockamadeus.wav" LoadedBehavior="Manual" MediaEnded="RockAmadeusLoop" />
+        <MediaElement Name="Always" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.wav" LoadedBehavior="Manual" MediaEnded="AlwaysLoop" />
+        <MediaElement Name="AirG" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.wav" LoadedBehavior="Manual" MediaEnded="AirGLoop" />
         <ListBox Name="SongSelector" HorizontalAlignment="Left" Height="403" Margin="25,25,0,0" VerticalAlignment="Top" Width="380">
-            <ListBoxItem Content="    Radiohead: Paranoid Android" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_1"/>
-            <ListBoxItem Content="    Madonna: Like a Prayer" Height="50" FontSize="18"  Foreground="Black" Background="LightGray" Selected="ListBoxItem_Selected_2"/>
-            <ListBoxItem Content="    Skrillex: Scary Monsters and Nice Sprites" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_3"/>
-            <ListBoxItem Content="    Beethoven: Symphony No. 5" Height="50" FontSize="18"   Background="LightGray" Selected="ListBoxItem_Selected_4"/>
-            <ListBoxItem Content="    Greig: In The Hall of the Mountain King" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_5"/>
-            <ListBoxItem Content="    Daft Punk: Get Lucky" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_6"/>
+            <ListBoxItem Content="    Bach: Air on a G String" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_10"/>
             <ListBoxItem Content="    The Beatles: Hard Day's Night" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_7"/>
-            <ListBoxItem Content="    Falco: Rock Me Amadeus" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_8"/>
+            <ListBoxItem Content="    Beethoven: Symphony No. 5" Height="50" FontSize="18"   Background="LightGray" Selected="ListBoxItem_Selected_4"/>
+            <ListBoxItem Content="    Daft Punk: Get Lucky" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_6"/>
+            <ListBoxItem Content="    Erasure: Always" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_9"/>
+            <ListBoxItem Content="    Falco: Rock Me Amadeus" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_8"/>
+            <ListBoxItem Content="    Grieg: In The Hall of the Mountain King" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_5"/>
+            <ListBoxItem Content="    Madonna: Like a Prayer" Height="50" FontSize="18"  Foreground="Black" Background="White" Selected="ListBoxItem_Selected_2"/>
+            <ListBoxItem Content="    Radiohead: Paranoid Android" Height="50"  FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_1"/>
+            <ListBoxItem Content="    Skrillex: Scary Monsters and Nice Sprites" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_3"/>
         </ListBox>
         <Image Name="PreviewImage" Source="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" HorizontalAlignment="Left" Height="200" Margin="490,49,0,0" VerticalAlignment="Top" Width="200"/>
         <Label Name="PreviewText" Foreground="White" Content="Pick a Song!" FontSize="20" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="40" Margin="490,280,0,0" VerticalAlignment="Top" Width="200"/>
