@@ -157,19 +157,19 @@ namespace Orchestra
         private void ListBoxItem_Selected_8(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
-            NewWorld.Play();
+            RockAmadeus.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Dvorak.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\falco.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.mid";
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rockamadeus.mid";
         }
 
-        private void NewWorldLoop(object sender, RoutedEventArgs e)
+        private void RockAmadeusLoop(object sender, RoutedEventArgs e)
         {
-            NewWorld.Position = TimeSpan.Zero;
-            NewWorld.Play();
+            RockAmadeus.Position = TimeSpan.Zero;
+            RockAmadeus.Play();
         }
 
         private void StopAllMusic()
@@ -199,10 +199,10 @@ namespace Orchestra
             {
                 Sym5.Stop();
             }
-            bool newWorldPause = NewWorld.CanPause;
-            if (newWorldPause == true)
+            bool rockAmadeusPause = RockAmadeus.CanPause;
+            if (rockAmadeusPause == true)
             {
-                NewWorld.Stop();
+                RockAmadeus.Stop();
             }
             bool getLuckyPause = GetLucky.CanPause;
             if (getLuckyPause == true)
@@ -220,13 +220,10 @@ namespace Orchestra
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
+            this.Close();
             GUIWindow guiWindow = new GUIWindow();
             guiWindow.Show();
-            this.Close();
             Dispatch.TriggerSongSelected(songFile);
-            
-            
-            
         }
     }
 }

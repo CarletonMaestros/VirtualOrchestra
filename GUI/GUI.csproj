@@ -140,7 +140,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Accordion.jpg" />
     <Resource Include="Resources\AcousticBass.jpg" />
     <Resource Include="Resources\AcousticGrandPiano.jpg" />
     <Resource Include="Resources\AcousticGuitarNylon.jpg" />

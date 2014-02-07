@@ -23,7 +23,7 @@ namespace Orchestra
     public class ChannelHandler
     {
         public List<int[]> EventData = new List<int[]>();
-        public int prevInst = 0;
+        public int prevInst = -1;
         public Image channelImage;
     }
 }

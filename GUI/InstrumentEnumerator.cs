@@ -136,5 +136,6 @@ namespace Orchestra
         Helicopter,
         Applause,
         Gunshot,
+        Drums,
     }
 }

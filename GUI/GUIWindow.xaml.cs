@@ -101,40 +101,6 @@ namespace Orchestra
         {
         }
 
-        private void PreProcessInstruments(Dictionary<int, int[]> instDict)
-        {
-
-            instruments = new List<int>();
-            foreach (KeyValuePair<int, int[]> instrument in instDict)
-            {
-                foreach (int inst in instrument.Value)
-                {
-                    instruments.Add(inst);
-                    //Console.WriteLine("Adding: {0}", inst);
-                }
-            }
-            //Console.WriteLine("Final list: {0} ", instruments);
-            int counter = 1;
-            foreach (int inst in instruments)
-            {
-                var squareNumber = "square" + counter.ToString(); //get the correct image to populate's name. I changed the image names to what's on that sheet of paper.
-                //Console.WriteLine(squareNumber); 
-                object item = FindName(squareNumber); // turn its name from a string into the Image
-                Image imgToPopulate = (Image)item;
-
-                var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".jpg";
-                //var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)inst + ".png";
-                Console.WriteLine(uriString);
-                BitmapImage bitIm = new BitmapImage();
-                bitIm.BeginInit();
-                bitIm.UriSource = new Uri(uriString);
-                bitIm.EndInit();
-                imgToPopulate.Source = bitIm;
-
-                counter += 1;
-            }
-        }
-
         private void PopulatePianoRoll()
         {
             if (currTick - lastPopulate > ticksPerBeat * beatsPerMeasure)
@@ -151,6 +117,7 @@ namespace Orchestra
                 {
                     foreach (int[] note in eventsAtTicksDict[ticks])
                     {
+                        //entries are [instr, pitch, velocity, duration, channel]
                         double height = PianoRoll.ActualHeight / noteHeightResolution;
                         double width = note[3] / TicksPerPixel;
                         if (note[0] < 0) { note[0] = 0; }
@@ -161,6 +128,13 @@ namespace Orchestra
                         Canvas.SetLeft(noteRect, xPos);
                         Canvas.SetTop(noteRect, yPos);
                         PianoRoll.Children.Add(noteRect);
+                        if (note[4] == 9)
+                        {
+                            note[0] = 128;
+                        }
+                        //entries are [ticks, duration, instr, velocity]
+                        Console.WriteLine("{0} , {1}", note[2], note[3]);
+
                         channels[note[4]].EventData.Add(new int[] { ticks, note[3], note[0], note[2]});
                     }
                     eventsAtTicksDict.Remove(ticks);
@@ -219,6 +193,7 @@ namespace Orchestra
                         {
                             channel.prevInst = note[2];
 
+                            //entries are [tick, duration, instr, velocity]
                             //var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".png";
                             var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
                             Console.WriteLine(uriString);
@@ -255,6 +230,7 @@ namespace Orchestra
         private double calcOpacity(int velocity, double percentRemaining)
         {
             double correctedVelocity = velocity / 127d;
+            //double correctedVelocity = 1d;
 
             return correctedVelocity * percentRemaining;
         }
@@ -264,13 +240,6 @@ namespace Orchestra
             double pixelPosition = ((int)child.Tag - currTick) / TicksPerPixel;
             return pixelPosition;
         }
-
-        //private void StartStopwatch()
-        //{ 
-        //    Timer aTimer = new System.Timers.Timer(10);
-        //    aTimer.Elapsed += new ElapsedEventHandler(TestPlayback);
-        //    aTimer.Enabled = true;
-        //}
 
         private void TickTriggered(int tick)
         {
@@ -310,83 +279,5 @@ namespace Orchestra
             }
 
         }
-
-
-
-        //    private Dictionary<int, Dictionary<string, List<int[]>>> MakeInstChangesDict()
-        //    {
-        //        //We should prolly break this into 2 functions. I'm just psuedocode vomiting. 
-        //        //Start stopwatch to keep track of when events sh0uld happen (coming from dispatch)
-        //        // Dictionary is like:
-        //        // {AbsoluteTick1: [[instrument, pitch, velocity, note duration],[instrument, pitch, velocity, duration, channel]], AbsoluteTick2: [[...]...]}
-
-
-        //        Dictionary<int, List<int[]>> instPlayingDict = new Dictionary<int, List<int[]>>(); // {Instrument: [all the ticks it plays at]}
-        //        Dictionary<int, Dictionary<string, List<int[]>>> instChangesDict = new Dictionary<int, Dictionary<string, List<int[]>>>();
-
-        //        foreach (KeyValuePair<int, List<int[]>> tick in eventsAtTicksDict)
-        //        {
-        //            foreach (int[] note in tick.Value) // Instrument notes kind of...
-        //            {
-
-        //                int instrument = note[0];
-
-        //                if (!instPlayingDict.ContainsKey(instrument)) // if the instrument's not in the dictionary yet
-        //                {
-        //                    List<int[]> newInstList = new List<int[]>(); //make a list for its ticks
-        //                    instPlayingDict.Add(note[0], newInstList); // put it in the dictionary
-        //                }
-        //                int[] tempArr = new int[] {tick.Key, (tick.Key + note[3]), note[4]};
-        //                instPlayingDict[note[0]].Add(tempArr);
-
-        //            }
-
-        //        }
-        //        // ok so we now have every tick in which an instrument plays
-
-
-        //        foreach (KeyValuePair<int, List<int[]>> inst in instPlayingDict) //key is instrument, value is list of ticks they play at
-        //        {
-        //            int length = inst.Value.Count - 1;
-        //            //always have a turnOn at the insttrument's first note
-        //            if (!instChangesDict.ContainsKey(inst.Value[0][0]))
-        //            {
-        //                Dictionary<String, List<int[]>> subDict0 = new Dictionary<String, List<int[]>>();
-        //                List<int[]> newInstList0 = new List<int[]>();
-        //                subDict0.Add("TurnOn", newInstList0);
-        //                instChangesDict.Add(inst.Value[0][0], subDict0);
-        //            }
-        //            instChangesDict[inst.Value[0][0]]["TurnOn"].Add(new int[] {inst.Key, inst.Value[0][2]});
-        //            for (int i = 0; i < length; i++)
-        //            {
-
-        //                if ((inst.Value[i + 1][0] - inst.Value[i][1]) > 1000)
-        //                {
-        //                    if (!instChangesDict.ContainsKey(inst.Value[i + 1][0])) //if the dict doesnt have the tick as a key yet
-        //                    {
-        //                        Dictionary<String, List<int[]>> subDict = new Dictionary<String, List<int[]>>();
-        //                        List<int[]> newInstList = new List<int[]>();
-        //                        List<int[]> newInstList2 = new List<int[]>();
-        //                        subDict.Add("TurnOn", newInstList);
-        //                        subDict.Add("TurnOff", newInstList2);
-        //                        instChangesDict.Add(inst.Value[i + 1][0], subDict); // put it in the dictionary
-        //                    }
-        //                    if (!instChangesDict.ContainsKey(inst.Value[i][1])) //if the dict doesnt have the tick as a key yet
-        //                    {
-        //                        Dictionary<String, List<int[]>> subDict2 = new Dictionary<String, List<int[]>>();
-        //                        List<int[]> newInstList3 = new List<int[]>();
-        //                        List<int[]> newInstList4 = new List<int[]>();
-        //                        subDict2.Add("TurnOn", newInstList3);
-        //                        subDict2.Add("TurnOff", newInstList4);
-        //                        instChangesDict.Add(inst.Value[i][1], subDict2);
-        //                    }
-        //                    instChangesDict[inst.Value[i + 1][0]]["TurnOn"].Add(new int[] { inst.Key, inst.Value[0][2] });
-        //                    instChangesDict[inst.Value[i][1]]["TurnOff"].Add(new int[] { inst.Key, inst.Value[0][2] });
-        //                }
-        //            }
-        //        }
-        //        return instChangesDict;
-        //    }
-        //}
     }
 }
