@@ -220,6 +220,8 @@ namespace Orchestra
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
+            GUIWindow guiWindow = new GUIWindow();
+            guiWindow.Show();
             this.Close();
             Dispatch.TriggerSongSelected(songFile);
             

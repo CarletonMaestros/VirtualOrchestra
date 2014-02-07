@@ -45,8 +45,8 @@ namespace Orchestra.Sandbox
             Gestures.Load();
             MIDI.Load();
 
-            GUIWindow guiWindow = new GUIWindow();
-            guiWindow.Show();
+            //GUIWindow guiWindow = new GUIWindow();
+           // guiWindow.Hide();
 
             // Add event loggers
             //Dispatch.Beat += (time, beat) => Console.WriteLine("Beat {0}", beat);
