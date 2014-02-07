@@ -51,70 +51,79 @@
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Canvas x:Name="rect15">
-                <Image x:Name="square15"
-        			HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="128" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="1" x:Name="rect11">
-                <Image x:Name="square11" 
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="128" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="2" x:Name="rect7">
-                <Image x:Name="square7" 
-        			HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="128" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="3" x:Name="rect1">
-                <Image x:Name="square1" 
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="128" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="4" x:Name="rect2">
-                <Image x:Name="square2" 
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="128" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="5" x:Name="rect8">
-                <Image x:Name="square8" 
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="128" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="6" x:Name="rect12">
-                <Image x:Name="square12"
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="128" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="7" x:Name="rect16">
-                <Image x:Name="square16" 
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="128" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Row="1" x:Name="rect13">
-                <Image x:Name="square13" 
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="129" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="1" Grid.Row="1" x:Name="rect9">
-                <Image x:Name="square9"
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="129" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="2" Grid.Row="1" x:Name="rect5">
-                <Image x:Name="square5" 
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="129" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="3" Grid.Row="1" x:Name="rect3">
-                <Image x:Name="square3"
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="129" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="4" Grid.Row="1" x:Name="rect4">
-                <Image x:Name="square4"
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="129" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="5" Grid.Row="1" x:Name="rect6">
-                <Image x:Name="square6" 
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="129" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="6" Grid.Row="1" x:Name="rect10">
-                <Image x:Name="square10"
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="128" Width="124"/>
-            </Canvas>
-            <Canvas Grid.Column="7" Grid.Row="1" x:Name="rect14">
-                <Image x:Name="square14"
-            		HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="129" Width="124"/>
-            </Canvas>
+            
+            
+            <Canvas x:Name="rect15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,5,5"/>
+            <Image x:Name="square15"
+        			Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+
+            <Canvas Grid.Column="1" x:Name="rect11" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,5,5"/>
+            <Image x:Name="square11" Grid.Column="1"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+           
+            
+            <Canvas Grid.Column="2" x:Name="rect7" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,5,5"/>
+                <Image x:Name="square7" Grid.Column="2"
+        			 Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+            
+            <Canvas Grid.Column="3" x:Name="rect1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,5,5"/>
+                    <Image x:Name="square1" Grid.Column="3"
+            		    Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+
+            <Canvas Grid.Column="4" x:Name="rect2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,5,5"/>
+            <Image x:Name="square2" Grid.Column="4"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+            
+            
+            
+            <Canvas Grid.Column="5" x:Name="rect8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,5,5"/>
+                <Image x:Name="square8" Grid.Column="5"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+            
+            <Canvas Grid.Column="6" x:Name="rect12" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,5,5"/>
+                <Image x:Name="square12" Grid.Column="6"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+            
+            
+            <Canvas Grid.Column="7" x:Name="rect16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,5,5"/>
+                <Image x:Name="square16" Grid.Column="7"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+            <Canvas Grid.Row="1" x:Name="rect13" Margin="5,5,5,5"/>
+                <Image x:Name="square13" Grid.Row="1"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+            <Canvas Grid.Column="1" Grid.Row="1" x:Name="rect9" Margin="5,5,5,5"/>
+            <Image x:Name="square9"  Grid.Column="1" Grid.Row="1"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+            <Canvas Grid.Column="2" Grid.Row="1" x:Name="rect5" Margin="5,5,5,5"/>
+                <Image x:Name="square5" Grid.Column="2" Grid.Row="1"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+            <Canvas Grid.Column="3" Grid.Row="1" x:Name="rect3" Margin="5,5,5,5"/>
+                <Image x:Name="square3" Grid.Column="3" Grid.Row="1"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+            <Canvas Grid.Column="4" Grid.Row="1" x:Name="rect4" Margin="5,5,5,5"/>
+            <Image x:Name="square4" Grid.Column="4" Grid.Row="1"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+            <Canvas Grid.Column="5" Grid.Row="1" x:Name="rect6" Margin="5,5,5,5"/>
+            <Image x:Name="square6" Grid.Column="5" Grid.Row="1"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+            <Canvas Grid.Column="6" Grid.Row="1" x:Name="rect10" Margin="5,5,5,5"/>
+                <Image x:Name="square10" Grid.Column="6" Grid.Row="1"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
+            <Canvas Grid.Column="7" Grid.Row="1" x:Name="rect14" Margin="5,5,5,5"/>
+            <Image x:Name="square14" Grid.Column="7" Grid.Row="1"
+            		Stretch="Uniform" StretchDirection="Both"  HorizontalAlignment="Center" VerticalAlignment="Stretch" ClipToBounds="True"  Margin="8,8,8,8"/>
+
         </Grid>
 
         <!--<Border Background="Pink" Width="20" Height="20" CornerRadius="20" x:Name="myBorder">

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Orchestra.SongSelectWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Select a Song!" Height="380" Width="700">
+        Title="Select a Song!" Height="520" Width="750">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
@@ -17,20 +17,20 @@
         <MediaElement Name="GetLucky" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\daft.wav" LoadedBehavior="Manual" MediaEnded="GetLuckyLoop" />
         <MediaElement Name="HardDay" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.wav" LoadedBehavior="Manual" MediaEnded="HardDayLoop" />
         <MediaElement Name="NewWorld" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.wav" LoadedBehavior="Manual" MediaEnded="NewWorldLoop" />
-        <ListBox Name="SongSelector" HorizontalAlignment="Left" Height="300" Margin="25,25,0,0" VerticalAlignment="Top" Width="380">
-            <ListBoxItem Content="Paranoid Android" Height="50"  FontSize="23" HorizontalContentAlignment="Center" Background="White" Selected="ListBoxItem_Selected_1"/>
-            <ListBoxItem Content="Like a Prayer" Height="50" FontSize="23" HorizontalContentAlignment="Center" Foreground="White" Background="Gray" Selected="ListBoxItem_Selected_2"/>
-            <ListBoxItem Content="Scary Monsters and Nice Sprites" Height="50" FontSize="23" HorizontalContentAlignment="Center" Background="White" Selected="ListBoxItem_Selected_3"/>
-            <ListBoxItem Content="Symphony No. 5" Height="50" FontSize="23" HorizontalContentAlignment="Center" Foreground="White" Background="Gray" Selected="ListBoxItem_Selected_4"/>
-            <ListBoxItem Content="In The Hall of the Mountain King" Height="50" FontSize="23" HorizontalContentAlignment="Center" Background="White" Selected="ListBoxItem_Selected_5"/>
-            <ListBoxItem Content="Get Lucky" Height="50" FontSize="23" HorizontalContentAlignment="Center" Foreground="White" Background="Gray" Selected="ListBoxItem_Selected_6"/>
-            <ListBoxItem Content="Hard Day's Night" Height="50" FontSize="23" HorizontalContentAlignment="Center" Background="White" Selected="ListBoxItem_Selected_7"/>
-            <ListBoxItem Content="From the New World" Height="50" FontSize="23" HorizontalContentAlignment="Center" Foreground="White" Background="Gray" Selected="ListBoxItem_Selected_8"/>
+        <ListBox Name="SongSelector" HorizontalAlignment="Left" Height="403" Margin="25,25,0,0" VerticalAlignment="Top" Width="380">
+            <ListBoxItem Content="    Radiohead: Paranoid Android" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_1"/>
+            <ListBoxItem Content="    Madonna: Like a Prayer" Height="50" FontSize="18"  Foreground="Black" Background="LightGray" Selected="ListBoxItem_Selected_2"/>
+            <ListBoxItem Content="    Skrillex: Scary Monsters and Nice Sprites" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_3"/>
+            <ListBoxItem Content="    Beethoven?: Symphony No. 5" Height="50" FontSize="18"   Background="LightGray" Selected="ListBoxItem_Selected_4"/>
+            <ListBoxItem Content="    Greig: In The Hall of the Mountain King" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_5"/>
+            <ListBoxItem Content="Daft Punk: Get Lucky" Height="50" FontSize="18" HorizontalContentAlignment="Center" Foreground="White" Background="Gray" Selected="ListBoxItem_Selected_6"/>
+            <ListBoxItem Content="The Beatles: Hard Day's Night" Height="50" FontSize="18" HorizontalContentAlignment="Center" Background="White" Selected="ListBoxItem_Selected_7"/>
+            <ListBoxItem Content="No Clue: From the New World" Height="50" FontSize="18" HorizontalContentAlignment="Center" Foreground="White" Background="Gray" Selected="ListBoxItem_Selected_8"/>
         </ListBox>
-        <Image Name="PreviewImage" Source="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" HorizontalAlignment="Left" Height="200" Margin="440,25,0,0" VerticalAlignment="Top" Width="200"/>
-        <Label Name="PreviewText" Foreground="White" Content="Pick a Song!" FontSize="20" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="40" Margin="440,237,0,0" VerticalAlignment="Top" Width="200"/>
-        <Button Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Left" Height="42" Margin="490,283,0,0" VerticalAlignment="Top" Width="100" Click="ConfirmButton_Click"/>
-        <Border BorderBrush="DarkGray" BorderThickness="3" HorizontalAlignment="Left" Height="204" Margin="438,23,0,0" VerticalAlignment="Top" Width="204"/>
-        <Border BorderBrush="DarkGray" BorderThickness="3" HorizontalAlignment="Left" Height="300" Margin="25,25,0,0" VerticalAlignment="Top" Width="380"/>
+        <Image Name="PreviewImage" Source="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" HorizontalAlignment="Left" Height="200" Margin="490,49,0,0" VerticalAlignment="Top" Width="200"/>
+        <Label Name="PreviewText" Foreground="White" Content="Pick a Song!" FontSize="20" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="40" Margin="490,280,0,0" VerticalAlignment="Top" Width="200"/>
+        <Button Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Left" Height="42" Margin="542,335,0,0" VerticalAlignment="Top" Width="100" Click="ConfirmButton_Click"/>
+        <Border BorderBrush="DarkGray" BorderThickness="3" HorizontalAlignment="Left" Height="204" Margin="490,49,0,0" VerticalAlignment="Top" Width="204"/>
+        <Border BorderBrush="DarkGray" BorderThickness="3" HorizontalAlignment="Left" Height="403" Margin="25,25,0,0" VerticalAlignment="Top" Width="380"/>
     </Grid>
 </Window>

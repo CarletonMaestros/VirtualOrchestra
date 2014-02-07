@@ -76,6 +76,7 @@ namespace Orchestra
                 object rectangle = FindName(rectNumber);
                 Canvas rect = (Canvas)rectangle;
                 rect.Background = colorByChannel[i];
+                rect.Opacity = .6;
 
                 object item = FindName(squareNumber); // turn its name from a string into the Image
                 

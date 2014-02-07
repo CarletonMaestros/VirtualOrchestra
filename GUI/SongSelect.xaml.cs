@@ -219,11 +219,12 @@ namespace Orchestra
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            StopAllMusic();
+            this.Close();
             Dispatch.TriggerSongSelected(songFile);
             
-            //var guiWindow = new GUIWindow();
-            //guiWindow.Show();
-            this.Close();
+            
+            
         }
     }
 }
