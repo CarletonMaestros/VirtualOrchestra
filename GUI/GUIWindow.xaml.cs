@@ -218,8 +218,8 @@ namespace Orchestra
                         {
                             channel.prevInst = note[2];
 
-                            var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".png";
-                            //var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
+                            //var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".png";
+                            var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
                             Console.WriteLine(uriString);
                             BitmapImage bitIm = new BitmapImage();
                             bitIm.BeginInit();

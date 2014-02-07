@@ -11,6 +11,12 @@
         </Grid.Background>
         <MediaElement Name="ParaAnd" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.wav" LoadedBehavior="Manual" MediaEnded="ParaAndLoop" />
         <MediaElement Name="ScarMon" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.wav" LoadedBehavior="Manual" MediaEnded="ScarMonLoop" />
+        <MediaElement Name="Prayer" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\prayer.wav" LoadedBehavior="Manual" MediaEnded="PrayerLoop" />
+        <MediaElement Name="Sym5" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\Sym5.wav" LoadedBehavior="Manual" MediaEnded="Sym5Loop" />
+        <MediaElement Name="MtKing" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\MtKing.wav" LoadedBehavior="Manual" MediaEnded="MtKingLoop" />
+        <MediaElement Name="GetLucky" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\daft.wav" LoadedBehavior="Manual" MediaEnded="GetLuckyLoop" />
+        <MediaElement Name="HardDay" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.wav" LoadedBehavior="Manual" MediaEnded="HardDayLoop" />
+        <MediaElement Name="NewWorld" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.wav" LoadedBehavior="Manual" MediaEnded="NewWorldLoop" />
         <ListBox Name="SongSelector" HorizontalAlignment="Left" Height="300" Margin="25,25,0,0" VerticalAlignment="Top" Width="380">
             <ListBoxItem Content="Paranoid Android" Height="50"  FontSize="23" HorizontalContentAlignment="Center" Background="White" Selected="ListBoxItem_Selected_1"/>
             <ListBoxItem Content="Like a Prayer" Height="50" FontSize="23" HorizontalContentAlignment="Center" Foreground="White" Background="Gray" Selected="ListBoxItem_Selected_2"/>
@@ -19,9 +25,9 @@
             <ListBoxItem Content="In The Hall of the Mountain King" Height="50" FontSize="23" HorizontalContentAlignment="Center" Background="White" Selected="ListBoxItem_Selected_5"/>
             <ListBoxItem Content="Get Lucky" Height="50" FontSize="23" HorizontalContentAlignment="Center" Foreground="White" Background="Gray" Selected="ListBoxItem_Selected_6"/>
             <ListBoxItem Content="Hard Day's Night" Height="50" FontSize="23" HorizontalContentAlignment="Center" Background="White" Selected="ListBoxItem_Selected_7"/>
-            <ListBoxItem Content="All of the Lights" Height="50" FontSize="23" HorizontalContentAlignment="Center" Foreground="White" Background="Gray" Selected="ListBoxItem_Selected_8"/>
+            <ListBoxItem Content="From the New World" Height="50" FontSize="23" HorizontalContentAlignment="Center" Foreground="White" Background="Gray" Selected="ListBoxItem_Selected_8"/>
         </ListBox>
-        <Image Name="PreviewImage" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" HorizontalAlignment="Left" Height="200" Margin="440,25,0,0" VerticalAlignment="Top" Width="200"/>
+        <Image Name="PreviewImage" Source="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" HorizontalAlignment="Left" Height="200" Margin="440,25,0,0" VerticalAlignment="Top" Width="200"/>
         <Label Name="PreviewText" Foreground="White" Content="Pick a Song!" FontSize="20" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="40" Margin="440,237,0,0" VerticalAlignment="Top" Width="200"/>
         <Button Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Left" Height="42" Margin="490,283,0,0" VerticalAlignment="Top" Width="100" Click="ConfirmButton_Click"/>
         <Border BorderBrush="DarkGray" BorderThickness="3" HorizontalAlignment="Left" Height="204" Margin="438,23,0,0" VerticalAlignment="Top" Width="204"/>

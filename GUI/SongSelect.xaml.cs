@@ -38,7 +38,6 @@ namespace Orchestra
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid";
             //songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\r.mid";
-            Dispatch.TriggerSongSelected(songFile); 
         }
 
         private void ParaAndLoop(object sender, RoutedEventArgs e)
@@ -50,13 +49,19 @@ namespace Orchestra
         private void ListBoxItem_Selected_2(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
+            Prayer.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Madonna.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\m.mid";
-            Dispatch.TriggerSongSelected(songFile); 
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\prayer.mid";
+        }
+
+        private void PrayerLoop(object sender, RoutedEventArgs e)
+        {
+            Prayer.Position = TimeSpan.Zero;
+            Prayer.Play();
         }
 
         private void ListBoxItem_Selected_3(object sender, RoutedEventArgs e)
@@ -69,7 +74,6 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid";
-            Dispatch.TriggerSongSelected(songFile); 
         }
 
         private void ScarMonLoop(object sender, RoutedEventArgs e)
@@ -81,61 +85,91 @@ namespace Orchestra
         private void ListBoxItem_Selected_4(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
+            Sym5.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Beethoven.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\b2.mid";
-            Dispatch.TriggerSongSelected(songFile); 
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\sym5.mid";
+        }
+
+        private void Sym5Loop(object sender, RoutedEventArgs e)
+        {
+            Sym5.Position = TimeSpan.Zero;
+            Sym5.Play();
         }
 
         private void ListBoxItem_Selected_5(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
+            MtKing.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\MountainKing.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\g.mid";
-            Dispatch.TriggerSongSelected(songFile); 
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mtking.mid";
+        }
+
+        private void MtKingLoop(object sender, RoutedEventArgs e)
+        {
+            MtKing.Position = TimeSpan.Zero;
+            MtKing.Play();
         }
 
         private void ListBoxItem_Selected_6(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
+            GetLucky.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Daftpunk.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\d.mid";
-            Dispatch.TriggerSongSelected(songFile); 
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\daft.mid";
+        }
+
+        private void GetLuckyLoop(object sender, RoutedEventArgs e)
+        {
+            GetLucky.Position = TimeSpan.Zero;
+            GetLucky.Play();
         }
 
         private void ListBoxItem_Selected_7(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
+            HardDay.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Beatles.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\b.mid";
-            Dispatch.TriggerSongSelected(songFile); 
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.mid";
+        }
+
+        private void HardDayLoop(object sender, RoutedEventArgs e)
+        {
+            HardDay.Position = TimeSpan.Zero;
+            HardDay.Play();
         }
 
         private void ListBoxItem_Selected_8(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
+            NewWorld.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Kanye.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Dvorak.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\k.mid";
-            Dispatch.TriggerSongSelected(songFile); 
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.mid";
+        }
+
+        private void NewWorldLoop(object sender, RoutedEventArgs e)
+        {
+            NewWorld.Position = TimeSpan.Zero;
+            NewWorld.Play();
         }
 
         private void StopAllMusic()
@@ -150,12 +184,45 @@ namespace Orchestra
             {
                 ScarMon.Stop();
             }
+            bool prayerPause = Prayer.CanPause;
+            if (prayerPause == true)
+            {
+                Prayer.Stop();
+            }
+            bool hardDayPause = HardDay.CanPause;
+            if (hardDayPause == true)
+            {
+                HardDay.Stop();
+            }
+            bool sym5Pause = Sym5.CanPause;
+            if (sym5Pause == true)
+            {
+                Sym5.Stop();
+            }
+            bool newWorldPause = NewWorld.CanPause;
+            if (newWorldPause == true)
+            {
+                NewWorld.Stop();
+            }
+            bool getLuckyPause = GetLucky.CanPause;
+            if (getLuckyPause == true)
+            {
+                GetLucky.Stop();
+            }
+            bool mtKingPause = MtKing.CanPause;
+            if (mtKingPause == true)
+            {
+                MtKing.Stop();
+            }
+
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            var guiWindow = new GUIWindow();
-            guiWindow.Show();
+            Dispatch.TriggerSongSelected(songFile);
+            
+            //var guiWindow = new GUIWindow();
+            //guiWindow.Show();
             this.Close();
         }
     }

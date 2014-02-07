@@ -23,20 +23,20 @@ namespace Orchestra.Sandbox
         private DrawingGroup drawingGroup;
         private DrawingImage imageSource;
 
-        private GUIWindow guiWindow = new GUIWindow();
+        //private GUIWindow guiWindow = new GUIWindow();
         private SongSelectWindow songWindow = new SongSelectWindow();
 
         public MainWindow()
         {
             InitializeComponent();
             //songWindow.Show();
-            //guiWindow.Show();
-            songWindow.Show();
             //Hide();
         }
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
+            songWindow.Show();
+            
             // Initialize GUI elements
             InitKinect();
             InitDrawing();
@@ -44,6 +44,9 @@ namespace Orchestra.Sandbox
             // Load components
             Gestures.Load();
             MIDI.Load();
+
+            GUIWindow guiWindow = new GUIWindow();
+            guiWindow.Show();
 
             // Add event loggers
             //Dispatch.Beat += (time, beat) => Console.WriteLine("Beat {0}", beat);

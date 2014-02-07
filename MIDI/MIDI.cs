@@ -30,7 +30,8 @@ namespace Orchestra
         static List<int[]> instrChanges = new List<int[]>(); //int[17] [0-15] = inst @ chan. [16] = tick
         static Dictionary<int, int[]> instrumentsAtTicks;
         static Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
-        static string songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid";
+        //static string songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid";
+        static string songFile;
 
         // Volatile Variables
         private static Boolean songStarted = false;
@@ -68,17 +69,23 @@ namespace Orchestra
             // Initialize MIDI
             sequencer.Sequence = sequence;
 
-            LoadSong(songFile);
+            //LoadSong(songFile);
 
             // Initialize timer
-            timer.Elapsed += new ElapsedEventHandler(TimePassed);
-            timer.Enabled = true;
+            //timer.Elapsed += new ElapsedEventHandler(TimePassed);
+            //timer.Enabled = true;
         }
 
 
         public static void SongSelected(string file)
         {
             songFile = file;
+
+            LoadSong(songFile);
+
+            // Initialize timer
+            timer.Elapsed += new ElapsedEventHandler(TimePassed);
+            timer.Enabled = true;
         }
 
         private static void Stopped(object sender, StoppedEventArgs e)
