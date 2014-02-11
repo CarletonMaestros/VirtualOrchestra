@@ -124,11 +124,11 @@ namespace Orchestra
                         Rectangle noteRect = new Rectangle { Width = width, Height = height, Fill = colorByChannel[note[4] % 16], Opacity = note[2] / 127d, Stroke = Brushes.Black, StrokeThickness = 2 };
                         noteRect.Tag = ticks;
                         double xPos = ((int)noteRect.Tag - currTick) / TicksPerPixel;
-                        double yPos = PianoRoll.ActualHeight - (((note[1] - 36 ) % noteHeightResolution) / (double)noteHeightResolution * PianoRoll.ActualHeight); //high notes are low Y, because pixel numbering starts at top left
+                        double yPos = PianoRoll.ActualHeight - ((note[1] % noteHeightResolution) / (double)noteHeightResolution * PianoRoll.ActualHeight); //high notes are low Y, because pixel numbering starts at top left
                         Canvas.SetLeft(noteRect, xPos);
                         Canvas.SetTop(noteRect, yPos);
                         PianoRoll.Children.Add(noteRect);
-                        if (note[4] == 9)
+                        if (note[4] == 9) //drums on track 10
                         {
                             note[0] = 128;
                         }
