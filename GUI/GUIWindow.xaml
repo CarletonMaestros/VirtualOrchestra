@@ -133,11 +133,11 @@
         </Border>-->
         <Grid Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="47*"/>
+                    <ColumnDefinition Width="449*"/>
             </Grid.ColumnDefinitions>
-            <Canvas x:Name="PianoRoll"  Margin="10,62,41,30" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="1" Grid.Column="1" />
-        <Canvas x:Name ="VolumeGauge" Margin="36,0,24,30"   HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Column="0"  Grid.ColumnSpan="1"  RenderTransformOrigin="0.5,0.5" >
+            <Canvas x:Name="PianoRoll"  Margin="26,62,24,30" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="1" Grid.Column="1" />
+        <Canvas x:Name ="VolumeGauge" Margin="36,0,24,30"   HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Column="0"  Grid.ColumnSpan="1"  RenderTransformOrigin="0.5,0.5" Height="0" >
             <Canvas.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="-1"/>

@@ -95,7 +95,7 @@ namespace Orchestra
                 }
                 case "START":
                 {
-                    if (prevYTwo < (prevYOne - .01) && prevYOne < (rightHandY - .01))
+                    if (prevYTwo < (prevYOne - .01) && prevYOne < (rightHandY - .01) && Math.Abs(rightHandX - rightHipX) < .15)
                     {
                         if (framesInFirstBeat == 0)
                         {

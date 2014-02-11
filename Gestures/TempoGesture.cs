@@ -98,6 +98,7 @@ namespace Orchestra
         public float middleBeat;
         public int testingCounter;
         public int startingFour = 0;
+        public Boolean aboveHip = false;
 
         public TempoGesture()
         {
@@ -195,7 +196,9 @@ namespace Orchestra
                             framesInFirstBeat++;
                             break;
                         }
-                        if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01))
+                        if (rightHandY > rightHipY) { aboveHip = true; }
+                        if (rightHandY < rightHipY) { aboveHip = false; }
+                        if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01) && Math.Abs(rightHandX - rightHipX) < .15 && aboveHip == true)
                         {
                             //Console.WriteLine("Start with " + stopwatch.ElapsedMilliseconds + " in the pre-start beat.");
                             //Console.WriteLine("START");
@@ -233,32 +236,32 @@ namespace Orchestra
                             {
                                 if (prevBeat == 1)
                                 {
-                                    //Dispatch.TriggerBeat(counter, "beat");
+                                    //Dispatch.TriggerBeat(counter, "beat2");
                                     prevBeat = 2;
                                     middleBeat = 1;
                                 }
                                 else if (prevBeat == 2 && middleBeat == 0)
                                 {
-                                    //Dispatch.TriggerBeat(counter, "beat");
+                                    //Dispatch.TriggerBeat(counter, "beat3");
                                     prevBeat = 3;
                                     middleBeat = 1;
                                 }
                                 else if (prevBeat == 3 && middleBeat == 0)
                                 {
-                                    //Dispatch.TriggerBeat(counter, "beat");
+                                    //Dispatch.TriggerBeat(counter, "beat4");
                                     prevBeat = 4;
                                     middleBeat = 1;
                                 }
                                 else
                                 {
-                                    //Dispatch.TriggerBeat(counter, "beat");
+                                    //Dispatch.TriggerBeat(counter, "beat1");
                                     prevBeat = 1;
                                     middleBeat = 1;
                                 }
                             }
                             else if (rightHandX < 0)
                             {
-                                //Dispatch.TriggerBeat(counter, "beat");
+                                //Dispatch.TriggerBeat(counter, "beat2");
                                 prevBeat = 2;
                                 middleBeat = 0;
                             }
@@ -266,13 +269,13 @@ namespace Orchestra
                             {
                                 if (prevBeat == 2)
                                 {
-                                    //Dispatch.TriggerBeat(counter, "beat");
+                                    //Dispatch.TriggerBeat(counter, "beat3");
                                     prevBeat = 3;
                                     middleBeat = 0;
                                 }
                                 else if (prevBeat == 1)
                                 {
-                                    //Dispatch.TriggerBeat(counter, "beat");
+                                    //Dispatch.TriggerBeat(counter, "beat2");
                                     prevBeat = 2;
                                     middleBeat = 0;
                                 }

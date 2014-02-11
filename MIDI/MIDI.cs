@@ -32,6 +32,9 @@ namespace Orchestra
         static Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
         //static string songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid";
         static string songFile;
+        static int tempoHold = 100000000;
+        static int furthestEvent;
+        static int numEvents = 0;
 
         // Volatile Variables
         private static Boolean songStarted = false;
@@ -130,19 +133,38 @@ namespace Orchestra
             if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
         }
 
+
+        public double NoteDensity
+        {
+            get { return furthestEvent / (double)numEvents; }
+        }
+
         /// <summary>
         /// Inform the GUI of the sequencer position.
         /// </summary>
         private static void SkeletonMoved(float time, Skeleton skeleton)
         {
-            Dispatch.TriggerTickInfo(sequencer.Position);
+            if (sequencer.Clock.Tempo != int.MaxValue)
+            {
+                //Dispatch.TriggerTickInfo(sequencer.Position - (int)(62500000 / (double)sequencer.Clock.Tempo));
+                Dispatch.TriggerTickInfo(sequencer.Position - (int)(5000000 * (furthestEvent / (double)numEvents) / (double)sequencer.Clock.Tempo)); //Calder, help
+                tempoHold = sequencer.Clock.Tempo;
+            }
+            else
+            {
+                Dispatch.TriggerTickInfo(sequencer.Position - (int)(5000000 * (furthestEvent / (double)numEvents) / tempoHold));
+            }
         }
-
         //private void 
         //adds to event dictionary, and check for collisions, instead of exception, edits val at key
         //dictionary properties: keys are absolute tick values for the NON data, elements are lists of int[4] arrays containing instr#, pitch, velocity, duration in ticks
         static Dictionary<int, List<int[]>> addToDictHandleCollisions(int key, int[] eventData, Dictionary<int, List<int[]>> eventsAtTicksDict)
         {
+            numEvents++;
+            if (key > furthestEvent)
+            {
+                furthestEvent = key;
+            }
             List<int[]> keyValHolder = new List<int[]>();
             if (eventsAtTicksDict.ContainsKey(key))
             {
@@ -221,6 +243,10 @@ namespace Orchestra
                 }
             }
             allInstrumentsUsed.Sort();
+            foreach (int instr in allInstrumentsUsed)
+            {
+                Console.WriteLine(instr);
+            }
             return mergeInstrChangeData();
         }
 

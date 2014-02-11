@@ -32,10 +32,7 @@ namespace Orchestra
             Dispatch.Start += Start;
         }
 
-        ~StopGesture()
-        {
-            Dispatch.SkeletonMoved -= this.SkeletonMoved;
-        }
+        ~StopGesture() { Dispatch.SkeletonMoved -= this.SkeletonMoved; }
 
 
         void SkeletonMoved(float time, Skeleton skeleton)
@@ -62,7 +59,7 @@ namespace Orchestra
                 //if ((rightHandX >= prevRightXOne && leftHandX <= prevLeftXOne && Math.Abs(rightHandY - prevRightYTwo) < .2 && Math.Abs(leftHandY - prevLeftYTwo) < .2) || (rightHandY <= prevRightYOne && leftHandY <= prevLeftYOne && Math.Abs(rightHandX - prevRightXTwo) < .2 && Math.Abs(leftHandX - prevLeftXTwo) < .2)) { counter += 1; }
                 //Console.WriteLine("{0}", Math.Abs(rightHandX - prevRightXTwo));
                 //if (Math.Abs(rightHandX - hipCenterX) - Math.Abs(leftHandX - hipCenterX) < .1 && Math.Abs(rightHandX - prevRightXTwo) >= .2)   { counter += 1; }
-                if (counter >= 3 && Math.Abs(rightHandX - prevRightXTwo) < .1 && Math.Abs(leftHandX - prevLeftXTwo) < .1 && Math.Abs(rightHandY - prevRightYTwo) < .1 && Math.Abs(leftHandY - prevLeftYTwo) < .1)
+                if (counter >= 3 && Math.Abs(rightHandX - prevRightXOne) < .1 && Math.Abs(leftHandX - prevLeftXOne) < .1 && Math.Abs(rightHandY - prevRightYOne) < .1 && Math.Abs(leftHandY - prevLeftYOne) < .1)
                 {
                     stop = true;
                     counter = 0;

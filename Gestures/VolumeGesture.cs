@@ -8,20 +8,21 @@ namespace Orchestra
 {
     public class VolumeGesture
     {
-        float leftWristY = 0;
-        float leftWristX = 0;
+        float leftHandY;
+        float leftHandX;
+        float leftHipX;
         Boolean aboveHip = false;
         Boolean outsideBox = true;
-        float startValueX = 0;
-        float startValueY = 0;
-        float changeInYVal = 0;
-        float changeVolume = 0;
-        float prevYValue = 0;
+        float startValueX;
+        float startValueY;
+        float changeInYVal;
+        float changeVolume;
+        float prevYValue;
         float increaseToDecrease = 1; // 0 means hand is moving down, 1 moving up
         float volume = 64;
-        int count = 0;
-        float yAverage = 0;
-        float xAverage = 0;
+        int count;
+        float yAverage;
+        float xAverage;
 
         public VolumeGesture()
         {
@@ -47,7 +48,7 @@ namespace Orchestra
 
                 if (joint.JointType == JointType.HipLeft)
                 {
-                    if (leftWristY > joint.Position.Y)
+                    if (leftHandY > joint.Position.Y)
                     {
                         aboveHip = true;
                         outsideBox = false;
@@ -62,11 +63,11 @@ namespace Orchestra
                         xAverage = 0;
                     }
                 }
-
+                if (joint.JointType == JointType.HipLeft) { leftHipX = joint.Position.X; }
                 if (joint.JointType == JointType.WristLeft)
                 {
-                    leftWristY = joint.Position.Y;
-                    leftWristX = joint.Position.X;
+                    leftHandY = joint.Position.Y;
+                    leftHandX = joint.Position.X;
                     if (count == 15)
                     {
                         startValueY = yAverage;
@@ -78,45 +79,45 @@ namespace Orchestra
                         if (aboveHip == true && yAverage == 0 && xAverage == 0)
                         {
                             count += 1;
-                            yAverage = leftWristY;
-                            xAverage = leftWristX;
+                            yAverage = leftHandY;
+                            xAverage = leftHandX;
                         }
                         else if (aboveHip == true && yAverage != 0 && xAverage != 0)
                         {
-                            if (yAverage - leftWristY > -.1 && yAverage - leftWristY < .1 && xAverage - leftWristX > -.1 && xAverage - leftWristX < .1)
+                            if (yAverage - leftHandY > -.1 && yAverage - leftHandY < .1 && xAverage - leftHandX > -.1 && xAverage - leftHandX < .1)
                             {
-                                yAverage = (yAverage + leftWristY) / 2;
-                                xAverage = (xAverage + leftWristX) / 2;
+                                yAverage = (yAverage + leftHandY) / 2;
+                                xAverage = (xAverage + leftHandX) / 2;
                                 count += 1;
                             }
                             else
                             {
-                                yAverage = leftWristY;
-                                xAverage = leftWristX;
+                                yAverage = leftHandY;
+                                xAverage = leftHandX;
                                 count = 0;
                             }
-
                         }
                     }
+                    
                     else if (aboveHip == true && startValueY != 0 && startValueX != 0)
                     {
-                        if ((startValueX - leftWristX) < .1 && (startValueX - leftWristX) > -.1 && outsideBox == false) // if wrist is within the acceptable "box" of x-ranges
+                        if ((startValueX - leftHandX) < .1 && (startValueX - leftHandX) > -.1 && Math.Abs(leftHandX - leftHipX) < .3 && outsideBox == false) // if wrist is within the acceptable "box" of x-ranges
                         {
-                            changeInYVal += (leftWristY - prevYValue);
-                            if (increaseToDecrease == 0 && leftWristY - prevYValue > 0) //hand is moving up now
+                            changeInYVal += (leftHandY - prevYValue);
+                            if (increaseToDecrease == 0 && leftHandY - prevYValue > 0) //hand is moving up now
                             {
                                 increaseToDecrease = 1;
                                 changeVolume = changeInYVal;
                             }
-                            else if (increaseToDecrease == 1 && leftWristY - prevYValue < 0) //hand is moving down now
+                            else if (increaseToDecrease == 1 && leftHandY - prevYValue < 0) //hand is moving down now
                             {
                                 increaseToDecrease = 0;
                                 changeVolume = changeInYVal;
                             }
                             else
-                                changeInYVal += (leftWristY - prevYValue);
+                                changeInYVal += (leftHandY - prevYValue);
 
-                            prevYValue = leftWristY;
+                            prevYValue = leftHandY;
                             if (changeInYVal - changeVolume > .1)
                             {
                                 if (volume < 127)
