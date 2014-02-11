@@ -34,7 +34,7 @@ namespace Orchestra
 
         //private int beatsPerMeasure = 4;
         private int lastPopulate = -100000; //tick value where most recent piano roll population occurred, starts low to trigger piano roll population
-        private int noteHeightResolution = 48; //number of notes that fit vertically into the canvas
+        private int noteHeightResolution = 60; //number of notes that fit vertically into the canvas
 
         //private LinearGradientBrush[] colorByChannel = new LinearGradientBrush[16] { LinearGradientBrush(.Aqua, Brushes.Beige, Brushes.Blue, Brushes.BlueViolet, Brushes.Brown, Brushes.Chartreuse, Brushes.Crimson, Brushes.Red, Brushes.Salmon, Brushes.Silver, Brushes.Yellow, Brushes.Turquoise, Brushes.Violet, Brushes.Black, Brushes.Aquamarine, Brushes.Orange };
 
@@ -124,7 +124,7 @@ namespace Orchestra
                         Rectangle noteRect = new Rectangle { Width = width, Height = height, Fill = colorByChannel[note[4] % 16], Opacity = note[2] / 127d, Stroke = Brushes.Black, StrokeThickness = 2 };
                         noteRect.Tag = ticks;
                         double xPos = ((int)noteRect.Tag - currTick) / TicksPerPixel;
-                        double yPos = PianoRoll.ActualHeight - (((note[1] + 12) % noteHeightResolution) / (double)noteHeightResolution * PianoRoll.ActualHeight); //high notes are low Y, because pixel numbering starts at top left
+                        double yPos = PianoRoll.ActualHeight - (((note[1] - 36 ) % noteHeightResolution) / (double)noteHeightResolution * PianoRoll.ActualHeight); //high notes are low Y, because pixel numbering starts at top left
                         Canvas.SetLeft(noteRect, xPos);
                         Canvas.SetTop(noteRect, yPos);
                         PianoRoll.Children.Add(noteRect);

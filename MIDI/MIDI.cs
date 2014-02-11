@@ -146,7 +146,6 @@ namespace Orchestra
         {
             if (sequencer.Clock.Tempo != int.MaxValue)
             {
-                //Dispatch.TriggerTickInfo(sequencer.Position - (int)(62500000 / (double)sequencer.Clock.Tempo));
                 Dispatch.TriggerTickInfo(sequencer.Position - (int)(5000000 * (furthestEvent / (double)numEvents) / (double)sequencer.Clock.Tempo)); //Calder, help
                 tempoHold = sequencer.Clock.Tempo;
             }
