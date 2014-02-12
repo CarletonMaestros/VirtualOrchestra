@@ -27,7 +27,7 @@ namespace Orchestra
         public SineTracker()
         {
             Dispatch.SkeletonMoved += this.SkeletonMoved;
-            InitializeComponent();
+            //InitializeComponent();
             //AddChart();
         }
         ~SineTracker()

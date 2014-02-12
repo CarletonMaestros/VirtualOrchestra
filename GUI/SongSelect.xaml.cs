@@ -208,6 +208,24 @@ namespace Orchestra
             AirG.Play();
         }
 
+        private void ListBoxItem_Selected_11(object sender, RoutedEventArgs e)
+        {
+            StopAllMusic();
+            NewWorld.Play();
+            BitmapImage newIm = new BitmapImage();
+            newIm.BeginInit();
+            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Dvorak.jpg");
+            newIm.EndInit();
+            PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.mid";
+        }
+
+        private void NewWorldLoop(object sender, RoutedEventArgs e)
+        {
+            NewWorld.Position = TimeSpan.Zero;
+            NewWorld.Play();
+        }
+
         private void StopAllMusic()
         {
             bool parAndPause = ParaAnd.CanPause;
@@ -259,6 +277,11 @@ namespace Orchestra
             if (airGPause == true)
             {
                 AirG.Stop();
+            }
+            bool newWorldPause = NewWorld.CanPause;
+            if (newWorldPause == true)
+            {
+                NewWorld.Stop();
             }
 
         }

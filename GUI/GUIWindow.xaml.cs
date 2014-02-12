@@ -56,6 +56,8 @@ namespace Orchestra
             Dispatch.SongLoaded += SongLoaded;
             Dispatch.TickInfo += TickTriggered;
             Dispatch.VolumeChanged += VolumeChanged;
+            Dispatch.Start += Start;
+            Dispatch.Stop += Stop;
 
         }
 
@@ -63,6 +65,16 @@ namespace Orchestra
         {
             VolumeGauge.Opacity = (volume);
             VolumeGauge.Height = volume * PianoRoll.ActualHeight;
+        }
+
+        public void Start(float time)
+        {
+            PlayPause.Content = "PLAYING!!";
+        }
+
+        public void Stop(float time)
+        {
+            PlayPause.Content = "STOPPED!!";
         }
 
         private void SongLoaded(SongData song)
