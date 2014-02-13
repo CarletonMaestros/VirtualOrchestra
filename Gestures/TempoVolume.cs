@@ -34,6 +34,9 @@ namespace Orchestra
         public List<float> minY = new List<float>();
         public Boolean volumeChanged = false;
         public double volume = 64;
+        public float volumeFloat;
+        public int allChanged = 1;
+        public Boolean changeVolume = false;
 
         public TempoVolume()
         {
@@ -95,7 +98,7 @@ namespace Orchestra
                 }
                 case "START":
                 {
-                    if (prevYTwo < (prevYOne - .01) && prevYOne < (rightHandY - .01) && Math.Abs(rightHandX - rightHipX) < .15)
+                    if (prevYTwo < (prevYOne - .01) && prevYOne < (rightHandY - .01))
                     {
                         if (framesInFirstBeat == 0)
                         {
@@ -115,40 +118,74 @@ namespace Orchestra
                 {
                     if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
                     {
-                        if (counter == 5)
-                        {
-                            counter = 1;
-                        }
-                        if (startMarker == 0)
-                        {
-                            startMarker = 1;
-                            long firstTempo = stopwatch.ElapsedMilliseconds * 1000 / 2;
-                        }
-                        else
-                        {
-                            long tempo = stopwatch.ElapsedMilliseconds * 1000;
-                        }
                         if (rightHandX - rightHipX > -.1 && rightHandX - rightHipX < .15 && Math.Abs(rightHandY - rightHipY) < .15)
                         {
                             minY.Add(rightHandY);
                             if (minY.Count == 4) { minY.RemoveAt(0); }
+                            allChanged++;
+                            //Console.WriteLine("volume: beat 1 or 4");
                         }
                         else if (rightHandX < 0)
                         {
-                            minX.Add(rightHandX);
-                            if (minX.Count == 4) { minX.RemoveAt(0); }
+                            if (minX.Count == 0)
+                            {
+                                for (int i = 0; i < 3; i++) { minX.Add(rightHandX); }
+                            }
+                            else { minX.Add(rightHandX); }
+                            if (minX.Count == 3) { minX.RemoveAt(0); }
+                            if (minX.ElementAt(1) > minX.ElementAt(0) * .9)
+                            {
+                                Console.WriteLine(Math.Abs((minX.ElementAt(1) - rightHipX) / .25) * 127f);
+                                volume = Math.Abs((minX.ElementAt(1) - rightHipX) / .25);
+                                volumeFloat = (float)volume;
+                                Dispatch.TriggerVolumeChanged(volumeFloat);
+                            }
+                            if (minX.ElementAt(1) < minX.ElementAt(0) * 1.1)
+                            {
+                                volume = Math.Abs((minX.ElementAt(1) - rightHipX) / .1);
+                                volumeFloat = (float)volume;
+                                Dispatch.TriggerVolumeChanged(volumeFloat);
+                            }
+                            allChanged++;
+                            //Console.WriteLine("volume: beat 2");
                         }
                         else if (rightHandX > 0)
                         {
-                            maxX.Add(rightHandX);
-
+                            if (maxX.Count == 0)
+                            {
+                                for (int i = 0; i < 4; i++) { maxX.Add(rightHandX); }
+                            }
                             if (maxX.Count == 4) { maxX.RemoveAt(0); }
+                            //if (maxX.ElementAt(2) > minX.ElementAt(0) * 1.1)
+                            //volume = Math.Abs((maxX.ElementAt(2) - rightHipX + .65) / 1.15);
+                            //volumeFloat = (float)volume;
+                            //Dispatch.TriggerVolumeChanged(volumeFloat);
+                            allChanged = 1;
+                            Console.WriteLine("volume: beat 3");
+                        }
+                        if (maxX.Count == 3 && minX.Count == 3 && maxY.Count == 3)
+                        {
+                            //if (maxX.ElementAt(2) < maxX.ElementAt(0) * .9 && minX.ElementAt(2) > minX.ElementAt(0) * .9 && maxY.ElementAt(2) < maxY.ElementAt(0) * .9 && allChanged == 3)
+                            //Console.WriteLine("allChanged: " + allChanged);
+                            if (maxX.ElementAt(2) < maxX.ElementAt(0) * .9 && minX.ElementAt(2) > minX.ElementAt(0) * .9 && allChanged % 3 == 0)
+                            {
+                                changeVolume = true;
+                                //Console.WriteLine("YIPEE");
+                            }
+                            //else if (maxX.ElementAt(2) > maxX.ElementAt(0) * 1.1 && minX.ElementAt(2) < minX.ElementAt(0) * 1.1 && maxY.ElementAt(2) > maxY.ElementAt(0) * 1.1 && allChanged == 3)
+                            else if (maxX.ElementAt(2) > maxX.ElementAt(0) * 1.1 && minX.ElementAt(2) < minX.ElementAt(0) * 1.1 && allChanged % 3 == 0)
+                            {
+                                changeVolume = true;
+                                //Console.WriteLine("WAHOO");
+                            }
+                            else { changeVolume = false; }
+                            //Console.WriteLine(changeVolume);
                         }
                         //Dispatch.TriggerBeat(counter, "beat");
                         stopwatch.Restart();
                         seeking = "MAXIMUM";
                         counter++;
-                        Dispatch.TriggerBeat(counter, "beat");
+                        //Dispatch.TriggerBeat(counter, "beat");
                         break;
                     }
                     break;
@@ -160,6 +197,7 @@ namespace Orchestra
                         seeking = "MINIMUM";
                         maxY.Add(rightHandY);
                         if (maxY.Count == 4) { maxY.RemoveAt(0); }
+                        //allChanged++;
                         break;
                     }
                     break;
@@ -167,32 +205,35 @@ namespace Orchestra
             }
             //if (maxX.Count == 3 && minX.Count == 3 && maxY.Count == 3)
             //{
-            //    if (maxX.ElementAt(2) < maxX.ElementAt(0) * .9 && minX.ElementAt(2) > minX.ElementAt(0) * .9 && maxY.ElementAt(2) < maxY.ElementAt(0) * .9)
+            //    if (maxX.ElementAt(2) < maxX.ElementAt(0) * .9 && minX.ElementAt(2) > minX.ElementAt(0) * .9 && maxY.ElementAt(2) < maxY.ElementAt(0) * .9 && allChanged == 3)
             //    {
-            //        //if (volume > 0) { volume -= (Math.Abs(maxX.ElementAt(2) / maxX.ElementAt(0)) * volume / 127); }
-            //        if (volume > 0) { volume -= (5 * volume / 127); }
-            //        volumeChanged = true;
+            //        if (volume > 0) { volume -= (Math.Abs(maxX.ElementAt(2) - maxX.ElementAt(0)) * volume / 127); }
+            //        //if (volume > 0) { volume -= ((5 * volume) / 127); }
+            //        //volumeChanged = true;
+            //        allChanged = 0;
             //    }
-            //    if (maxX.ElementAt(2) > maxX.ElementAt(0) * 1.1 && minX.ElementAt(2) < minX.ElementAt(0) * 1.1 && maxY.ElementAt(2) > maxY.ElementAt(0) * 1.1)
+            //    if (maxX.ElementAt(2) > maxX.ElementAt(0) * 1.1 && minX.ElementAt(2) < minX.ElementAt(0) * 1.1 && maxY.ElementAt(2) > maxY.ElementAt(0) * 1.1 && allChanged == 3)
             //    {
-            //        Console.WriteLine("{0}", Math.Abs(maxX.ElementAt(2) / maxX.ElementAt(0)));
-            //        //if (volume < 127) { volume += (Math.Abs(maxX.ElementAt(2) / maxX.ElementAt(0)) * (127 - volume) / 127); }
-            //        if (volume < 127) { volume += (5 * (127 - volume) / 127); }
-            //        volumeChanged = true;
+            //        if (volume < 127) { volume += (Math.Abs(maxX.ElementAt(2) - maxX.ElementAt(0)) * (127 - volume) / 127); }
+            //        //if (volume < 127) { volume += (5 * (127 - volume) / 127); }
+            //        //volumeChanged = true;
+            //        allChanged = 0;
             //    }
+            //    //foreach (var i in maxX) { Console.WriteLine(i); }
             //    //if (volumeChanged == true)
             //    //{
-            //    //    maxX.Insert(1, maxX.ElementAt(0));
-            //    //    maxX.Insert(2, maxX.ElementAt(0));
-            //    //    minX.Insert(1, minX.ElementAt(0));
-            //    //    minX.Insert(2, minX.ElementAt(0));
-            //    //    maxY.Insert(1, maxY.ElementAt(0));
-            //    //    maxY.Insert(2, maxY.ElementAt(0));
+            //    //    maxX[1] = maxX.ElementAt(0);
+            //    //    maxX[2] = maxX.ElementAt(0);
+            //    //    minX[1] = minX.ElementAt(0);
+            //    //    minX[2] = minX.ElementAt(0);
+            //    //    maxY[1] = maxY.ElementAt(0);
+            //    //    maxY[2] = maxY.ElementAt(0);
             //    //    volumeChanged = false;
             //    //}
             //    int intVolume = (int)volume;
             //    Dispatch.TriggerVolumeChanged(intVolume / 127f);
             //}
+            //change 1/4 of volume per beat, find difference between first and last, divide by 4, change volume by that
             prevYTwo = prevYOne;
             prevXTwo = prevXOne;
             prevYOne = rightHandY;

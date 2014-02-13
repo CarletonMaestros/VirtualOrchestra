@@ -13,13 +13,9 @@ namespace Orchestra
         public float rightHandY;
         public float rightHandX;
         public float prevRightYOne;
-        public float prevRightYTwo;
         public float prevRightXOne;
-        public float prevRightXTwo;
         public float prevLeftYOne;
-        public float prevLeftYTwo;
         public float prevLeftXOne;
-        public float prevLeftXTwo;
         public float hipRightY;
         public float hipCenterX;
         public float counter;
@@ -55,7 +51,7 @@ namespace Orchestra
             if (Math.Abs(leftHandY - rightHandY) < .1 && rightHandY - hipRightY > .5) { start = true; }
             if (Math.Abs(leftHandY - rightHandY) < .1 && start == true && stop == false)
             {          
-                if (rightHandX >= prevRightXTwo && leftHandX <= prevLeftXTwo && rightHandY <= prevRightYTwo && leftHandY <= prevLeftYTwo) { counter += 1; }
+                if (rightHandX >= prevRightXOne && leftHandX <= prevLeftXOne && rightHandY <= prevRightYOne && leftHandY <= prevLeftYOne) { counter += 1; }
                 //if ((rightHandX >= prevRightXOne && leftHandX <= prevLeftXOne && Math.Abs(rightHandY - prevRightYTwo) < .2 && Math.Abs(leftHandY - prevLeftYTwo) < .2) || (rightHandY <= prevRightYOne && leftHandY <= prevLeftYOne && Math.Abs(rightHandX - prevRightXTwo) < .2 && Math.Abs(leftHandX - prevLeftXTwo) < .2)) { counter += 1; }
                 //Console.WriteLine("{0}", Math.Abs(rightHandX - prevRightXTwo));
                 //if (Math.Abs(rightHandX - hipCenterX) - Math.Abs(leftHandX - hipCenterX) < .1 && Math.Abs(rightHandX - prevRightXTwo) >= .2)   { counter += 1; }
@@ -66,12 +62,8 @@ namespace Orchestra
                     Dispatch.TriggerStop();
                 }
             }
-            prevRightXTwo = prevRightXOne;
-            prevRightYTwo = prevRightYOne;
             prevRightXOne = rightHandX;
             prevRightYOne = rightHandY;
-            prevLeftXTwo = prevLeftXOne;
-            prevLeftYTwo = prevLeftYOne;
             prevLeftXOne = leftHandX;
             prevLeftYOne = leftHandY;
         }
