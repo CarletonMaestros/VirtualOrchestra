@@ -17,10 +17,10 @@ namespace Orchestra
         /// </summary>
         public static void Load()
         {
-            //gestures.Add(new VolumeGesture());
+            gestures.Add(new VolumeGesture());
             gestures.Add(new TempoGesture());
             gestures.Add(new StopGesture());
-            gestures.Add(new TempoVolume());
+            //gestures.Add(new TempoVolume());
         }
     }
 }
