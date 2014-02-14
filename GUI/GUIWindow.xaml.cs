@@ -23,8 +23,6 @@ namespace Orchestra
 {
     public partial class GUIWindow : Window
     {
-        private Dictionary<int, Dictionary<string, List<int[]>>> instChangesDict;
-        private List<int> instruments;
         private int currTick = 0;
         private ChannelHandler[] channels = new ChannelHandler[16];
         public static string songFile = "";
@@ -79,6 +77,22 @@ namespace Orchestra
 
         private void SongLoaded(SongData song)
         {
+            ticksPerBeat = 0;
+            beatsPerMeasure = 0;
+            eventsAtTicksDict = new Dictionary<int, List<int[]>>();
+
+            lastPopulate = -100000000;
+
+            List<Rectangle> markedChildren = new List<Rectangle>();
+            foreach (Rectangle child in PianoRoll.Children)
+            {
+                markedChildren.Add(child);
+            }
+            foreach (Rectangle child in markedChildren)
+            {
+                PianoRoll.Children.Remove(child);
+            }
+
             for (int i = 0; i < 16; i++)
             {
                 var squareNumber = "square" + (i+1).ToString(); //get the correct image to populate's name. I changed the image names to what's on that sheet of paper.
@@ -93,10 +107,13 @@ namespace Orchestra
                 object item = FindName(squareNumber); // turn its name from a string into the Image
                 
                 Image imgToPopulate = (Image)item;
+
+                imgToPopulate.Source = null;
                 
                 ChannelHandler temp = new ChannelHandler();
                 channels[i] = temp;
                 channels[i].channelImage = imgToPopulate;
+                channels[i].prevInst = -1;
             }
             ticksPerBeat = song.ppq;
             beatsPerMeasure = song.beatsPerMeasure;
@@ -262,33 +279,41 @@ namespace Orchestra
             PopulatePianoRoll();
         }
 
-        private void TestPlayback(int currTick)
+        //private void TestPlayback(int currTick)
+        //{
+        //    ///
+
+        //    ///
+        //    if (instChangesDict.ContainsKey(currTick))
+        //    {
+
+        //        Console.WriteLine("\nCurrent tick:  {0}", currTick);
+        //        System.Console.WriteLine("Turning On: ");
+        //        foreach (int thing in instChangesDict[currTick]["TurnOn"][0])
+        //        {
+        //            Console.WriteLine(thing);
+        //            Console.WriteLine(instChangesDict[currTick]["TurnOn"][thing].ToString());
+        //        }
+
+        //        System.Console.WriteLine("Turning Off: ");
+        //        if (instChangesDict[currTick].ContainsKey("TurnOff"))
+        //        {
+        //            foreach (int thing in instChangesDict[currTick]["TurnOff"][0])
+        //            {
+        //                Console.WriteLine(thing);
+        //                Console.WriteLine(instChangesDict[currTick]["TurnOn"][thing].ToString());
+        //            }
+        //        }
+        //    }
+
+        //}
+
+        private void EndSongButton_Click(object sender, RoutedEventArgs e)
         {
-            ///
-
-            ///
-            if (instChangesDict.ContainsKey(currTick))
-            {
-
-                Console.WriteLine("\nCurrent tick:  {0}", currTick);
-                System.Console.WriteLine("Turning On: ");
-                foreach (int thing in instChangesDict[currTick]["TurnOn"][0])
-                {
-                    Console.WriteLine(thing);
-                    Console.WriteLine(instChangesDict[currTick]["TurnOn"][thing].ToString());
-                }
-
-                System.Console.WriteLine("Turning Off: ");
-                if (instChangesDict[currTick].ContainsKey("TurnOff"))
-                {
-                    foreach (int thing in instChangesDict[currTick]["TurnOff"][0])
-                    {
-                        Console.WriteLine(thing);
-                        Console.WriteLine(instChangesDict[currTick]["TurnOn"][thing].ToString());
-                    }
-                }
-            }
-
+            Dispatch.TriggerStop();
+            Dispatch.TriggerVolumeChanged(0.5f);
+            SongSelectWindow newSelect = new SongSelectWindow(true);
+            newSelect.Show();
         }
     }
 }

@@ -82,8 +82,11 @@ namespace Orchestra
 
         public static void SongSelected(string file)
         {
-            songFile = file;
+            eventsAtTicksDict = new Dictionary<int, List<int[]>>();
+            instrumentsAtTicks = new Dictionary<int, int[]>();
+            instrChanges = new List<int[]>();
 
+            songFile = file;
             LoadSong(songFile);
 
             // Initialize timer

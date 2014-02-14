@@ -24,7 +24,7 @@ namespace Orchestra.Sandbox
         private DrawingImage imageSource;
 
         //private GUIWindow guiWindow = new GUIWindow();
-        private SongSelectWindow songWindow = new SongSelectWindow();
+        private SongSelectWindow songWindow = new SongSelectWindow(false);
 
         public MainWindow()
         {
@@ -54,6 +54,11 @@ namespace Orchestra.Sandbox
 
             // Please don't stop the muuusic
             //Dispatch.TriggerPlay(); //we do what we want.
+        }
+
+        public void EndThis()
+        {
+            Environment.Exit(0);
         }
 
         private void InitKinect()

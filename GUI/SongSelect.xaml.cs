@@ -19,10 +19,12 @@ namespace Orchestra
     /// </summary>
     public partial class SongSelectWindow : Window
     {
+        public bool guiCall;
         public string songFile;
 
-        public SongSelectWindow()
+        public SongSelectWindow(bool guiCalled)
         {
+            guiCall = guiCalled;
             InitializeComponent();
         }
 
@@ -290,8 +292,11 @@ namespace Orchestra
         {
             StopAllMusic();
             this.Close();
-            GUIWindow guiWindow = new GUIWindow();
-            guiWindow.Show();
+            if (guiCall == false)
+            {
+                GUIWindow guiWindow = new GUIWindow();
+                guiWindow.Show();
+            }
             Dispatch.TriggerSongSelected(songFile);
         }
     }

@@ -42,7 +42,6 @@ namespace Orchestra
         public static event SongSelectedDelegate SongSelected;
         public static void TriggerSongSelected(string songFile) { if (SongSelected != null) SongSelected(songFile); }
 
-
         private static Stopwatch stopwatch = new Stopwatch();
 
         private static float Time 
