@@ -1,8 +1,9 @@
 ﻿<Window 
 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-x:Class="MyProject.SimpleLineChart" 
+x:Class="Orchestra.SineTracker" 
 Title="Sine Tracker" 
-Width="640" Height="480">
+Width="640" Height="480"
+    Loaded="WindowLoaded">
     <Canvas x:Name="chartCanvas" ClipToBounds="True" Margin="10,10,12,13"/>
 </Window> 

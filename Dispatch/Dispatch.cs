@@ -9,6 +9,8 @@ namespace Orchestra
 {
     public class Dispatch
     {
+        public static void Load() { stopwatch.Restart(); }
+
         public delegate void TickInfoDelegate(int tick);
         public static event TickInfoDelegate TickInfo;
         public static void TriggerTickInfo(int tick) { if ( TickInfo != null) TickInfo(tick);}

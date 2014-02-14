@@ -25,6 +25,7 @@ namespace Orchestra.Sandbox
 
         //private GUIWindow guiWindow = new GUIWindow();
         private SongSelectWindow songWindow = new SongSelectWindow(false);
+        private SineTracker sineWindow = new SineTracker();
 
         public MainWindow()
         {
@@ -36,12 +37,14 @@ namespace Orchestra.Sandbox
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             songWindow.Show();
+            sineWindow.Show();
             
             // Initialize GUI elements
             InitKinect();
             InitDrawing();
 
             // Load components
+            Dispatch.Load();
             Gestures.Load();
             MIDI.Load();
 

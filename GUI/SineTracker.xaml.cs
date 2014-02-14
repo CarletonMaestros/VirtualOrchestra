@@ -11,10 +11,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Kinect;
 
+
+
 namespace Orchestra
 {
     public partial class SineTracker : Window
     {
+        float elapsedTime = 0;
+        float prevTime = 0;
+        private double Y;
+        private float hipY;
+        private float headY;
+        double canvasWidthInSeconds = 1;
+        Canvas sineCanvas;
+        int dataRectSize = 8;
         //private double xmin = 0;
 
         //private double xmax = 6.5;
@@ -22,17 +32,32 @@ namespace Orchestra
         //private double ymax = 1.1;
         //private Polyline pl;
 
-        private float Y;
+        public double PixelsPerSecond
+        {
+            get { if (!(sineCanvas == null)) { return sineCanvas.ActualWidth / canvasWidthInSeconds; } else { return 0; } }
+        }
+
+        public double HeadHipScaler
+        {
+            get { return (headY - hipY); } 
+        }
 
         public SineTracker()
         {
-            Dispatch.SkeletonMoved += this.SkeletonMoved;
-            //InitializeComponent();
-            //AddChart();
+            InitializeComponent();
         }
+
         ~SineTracker()
         {
             Dispatch.SkeletonMoved -= this.SkeletonMoved;
+        }
+
+        public void WindowLoaded(object sender, RoutedEventArgs e)
+        {
+            object chart = FindName("chartCanvas");
+            sineCanvas = (Canvas)chart;
+            Dispatch.SkeletonMoved += this.SkeletonMoved;
+            //AddChart();
         }
 
         private void SkeletonMoved(float time, Skeleton skel)
@@ -42,14 +67,60 @@ namespace Orchestra
                 if (joint.JointType == JointType.HandRight)
                 {
                     Y = joint.Position.Y;
+                    scaleInput();
+                }
+                if (joint.JointType == JointType.KneeRight)
+                {
+                    hipY = joint.Position.Y;
+                }
+                if (joint.JointType == JointType.Head)
+                {
+                    headY = joint.Position.Y;
                 }
             }
+            elapsedTime = time - prevTime;
+            prevTime = time;
             UpdateChart();
         }
 
         private void UpdateChart()
         {
 
+            double pixelOffset = elapsedTime * PixelsPerSecond;
+            Rectangle datum = new Rectangle { Width = dataRectSize, Fill = Brushes.Red, Height = dataRectSize, Stroke = Brushes.Black, StrokeThickness = 2 };
+            datum.Tag = canvasWidthInSeconds + elapsedTime;
+            Canvas.SetTop(datum, Y);
+            Console.WriteLine(Y);
+            sineCanvas.Children.Add(datum);
+
+            List<Rectangle> markedChildren = new List<Rectangle>();
+            foreach (Rectangle child in sineCanvas.Children)
+            {
+                double newPos = calculateNewPos(child);
+                Canvas.SetLeft(child, newPos);
+                if (((double)child.Tag + elapsedTime) < 0)
+                {
+                    markedChildren.Add(child);
+                }
+            }
+            foreach (Rectangle child in markedChildren)
+            {
+                sineCanvas.Children.Remove(child);
+            }
+        }
+        private void scaleInput()
+        {
+            //        x - min                                  max - min
+            //f(x) = ---------   ===>   f(min) = 0;  f(max) =  --------- = 1
+            //       max - min                                 max - min
+            Y = (1 - (Y - hipY) / (headY - hipY))* sineCanvas.ActualHeight;
+            return;
+        }
+        private double calculateNewPos(Rectangle child)
+        {
+            child.Tag = (double)child.Tag - elapsedTime;
+            double pixelPosition = (double)child.Tag * PixelsPerSecond;
+            return pixelPosition;
         }
         //private void AddChart()
         //{
