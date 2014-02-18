@@ -31,7 +31,6 @@ namespace Orchestra.Sandbox
         {
             InitializeComponent();
             //songWindow.Show();
-            //Hide();
         }
 
         private void WindowLoaded(object sender, RoutedEventArgs e)
@@ -57,6 +56,8 @@ namespace Orchestra.Sandbox
 
             // Please don't stop the muuusic
             //Dispatch.TriggerPlay(); //we do what we want.
+
+            Hide();
         }
 
         public void EndThis()

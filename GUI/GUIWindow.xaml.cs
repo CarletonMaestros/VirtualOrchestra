@@ -50,6 +50,11 @@ namespace Orchestra
             InitializeComponent();
         }
 
+        private void OnClosed(object sender, EventArgs e)
+        {
+            Process.GetCurrentProcess().Kill();
+        }
+
         public void WindowLoaded(object sender, RoutedEventArgs e)
         {
             //entries are [instr, pitch, velocity, duration, channel]
