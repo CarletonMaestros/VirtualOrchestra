@@ -303,6 +303,10 @@ namespace Orchestra
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
+            SongSelector.Visibility = Visibility.Hidden;
+
+
+
             this.Close();
             if (guiCall == false)
             {

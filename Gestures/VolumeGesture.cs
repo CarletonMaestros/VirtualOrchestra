@@ -8,21 +8,23 @@ namespace Orchestra
 {
     public class VolumeGesture
     {
-        float leftHandY;
         float leftHandX;
+        float leftHandY;
         float leftHipX;
-        Boolean aboveHip = false;
-        Boolean outsideBox = true;
+        float leftHipZ;
         float startValueX;
         float startValueY;
+        float prevYValue;
+        float yAverage;
+        float xAverage;
         float changeInYVal;
         float changeVolume;
-        float prevYValue;
         float increaseToDecrease = 1; // 0 means hand is moving down, 1 moving up
         float volume = 64;
         int count;
-        float yAverage;
-        float xAverage;
+        bool aboveHip = false;
+        bool outsideBox = true;
+        bool tooClose = false;
 
         public VolumeGesture()
         {
@@ -44,10 +46,10 @@ namespace Orchestra
         {
             foreach (Joint joint in skeleton.Joints)
             {
-                
-
                 if (joint.JointType == JointType.HipLeft)
                 {
+                    leftHipX = joint.Position.X;
+                    leftHipZ = joint.Position.Z;
                     if (leftHandY > joint.Position.Y)
                     {
                         aboveHip = true;
@@ -63,7 +65,8 @@ namespace Orchestra
                         xAverage = 0;
                     }
                 }
-                if (joint.JointType == JointType.HipLeft) { leftHipX = joint.Position.X; }
+                if (leftHipZ < .1) { tooClose = true; Console.WriteLine("TOO CLOSE"); }
+                else { tooClose = false; }
                 if (joint.JointType == JointType.WristLeft)
                 {
                     leftHandY = joint.Position.Y;
@@ -97,9 +100,8 @@ namespace Orchestra
                                 count = 0;
                             }
                         }
-                    }
-                    
-                    else if (aboveHip == true && startValueY != 0 && startValueX != 0)
+                    } 
+                    else if (aboveHip == true && startValueY != 0 && startValueX != 0 && tooClose == false)
                     {
                         if ((startValueX - leftHandX) < .1 && (startValueX - leftHandX) > -.1 && Math.Abs(leftHandX - leftHipX) < .3 && outsideBox == false) // if wrist is within the acceptable "box" of x-ranges
                         {
@@ -114,20 +116,15 @@ namespace Orchestra
                                 increaseToDecrease = 0;
                                 changeVolume = changeInYVal;
                             }
-                            else
-                                changeInYVal += (leftHandY - prevYValue);
-
+                            else { changeInYVal += (leftHandY - prevYValue); }
                             prevYValue = leftHandY;
                             if (changeInYVal - changeVolume > .1)
                             {
-                                if (volume < 127)
-                                    volume += (5 * (127 - volume) / 127);
-
+                                if (volume < 127) { volume += (5 * (127 - volume) / 127); }
                             }
                             else if (changeInYVal - changeVolume < -.1)
                             {
-                                if (volume > 0)
-                                    volume -= (5 * volume / 127);
+                                if (volume > 0) { volume -= (5 * volume / 127); }
                             }
                             int intVolume = (int)volume;
                             Dispatch.TriggerVolumeChanged(intVolume / 127f);

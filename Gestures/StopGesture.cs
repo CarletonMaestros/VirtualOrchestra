@@ -8,28 +8,25 @@ namespace Orchestra
 {
     public class StopGesture
     {
-        public float leftHandX;
-        public float leftHandY;
-        public float rightHandY;
-        public float rightHandX;
-        public float prevRightYOne;
-        public float prevRightXOne;
-        public float prevLeftYOne;
-        public float prevLeftXOne;
-        public float hipRightY;
-        public float hipCenterX;
-        public float counter;
-        public Boolean start = false;
-        public Boolean stop = false;
+        float leftHandX;
+        float leftHandY;
+        float rightHandX;
+        float rightHandY;
+        float hipRightY;
+        float hipRightZ;
+        float prevRightYOne;
+        float prevRightXOne;
+        float prevLeftYOne;
+        float prevLeftXOne;
+        float counter;
+        bool tooClose = false;
 
         public StopGesture()
         {
             Dispatch.SkeletonMoved += SkeletonMoved;
-            Dispatch.Start += Start;
         }
 
         ~StopGesture() { Dispatch.SkeletonMoved -= this.SkeletonMoved; }
-
 
         void SkeletonMoved(float time, Skeleton skeleton)
         {
@@ -45,19 +42,19 @@ namespace Orchestra
                     leftHandX = joint.Position.X;
                     leftHandY = joint.Position.Y;
                 }
-                if (joint.JointType == JointType.HipRight) { hipRightY = joint.Position.Y; }
-                if (joint.JointType == JointType.HipCenter) { hipCenterX = joint.Position.X; }
+                if (joint.JointType == JointType.HipRight) 
+                { 
+                    hipRightY = joint.Position.Y;
+                    hipRightZ = joint.Position.Z;
+                }
             }
-            if (Math.Abs(leftHandY - rightHandY) < .1 && rightHandY - hipRightY > .5) { start = true; }
-            if (Math.Abs(leftHandY - rightHandY) < .1 && start == true && stop == false)
+            if (hipRightZ < .1) { tooClose = true; Console.WriteLine("TOO CLOSE"); }
+            else { tooClose = false; }
+            if (Math.Abs(leftHandY - rightHandY) < .1 && tooClose == false)
             {          
                 if (rightHandX >= prevRightXOne && leftHandX <= prevLeftXOne && rightHandY <= prevRightYOne && leftHandY <= prevLeftYOne) { counter += 1; }
-                //if ((rightHandX >= prevRightXOne && leftHandX <= prevLeftXOne && Math.Abs(rightHandY - prevRightYTwo) < .2 && Math.Abs(leftHandY - prevLeftYTwo) < .2) || (rightHandY <= prevRightYOne && leftHandY <= prevLeftYOne && Math.Abs(rightHandX - prevRightXTwo) < .2 && Math.Abs(leftHandX - prevLeftXTwo) < .2)) { counter += 1; }
-                //Console.WriteLine("{0}", Math.Abs(rightHandX - prevRightXTwo));
-                //if (Math.Abs(rightHandX - hipCenterX) - Math.Abs(leftHandX - hipCenterX) < .1 && Math.Abs(rightHandX - prevRightXTwo) >= .2)   { counter += 1; }
-                if (counter >= 3 && Math.Abs(rightHandX - prevRightXOne) < .1 && Math.Abs(leftHandX - prevLeftXOne) < .1 && Math.Abs(rightHandY - prevRightYOne) < .1 && Math.Abs(leftHandY - prevLeftYOne) < .1)
+                if (counter >= 4 && Math.Abs(rightHandX - prevRightXOne) < .1 && Math.Abs(leftHandX - prevLeftXOne) < .1 && Math.Abs(rightHandY - prevRightYOne) < .1 && Math.Abs(leftHandY - prevLeftYOne) < .1)
                 {
-                    stop = true;
                     counter = 0;
                     Dispatch.TriggerStop();
                 }
@@ -66,12 +63,6 @@ namespace Orchestra
             prevRightYOne = rightHandY;
             prevLeftXOne = leftHandX;
             prevLeftYOne = leftHandY;
-        }
-
-        private void Start(float time)
-        {
-            start = false;
-            stop = false;
         }
     }
 }

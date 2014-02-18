@@ -56,7 +56,7 @@ namespace Orchestra.Playback
         static void Main(string[] args)
         {
             MIDI.Load();
-            Dispatch.TriggerPlay();
+            Dispatch.TriggerStart();
             ReadCSV(@"C:\Users\admin\Desktop\Dance.csv");
             Console.ReadLine();
         }
