@@ -21,6 +21,7 @@ namespace Orchestra
     {
         public bool guiCall;
         public string songFile;
+        public string songName;
 
         public SongSelectWindow(bool guiCalled)
         {
@@ -39,6 +40,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid";
+            songName = "Radiohead: Paranoid Android";
             //songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\r.mid";
         }
 
@@ -58,6 +60,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\prayer.mid";
+            songName = "Madonna: Like a Prayer";
         }
 
         private void PrayerLoop(object sender, RoutedEventArgs e)
@@ -76,6 +79,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid";
+            songName = "Skrillex: Scary Monsters and Nice Sprites";
         }
 
         private void ScarMonLoop(object sender, RoutedEventArgs e)
@@ -94,6 +98,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\sym5.mid";
+            songName = "Beethoven: Fifth Symphony";
         }
 
         private void Sym5Loop(object sender, RoutedEventArgs e)
@@ -112,6 +117,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mtking.mid";
+            songName = "Greig: In the Hall of the Mountain King";
         }
 
         private void MtKingLoop(object sender, RoutedEventArgs e)
@@ -130,6 +136,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\daft.mid";
+            songName = "Daft Punk: Get Lucky";
         }
 
         private void GetLuckyLoop(object sender, RoutedEventArgs e)
@@ -148,6 +155,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.mid";
+            songName = "The Beatles: Hard Day's Night";
         }
 
         private void HardDayLoop(object sender, RoutedEventArgs e)
@@ -166,6 +174,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rockamadeus.mid";
+            songName = "Falco: Rock Me Amadeus";
         }
 
         private void RockAmadeusLoop(object sender, RoutedEventArgs e)
@@ -184,6 +193,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\always.mid";
+            songName = "Erasure: Always";
         }
 
         private void AlwaysLoop(object sender, RoutedEventArgs e)
@@ -202,6 +212,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\airgstr.mid";
+            songName = "Bach: Air on a G String";
         }
 
         private void AirGLoop(object sender, RoutedEventArgs e)
@@ -220,6 +231,7 @@ namespace Orchestra
             newIm.EndInit();
             PreviewImage.Source = newIm;
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.mid";
+            songName = "Dvorak: From the New World";
         }
 
         private void NewWorldLoop(object sender, RoutedEventArgs e)
@@ -297,7 +309,7 @@ namespace Orchestra
                 GUIWindow guiWindow = new GUIWindow();
                 guiWindow.Show();
             }
-            Dispatch.TriggerSongSelected(songFile);
+            Dispatch.TriggerSongSelected(songFile, songName);
         }
     }
 }

@@ -80,14 +80,14 @@ namespace Orchestra
         }
 
 
-        public static void SongSelected(string file)
+        public static void SongSelected(string file, string name)
         {
             eventsAtTicksDict = new Dictionary<int, List<int[]>>();
             instrumentsAtTicks = new Dictionary<int, int[]>();
             instrChanges = new List<int[]>();
 
             songFile = file;
-            LoadSong(songFile);
+            LoadSong(songFile, name);
 
             // Initialize timer
             timer.Elapsed += new ElapsedEventHandler(TimePassed);
@@ -427,7 +427,7 @@ namespace Orchestra
             return instrumentDict;
         }
 
-        public static void LoadSong(string file)
+        public static void LoadSong(string file, string songName)
         {
             sequence.Load(file);
             
@@ -447,7 +447,7 @@ namespace Orchestra
             sequencer.Stop();
             stopwatch.Restart();
 
-            Dispatch.TriggerSongLoaded(song);
+            Dispatch.TriggerSongLoaded(song, songName);
 
         }
 

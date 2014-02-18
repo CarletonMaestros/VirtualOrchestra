@@ -94,11 +94,12 @@ namespace Orchestra
         //public List<float> xYValue();
         //public float xAverage = 0;
         //public float yAverage = 0;
-        public float prevBeat;
+        public float prevBeat = 0;
         public float middleBeat;
         public int testingCounter;
         public int startingFour = 0;
         public Boolean aboveHip = false;
+        public float prevXBeatValue;
 
         public TempoGesture()
         {
@@ -196,9 +197,9 @@ namespace Orchestra
                             framesInFirstBeat++;
                             break;
                         }
-                        if (rightHandY > rightHipY) { aboveHip = true; }
-                        if (rightHandY < rightHipY) { aboveHip = false; }
-                        if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01) && Math.Abs(rightHandX - rightHipX) < .15 && aboveHip == true)
+                        //if (rightHandY > rightHipY) { aboveHip = true; }
+                        //if (rightHandY < rightHipY) { aboveHip = false; }
+                        if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01) && Math.Abs(rightHandX - rightHipX) < .15)
                         {
                             //Console.WriteLine("Start with " + stopwatch.ElapsedMilliseconds + " in the pre-start beat.");
                             //Console.WriteLine("START");
@@ -232,54 +233,80 @@ namespace Orchestra
                                 long tempo = stopwatch.ElapsedMilliseconds * 1000;
                                 //Console.WriteLine(counter + " " + tempo);\
                             }
-                            if (rightHandX - rightHipX > -.1 && rightHandX - rightHipX < .15 && Math.Abs(rightHandY - rightHipY) < .15)
-                            {
-                                if (prevBeat == 1)
-                                {
-                                    //Dispatch.TriggerBeat(counter, "beat2");
-                                    prevBeat = 2;
-                                    middleBeat = 1;
-                                }
-                                else if (prevBeat == 2 && middleBeat == 0)
-                                {
-                                    //Dispatch.TriggerBeat(counter, "beat3");
-                                    prevBeat = 3;
-                                    middleBeat = 1;
-                                }
-                                else if (prevBeat == 3 && middleBeat == 0)
-                                {
-                                    //Dispatch.TriggerBeat(counter, "beat4");
-                                    prevBeat = 4;
-                                    middleBeat = 1;
-                                }
-                                else
-                                {
-                                    //Dispatch.TriggerBeat(counter, "beat1");
-                                    prevBeat = 1;
-                                    middleBeat = 1;
-                                }
-                            }
-                            else if (rightHandX < 0)
-                            {
-                                //Dispatch.TriggerBeat(counter, "beat2");
-                                prevBeat = 2;
-                                middleBeat = 0;
-                            }
-                            else if (rightHandX > 0)
-                            {
-                                if (prevBeat == 2)
-                                {
-                                    //Dispatch.TriggerBeat(counter, "beat3");
-                                    prevBeat = 3;
-                                    middleBeat = 0;
-                                }
-                                else if (prevBeat == 1)
-                                {
-                                    //Dispatch.TriggerBeat(counter, "beat2");
-                                    prevBeat = 2;
-                                    middleBeat = 0;
-                                }
-                            }
+                            //if (prevBeat == 0 || prevXBeatValue < rightHandX - .05 && Math.Abs(rightHandX - rightHipX) < .1)
+                            //{
+                            //    prevBeat = 1;
+                            //    Console.WriteLine("beat 1");
+                            //}
+                            //else if (prevXBeatValue > rightHandX + .05 && rightHandX + .05 < rightHipX)
+                            //{
+                            //    Console.WriteLine("beat 2");
+                            //}
+                            //else if (prevXBeatValue + .1 < rightHandX && rightHandX > rightHipX + .05)
+                            //{
+                            //    Console.WriteLine("beat 3");
+                            //}
+                            //else if (prevXBeatValue > rightHandX + .08 && Math.Abs(rightHandX - rightHipX) < .1)
+                            //{
+                            //    Console.WriteLine("beat 4");
+                            //}
+                            //else { Console.WriteLine("shit's wrong"); }
+                            //if (rightHandX - rightHipX > -.1 && rightHandX - rightHipX < .15 && Math.Abs(rightHandY - rightHipY) < .15 && )
+                            //{
+                            //    //if (prevBeat == 1)
+                            //    //{
+                            //    //    //Dispatch.TriggerBeat(counter, "beat2");
+                            //    //    Console.WriteLine("beat 2");
+                            //    //    prevBeat = 2;
+                            //    //    middleBeat = 1;
+                            //    //}
+                            //    //else if (prevBeat == 2 && middleBeat == 0)
+                            //    //{
+                            //    //    //Dispatch.TriggerBeat(counter, "beat3");
+                            //    //    prevBeat = 3;
+                            //    //    middleBeat = 1;
+                            //    //    Console.WriteLine("beat 3");
+                            //    //}
+                            //    if (prevBeat == 3)
+                            //    {
+                            //        //Dispatch.TriggerBeat(counter, "beat4");
+                            //        //prevXBeatValue = rightHandX;
+                            //        prevBeat = 4;
+                            //        middleBeat = 1;
+                            //        Console.WriteLine("beat 4");
+                            //    }
+                            //    else
+                            //    {
+                            //        //Dispatch.TriggerBeat(counter, "beat1");
+                            //        prevBeat = 1;
+                            //        middleBeat = 1;
+                            //        Console.WriteLine("beat 1");
+                            //    }
+                            //}
+                            //else if (rightHandX < 0)
+                            //{
+                            //    //Dispatch.TriggerBeat(counter, "beat2");
+                            //    prevBeat = 2;
+                            //    middleBeat = 0;
+                            //    Console.WriteLine("beat 2");
+                            //}
+                            //else if (rightHandX > 0)
+                            //{
+                            //    if (prevBeat == 2)
+                            //    {
+                            //        //Dispatch.TriggerBeat(counter, "beat3");
+                            //        prevBeat = 3;
+                            //        middleBeat = 0;
+                            //        Console.WriteLine("beat 3");
+                            //    }
+                            //    //else if (prevBeat == 1)
+                            //    //{
+                            //    //    //Dispatch.TriggerBeat(counter, "beat2");
+                            //    //    prevBeat = 2;
+                            //    //    middleBeat = 0;
+                            //    //    Console.WriteLine("beat 2");
+                            //    //}
+                            //}
                             // GET OVER IT
                             stopwatch.Restart();
                             Dispatch.TriggerBeat(counter, "beat");

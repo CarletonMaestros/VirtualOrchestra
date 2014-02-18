@@ -54,8 +54,6 @@ namespace Orchestra
             Dispatch.SongLoaded += SongLoaded;
             Dispatch.TickInfo += TickTriggered;
             Dispatch.VolumeChanged += VolumeChanged;
-            Dispatch.Start += Start;
-            Dispatch.Stop += Stop;
 
         }
 
@@ -64,22 +62,14 @@ namespace Orchestra
             VolumeGauge.Opacity = (volume);
             VolumeGauge.Height = volume * PianoRoll.ActualHeight;
         }
-
-        public void Start(float time)
-        {
-            PlayPause.Content = "PLAYING!!";
-        }
-
-        public void Stop(float time)
-        {
-            PlayPause.Content = "STOPPED!!";
-        }
-
-        private void SongLoaded(SongData song)
+         
+        private void SongLoaded(SongData song, string songName)
         {
             ticksPerBeat = 0;
             beatsPerMeasure = 0;
             eventsAtTicksDict = new Dictionary<int, List<int[]>>();
+
+            SongName.Content = songName;
 
             lastPopulate = -100000000;
 

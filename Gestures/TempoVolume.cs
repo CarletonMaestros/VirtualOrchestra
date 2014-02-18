@@ -18,7 +18,7 @@ namespace Orchestra
         public float prevXTwo;
         public float rightHandY;
         public float rightHandX;
-        public float rightHipX;
+        public float rightHipX = 0;
         public float rightHipY;
         public float threshold;
         public int stillFramesCount;
@@ -71,7 +71,7 @@ namespace Orchestra
                     rightHandY = joint.Position.Y;
                     rightHandX = joint.Position.X;
                 }
-                if (joint.JointType == JointType.HipRight)
+                if (joint.JointType == JointType.HipRight && rightHipX == 0)
                 {
                     rightHipX = joint.Position.X;
                     rightHipY = joint.Position.Y;
@@ -118,6 +118,8 @@ namespace Orchestra
                 {
                     if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
                     {
+                       // Console.WriteLine(rightHandX - rightHipX);
+                        //Console.WriteLine(Math.Abs(rightHandY - rightHipY));
                         if (rightHandX - rightHipX > -.1 && rightHandX - rightHipX < .15 && Math.Abs(rightHandY - rightHipY) < .15)
                         {
                             minY.Add(rightHandY);
@@ -127,65 +129,47 @@ namespace Orchestra
                         }
                         else if (rightHandX < 0)
                         {
-                            if (minX.Count == 0)
-                            {
-                                for (int i = 0; i < 3; i++) { minX.Add(rightHandX); }
-                            }
-                            else { minX.Add(rightHandX); }
-                            if (minX.Count == 3) { minX.RemoveAt(0); }
-                            if (minX.ElementAt(1) > minX.ElementAt(0) * .9)
-                            {
-                                Console.WriteLine(Math.Abs((minX.ElementAt(1) - rightHipX) / .25) * 127f);
-                                volume = Math.Abs((minX.ElementAt(1) - rightHipX) / .25);
-                                volumeFloat = (float)volume;
-                                Dispatch.TriggerVolumeChanged(volumeFloat);
-                            }
-                            if (minX.ElementAt(1) < minX.ElementAt(0) * 1.1)
-                            {
-                                volume = Math.Abs((minX.ElementAt(1) - rightHipX) / .1);
-                                volumeFloat = (float)volume;
-                                Dispatch.TriggerVolumeChanged(volumeFloat);
-                            }
+                            //if (minX.Count == 0)
+                            //{
+                            //    for (int i = 0; i < 3; i++) { minX.Add(rightHandX); }
+                            //}
+                            //else { minX.Add(rightHandX); }
+                            //if (minX.Count == 3) { minX.RemoveAt(0); }
+                            volume = Math.Abs((rightHandX - rightHipX + .22) / -.41);
+                            //Console.WriteLine("rightHandX " + rightHandX);
+                            //Console.WriteLine("rightHipX: " + rightHipX);
+                            //Console.WriteLine("volume: " + volume);
                             allChanged++;
                             //Console.WriteLine("volume: beat 2");
                         }
-                        else if (rightHandX > 0)
+                        else
                         {
                             if (maxX.Count == 0)
                             {
                                 for (int i = 0; i < 4; i++) { maxX.Add(rightHandX); }
                             }
                             if (maxX.Count == 4) { maxX.RemoveAt(0); }
-                            //if (maxX.ElementAt(2) > minX.ElementAt(0) * 1.1)
-                            //volume = Math.Abs((maxX.ElementAt(2) - rightHipX + .65) / 1.15);
-                            //volumeFloat = (float)volume;
-                            //Dispatch.TriggerVolumeChanged(volumeFloat);
                             allChanged = 1;
-                            Console.WriteLine("volume: beat 3");
+                            //Console.WriteLine("volume: beat 3");
                         }
                         if (maxX.Count == 3 && minX.Count == 3 && maxY.Count == 3)
                         {
-                            //if (maxX.ElementAt(2) < maxX.ElementAt(0) * .9 && minX.ElementAt(2) > minX.ElementAt(0) * .9 && maxY.ElementAt(2) < maxY.ElementAt(0) * .9 && allChanged == 3)
-                            //Console.WriteLine("allChanged: " + allChanged);
                             if (maxX.ElementAt(2) < maxX.ElementAt(0) * .9 && minX.ElementAt(2) > minX.ElementAt(0) * .9 && allChanged % 3 == 0)
                             {
                                 changeVolume = true;
-                                //Console.WriteLine("YIPEE");
                             }
-                            //else if (maxX.ElementAt(2) > maxX.ElementAt(0) * 1.1 && minX.ElementAt(2) < minX.ElementAt(0) * 1.1 && maxY.ElementAt(2) > maxY.ElementAt(0) * 1.1 && allChanged == 3)
                             else if (maxX.ElementAt(2) > maxX.ElementAt(0) * 1.1 && minX.ElementAt(2) < minX.ElementAt(0) * 1.1 && allChanged % 3 == 0)
                             {
                                 changeVolume = true;
-                                //Console.WriteLine("WAHOO");
                             }
                             else { changeVolume = false; }
-                            //Console.WriteLine(changeVolume);
                         }
-                        //Dispatch.TriggerBeat(counter, "beat");
                         stopwatch.Restart();
+                        if (volume > 1) { volume = 1; }
+                        volumeFloat = (float)volume;
+                        Dispatch.TriggerVolumeChanged(volumeFloat);
                         seeking = "MAXIMUM";
                         counter++;
-                        //Dispatch.TriggerBeat(counter, "beat");
                         break;
                     }
                     break;
