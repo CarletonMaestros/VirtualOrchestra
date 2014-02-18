@@ -35,7 +35,7 @@ namespace Orchestra
             Dispatch.SkeletonMoved -= SkeletonMoved;
         }
 
-        void SongLoaded(SongData song, string songName)
+        void SongLoaded(SongData song, string songName, string songFile)
         {
             Dispatch.TriggerVolumeChanged(0.5f);
         }

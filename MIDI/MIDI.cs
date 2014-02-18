@@ -452,7 +452,7 @@ namespace Orchestra
             sequencer.Stop();
             stopwatch.Restart();
 
-            Dispatch.TriggerSongLoaded(song, songName);
+            Dispatch.TriggerSongLoaded(song, songName, file);
 
         }
 

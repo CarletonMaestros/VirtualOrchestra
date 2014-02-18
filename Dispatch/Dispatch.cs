@@ -15,9 +15,9 @@ namespace Orchestra
         public static event TickInfoDelegate TickInfo;
         public static void TriggerTickInfo(int tick) { if ( TickInfo != null) TickInfo(tick);}
 
-        public delegate void SongLoadedDelegate(SongData song, string songName);
+        public delegate void SongLoadedDelegate(SongData song, string songName, string songFile);
         public static event SongLoadedDelegate SongLoaded;
-        public static void TriggerSongLoaded(SongData song, string songName) { if (SongLoaded != null) SongLoaded(song, songName); }
+        public static void TriggerSongLoaded(SongData song, string songName, string songFile) { if (SongLoaded != null) SongLoaded(song, songName, songFile); }
 
         public delegate void SkeletonMovedDelegate(float time, Skeleton skeleton);
         public static event SkeletonMovedDelegate SkeletonMoved;

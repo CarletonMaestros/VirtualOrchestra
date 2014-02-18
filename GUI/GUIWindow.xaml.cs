@@ -41,6 +41,9 @@ namespace Orchestra
         private int ticksPerBeat;
         private int beatsPerMeasure;
         private Dictionary<int, List<int[]>> eventsAtTicksDict;
+        private SongData curSong;
+        private string curSongName;
+        private string curSongFile;
 
         public GUIWindow()
         {
@@ -63,8 +66,12 @@ namespace Orchestra
             VolumeGauge.Height = volume * PianoRoll.ActualHeight;
         }
          
-        private void SongLoaded(SongData song, string songName)
+        private void SongLoaded(SongData song, string songName, string songFile)
         {
+            curSong = song;
+            curSongName = songName;
+            curSongFile = songFile;
+
             ticksPerBeat = 0;
             beatsPerMeasure = 0;
             eventsAtTicksDict = new Dictionary<int, List<int[]>>();
@@ -110,6 +117,8 @@ namespace Orchestra
             eventsAtTicksDict = song.eventsAtTicksDict;
             PianoRoll.ClipToBounds = true;
             VolumeGauge.ClipToBounds = true;
+
+            Dispatch.TriggerLock(false);
         }
 
         public void MainWindow_Closing(object sender, CancelEventArgs e)
@@ -305,6 +314,14 @@ namespace Orchestra
             Dispatch.TriggerLock(true);
             SongSelectWindow newSelect = new SongSelectWindow(true);
             newSelect.Show();
+        }
+
+        private void RestartButton_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatch.TriggerStop();
+            Dispatch.TriggerLock(true);
+            Dispatch.TriggerVolumeChanged(0.5f);
+            Dispatch.TriggerSongSelected(curSongFile, curSongName);
         }
     }
 }
