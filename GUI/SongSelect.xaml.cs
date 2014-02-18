@@ -309,6 +309,8 @@ namespace Orchestra
                 GUIWindow guiWindow = new GUIWindow();
                 guiWindow.Show();
             }
+            Dispatch.TriggerLock(false);
+            Dispatch.TriggerStart();
             Dispatch.TriggerSongSelected(songFile, songName);
         }
     }

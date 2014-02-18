@@ -17,7 +17,7 @@ namespace Orchestra
 
         public delegate void SongLoadedDelegate(SongData song, string songName);
         public static event SongLoadedDelegate SongLoaded;
-        public static void TriggerSongLoaded(SongData song, string songName) { stopwatch.Restart(); if (SongLoaded != null) SongLoaded(song, songName); }
+        public static void TriggerSongLoaded(SongData song, string songName) { if (SongLoaded != null) SongLoaded(song, songName); }
 
         public delegate void SkeletonMovedDelegate(float time, Skeleton skeleton);
         public static event SkeletonMovedDelegate SkeletonMoved;
@@ -43,6 +43,10 @@ namespace Orchestra
         public delegate void SongSelectedDelegate(string songFile, string songName);
         public static event SongSelectedDelegate SongSelected;
         public static void TriggerSongSelected(string songFile, string songName) { if (SongSelected != null) SongSelected(songFile, songName); }
+
+        public delegate void LockDelegate(bool songLock);
+        public static event LockDelegate Lock;
+        public static void TriggerLock(bool songLock) { if (Lock != null) Lock(songLock); }
 
         private static Stopwatch stopwatch = new Stopwatch();
 

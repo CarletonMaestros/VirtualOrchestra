@@ -85,6 +85,10 @@ namespace Orchestra
             eventsAtTicksDict = new Dictionary<int, List<int[]>>();
             instrumentsAtTicks = new Dictionary<int, int[]>();
             instrChanges = new List<int[]>();
+            //sequencer.Position = 0;
+            //sequencer.Clock.Tempo = int.MaxValue;
+            lastBeatStarts = new double[]{ -1, -1, -1, -1, -1 };
+
 
             songFile = file;
             LoadSong(songFile, name);
@@ -116,6 +120,7 @@ namespace Orchestra
                 double bps = LastBPS;
                 if ((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)) < 0)
                     Console.WriteLine((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)));
+
                 sequencer.Clock.Tempo = (int)(Math.Min(int.MaxValue,1000000/Last4BPS));
             }
         }

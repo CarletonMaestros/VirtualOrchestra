@@ -302,6 +302,7 @@ namespace Orchestra
         {
             Dispatch.TriggerStop();
             Dispatch.TriggerVolumeChanged(0.5f);
+            Dispatch.TriggerLock(true);
             SongSelectWindow newSelect = new SongSelectWindow(true);
             newSelect.Show();
         }

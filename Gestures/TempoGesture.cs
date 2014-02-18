@@ -91,6 +91,7 @@ namespace Orchestra
         public int startMarker = 0;
         //public CircularQueue<List<float>> circleChecker;
         public Boolean stop = false;
+        public bool locked = true;
         //public List<float> xYValue();
         //public float xAverage = 0;
         //public float yAverage = 0;
@@ -115,6 +116,7 @@ namespace Orchestra
 
             Dispatch.SkeletonMoved += SkeletonMoved;
             Dispatch.Stop += Stopped;
+            Dispatch.Lock += Lock;
         }
 
         private void Stopped(float time)
@@ -127,8 +129,15 @@ namespace Orchestra
             Dispatch.SkeletonMoved -= this.SkeletonMoved;
         }
 
+        private void Lock(bool songLocked)
+        {
+            locked = songLocked;
+        }
+
         void SkeletonMoved(float time, Skeleton skel)
         {
+            if (locked) return;
+
             if (testingCounter % 15 == 0)
             {
                 //Dispatch.TriggerBeat(0, "0");
