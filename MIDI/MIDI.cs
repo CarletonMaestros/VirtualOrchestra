@@ -32,9 +32,12 @@ namespace Orchestra
         static Dictionary<int, List<int[]>> eventsAtTicksDict = new Dictionary<int, List<int[]>>();
         //static string songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\s.mid";
         static string songFile;
+        static string songName;
         static int tempoHold = 100000000;
         static int furthestEvent;
         static int numEvents = 0;
+
+        static bool guiLoad = false;
 
         // Volatile Variables
         private static Boolean songStarted = false;
@@ -62,6 +65,7 @@ namespace Orchestra
             Dispatch.VolumeChanged += VolumeChanged;
             Dispatch.SkeletonMoved += SkeletonMoved;
             Dispatch.SongSelected += SongSelected;
+            Dispatch.GuiLoaded += GuiLoaded;
 
             // Subscribe to MIDI events
             sequencer.ChannelMessagePlayed += MIDIChannelMessagePlayed;
@@ -91,11 +95,32 @@ namespace Orchestra
 
 
             songFile = file;
-            LoadSong(songFile, name);
+            songName = name;
 
-            // Initialize timer
-            timer.Elapsed += new ElapsedEventHandler(TimePassed);
-            timer.Enabled = true;
+            if (guiLoad)
+            {
+                LoadSong(songFile, songName);
+
+                // Initialize timer
+                timer.Elapsed += new ElapsedEventHandler(TimePassed);
+                timer.Enabled = true;
+            }
+        }
+
+        private static void GuiLoaded()
+        {
+            if (songFile != null)
+            {
+                LoadSong(songFile, songName);
+
+                // Initialize timer
+                timer.Elapsed += new ElapsedEventHandler(TimePassed);
+                timer.Enabled = true;
+            }
+            else
+            {
+                guiLoad = true;
+            }
         }
 
         private static void Stopped(object sender, StoppedEventArgs e)

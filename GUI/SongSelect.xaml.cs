@@ -27,6 +27,7 @@ namespace Orchestra
         {
             guiCall = guiCalled;
             InitializeComponent();
+            if (guiCalled) { this.WindowStyle = 0; }
         }
 
         public void ListBoxItem_Selected_1(object sender, RoutedEventArgs e)
@@ -305,14 +306,15 @@ namespace Orchestra
             StopAllMusic();
             SongSelector.Visibility = Visibility.Hidden;
 
-
-
-            this.Close();
             if (guiCall == false)
             {
                 GUIWindow guiWindow = new GUIWindow();
                 guiWindow.Show();
             }
+
+
+            this.Close();
+            
             Dispatch.TriggerStart();
             Dispatch.TriggerSongSelected(songFile, songName);
         }

@@ -60,8 +60,11 @@ namespace Orchestra
             //entries are [instr, pitch, velocity, duration, channel]
 
             Dispatch.SongLoaded += SongLoaded;
+            Dispatch.SongSelected += SongSelected;
             Dispatch.TickInfo += TickTriggered;
             Dispatch.VolumeChanged += VolumeChanged;
+
+            Dispatch.TriggerGuiLoaded();
 
         }
 
@@ -69,6 +72,11 @@ namespace Orchestra
         {
             VolumeGauge.Opacity = (volume);
             VolumeGauge.Height = volume * PianoRoll.ActualHeight;
+        }
+
+        private void SongSelected(string file, string name)
+        {
+            Dispatch.TriggerGuiLoaded();
         }
          
         private void SongLoaded(SongData song, string songName, string songFile)
@@ -327,6 +335,12 @@ namespace Orchestra
             Dispatch.TriggerLock(true);
             Dispatch.TriggerVolumeChanged(0.5f);
             Dispatch.TriggerSongSelected(curSongFile, curSongName);
+            Dispatch.TriggerGuiLoaded();
+        }
+
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
