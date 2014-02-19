@@ -327,7 +327,9 @@ namespace Orchestra
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
+            //PreviewText.Content = "Loading";
             StopAllMusic();
+            
             SongSelector.Visibility = Visibility.Hidden;
 
             if (guiCall == false)

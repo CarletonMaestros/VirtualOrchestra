@@ -36,8 +36,9 @@
             <ListBoxItem Content="    Tchaikovsky: Swan Lake Prelude" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_12"/>
         </ListBox>
         <Image Name="PreviewImage" Source="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" HorizontalAlignment="Left" Height="200" Margin="490,49,0,0" VerticalAlignment="Top" Width="200"/>
-        <Label Name="PreviewText" Foreground="White" Content="Pick a Song!" FontSize="20" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="40" Margin="490,280,0,0" VerticalAlignment="Top" Width="200"/>
+        <Label x:Name="PreviewText" Foreground="White" Content="Pick a Song!" FontSize="20" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="40" Margin="490,280,0,0" VerticalAlignment="Top" Width="200"/>
         <Button Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Left" Height="42" Margin="542,335,0,0" VerticalAlignment="Top" Width="100" Click="ConfirmButton_Click"/>
+        
         <Border BorderBrush="DarkGray" BorderThickness="3" HorizontalAlignment="Left" Height="204" Margin="490,49,0,0" VerticalAlignment="Top" Width="204"/>
         <Border BorderBrush="DarkGray" BorderThickness="3" HorizontalAlignment="Left" Height="403" Margin="25,25,0,0" VerticalAlignment="Top" Width="380"/>
     </Grid>
