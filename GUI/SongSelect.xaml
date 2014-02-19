@@ -20,6 +20,7 @@
         <MediaElement Name="Always" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\always.wav" LoadedBehavior="Manual" MediaEnded="AlwaysLoop" />
         <MediaElement Name="AirG" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\airgstr.wav" LoadedBehavior="Manual" MediaEnded="AirGLoop" />
         <MediaElement Name="NewWorld" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.wav" LoadedBehavior="Manual" MediaEnded="NewWorldLoop" />
+        <MediaElement Name="SwanLake" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\swan.wav" LoadedBehavior="Manual" MediaEnded="SwanLakeLoop" />
         <ListBox Name="SongSelector" HorizontalAlignment="Left" Height="403" Margin="25,25,0,0" VerticalAlignment="Top" Width="380">
             <ListBoxItem Content="    Bach: Air on a G String" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_10"/>
             <ListBoxItem Content="    The Beatles: Hard Day's Night" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_7"/>
@@ -32,6 +33,7 @@
             <ListBoxItem Content="    Madonna: Like a Prayer" Height="50" FontSize="18"  Foreground="Black" Background="LightGray" Selected="ListBoxItem_Selected_2"/>
             <ListBoxItem Content="    Radiohead: Paranoid Android" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_1"/>
             <ListBoxItem Content="    Skrillex: Scary Monsters and Nice Sprites" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_3"/>
+            <ListBoxItem Content="    Tchaikovsky: Swan Lake Prelude" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_12"/>
         </ListBox>
         <Image Name="PreviewImage" Source="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" HorizontalAlignment="Left" Height="200" Margin="490,49,0,0" VerticalAlignment="Top" Width="200"/>
         <Label Name="PreviewText" Foreground="White" Content="Pick a Song!" FontSize="20" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="40" Margin="490,280,0,0" VerticalAlignment="Top" Width="200"/>

@@ -241,6 +241,25 @@ namespace Orchestra
             NewWorld.Play();
         }
 
+        private void ListBoxItem_Selected_12(object sender, RoutedEventArgs e)
+        {
+            StopAllMusic();
+            SwanLake.Play();
+            BitmapImage newIm = new BitmapImage();
+            newIm.BeginInit();
+            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Tchaikovsky.jpg");
+            newIm.EndInit();
+            PreviewImage.Source = newIm;
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\swan.mid";
+            songName = "Tchaikovsky: Swan Lake Prelude";
+        }
+
+        private void SwanLakeLoop(object sender, RoutedEventArgs e)
+        {
+            SwanLake.Position = TimeSpan.Zero;
+            SwanLake.Play();
+        }
+
         private void StopAllMusic()
         {
             bool parAndPause = ParaAnd.CanPause;
@@ -297,6 +316,11 @@ namespace Orchestra
             if (newWorldPause == true)
             {
                 NewWorld.Stop();
+            }
+            bool swanLakePause = SwanLake.CanPause;
+            if (swanLakePause == true)
+            {
+                SwanLake.Stop();
             }
 
         }
