@@ -27,9 +27,17 @@ namespace Orchestra
         private float hipY;
         private float headY;
         private double tempo;
+
+        private Point maxY;
+        private Point minY;
+
         double canvasWidthInSeconds = 1;
         Canvas sineCanvas;
+        //TextBlock t1;
         int dataRectSize = 8;
+
+        Complex[] samples = new Complex[32];
+        double[] sineApprox = new double[32];
         //private double xmin = 0;
 
         //private double xmax = 6.5;
@@ -62,10 +70,11 @@ namespace Orchestra
             object chart = FindName("chartCanvas");
             sineCanvas = (Canvas)chart;
             Dispatch.SkeletonMoved += this.SkeletonMoved;
+
             //AddChart();
         }
 
-        Complex[] samples = new Complex[32];
+        
         private void SkeletonMoved(float time, Skeleton skel)
         {
             Y = skel.Joints[JointType.HandRight].Position.Y;
@@ -89,6 +98,8 @@ namespace Orchestra
             Canvas.SetTop(datum, Y);
             sineCanvas.Children.Add(datum);
 
+            maxY.Y = 0;
+            minY.Y = double.MaxValue;
             List<UIElement> markedChildren = new List<UIElement>();
             foreach (UIElement p in sineCanvas.Children)
             {
@@ -104,6 +115,19 @@ namespace Orchestra
                 {
                     markedChildren.Add(child);
                 }
+                else
+                {
+                    if (Canvas.GetTop(child) > maxY.Y)
+                    {
+                        maxY.Y = Canvas.GetTop(child);
+                        maxY.X = (double)child.Tag;
+                    }
+                    if (Canvas.GetTop(child) < minY.Y)
+                    {
+                        minY.Y = Canvas.GetTop(child);
+                        minY.X = (double)child.Tag;
+                    }
+                }
             }
             foreach (var child in markedChildren)
             {
@@ -116,11 +140,21 @@ namespace Orchestra
             //foreach (var i in fft) Console.WriteLine(fft);
             for (int i = 0; i < fft.Length; ++i) fft[i] = fft[i].Magnitude;
 
-            double max = 0, maxi = 0;
+            double max = 0;
+            int maxi = 0;
             for (int i = 1; i < fft.Length/2; ++i)
                 if (fft[i].Real > max) { max = fft[i].Real; maxi = i; }
             //Console.WriteLine("{0} {1}", maxi/30*fft.Length, max);
-            tempo = maxi / 30 * fft.Length;
+            t1.Text = ((double)maxi / 30 * fft.Length).ToString("0.##") + " Hz";
+            t2.Text = "i+1 = " + fft[maxi + 1].Real.ToString("0.##");
+            t3.Text = "i-1 = " + fft[maxi - 1].Real.ToString("0.##");    
+            
+            //t2.Text = "max = " + maxY.Y.ToString("0.##");
+            //t3.Text = "min = " + minY.Y.ToString("0.##");
+            t4.Text = "fit = " + goodnessOfFit().ToString("0.##");
+            //Console.WriteLine(t1.Text);
+            //t1.Text = "TEXT";
+            tempo = (double)maxi / 30 * fft.Length;
 
             AddChart();
         }
@@ -138,6 +172,15 @@ namespace Orchestra
             child.Tag = (double)child.Tag - elapsedTime;
             double pixelPosition = (double)child.Tag * PixelsPerSecond;
             return pixelPosition;
+        }
+        private double goodnessOfFit()
+        {
+            double total= 0 ;
+            for (int i = 0; i < sineApprox.Length; ++i)
+            {
+                total += (sineApprox[i] - samples[i].Real);
+            }
+            return total;
         }
         //private void AddChart()
         //{
@@ -175,7 +218,7 @@ namespace Orchestra
         //    return result;
         //}
 
-        int resolution = 70;
+        int resolution = 96;
         private void AddChart()
         {
             // Draw sine curve:
@@ -185,7 +228,12 @@ namespace Orchestra
             {
                 double x = 1.0*i/resolution;
                 double y = Math.Sin(x*tempo*2*Math.PI);
-                pl.Points.Add(CurvePoint(new Point(x, y)));
+                Point newPoint = CurvePoint(new Point(x, y));
+                pl.Points.Add(newPoint);
+                if (i % 3 == 0)
+                {
+                    sineApprox[i / 3] = newPoint.Y;
+                }
             }
             sineCanvas.Children.Add(pl);
         }

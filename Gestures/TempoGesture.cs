@@ -30,7 +30,7 @@ namespace Orchestra
         int framesInFirstBeat;
         int startMarker = 0;
         bool locked = true;
-        bool aboveHip = false;       
+        bool aboveHip = false;
         bool tooClose = false;
 
         public TempoGesture()
@@ -80,7 +80,11 @@ namespace Orchestra
                     rightHipZ = joint.Position.Z;
                 }
             }
-            if (rightHipZ < .1) { tooClose = true; Console.WriteLine("TOO CLOSE"); }
+            if (rightHipZ < .1) 
+            { 
+                tooClose = true; 
+                //Console.WriteLine("TOO CLOSE"); 
+            }
             else { tooClose = false; }
             switch (seeking)
             {

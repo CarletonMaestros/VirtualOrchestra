@@ -427,12 +427,7 @@ namespace Orchestra
                             int[] eventdata = new int[5] { instr, pitchNOFF, velNON, dur, channelNOFF };
                             eventsAtTicksDict = addToDictHandleCollisions(absNON, eventdata, eventsAtTicksDict);
                         }
-                        else
-                        {
-                            //as If I even care at this point
-                        }
                         break;
-
 
                     default:
                         break;
@@ -478,7 +473,6 @@ namespace Orchestra
             stopwatch.Restart();
 
             Dispatch.TriggerSongLoaded(song, songName, file);
-
         }
 
         static void Start(float time)

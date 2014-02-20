@@ -48,7 +48,11 @@ namespace Orchestra
                     hipRightZ = joint.Position.Z;
                 }
             }
-            if (hipRightZ < .1) { tooClose = true; Console.WriteLine("TOO CLOSE"); }
+            if (hipRightZ < .1) 
+            { 
+                tooClose = true; 
+                //Console.WriteLine("TOO CLOSE"); 
+            }
             else { tooClose = false; }
             if (Math.Abs(leftHandY - rightHandY) < .1 && tooClose == false)
             {          

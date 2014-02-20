@@ -65,7 +65,11 @@ namespace Orchestra
                         xAverage = 0;
                     }
                 }
-                if (leftHipZ < .1) { tooClose = true; Console.WriteLine("TOO CLOSE"); }
+                if (leftHipZ < .1) 
+                { 
+                    tooClose = true; 
+                    //Console.WriteLine("TOO CLOSE"); 
+                }
                 else { tooClose = false; }
                 if (joint.JointType == JointType.WristLeft)
                 {
