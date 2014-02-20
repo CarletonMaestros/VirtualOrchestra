@@ -15,19 +15,13 @@ using System.Windows.Shapes;
 namespace Orchestra
 {
     /// <summary>
-    /// Interaction logic for StartScreen.xaml
+    /// Interaction logic for Tutorial.xaml
     /// </summary>
-    public partial class StartScreen : Window
+    public partial class Tutorial : Window
     {
-        public StartScreen()
+        public Tutorial()
         {
             InitializeComponent();
-
-        }
-
-        private void QuitButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

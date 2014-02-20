@@ -32,7 +32,7 @@ namespace Orchestra
             Dispatch.SongLoaded += SongLoaded;
         }
 
-        ~VolumeGesture()
+        public void Unload()
         {
             Dispatch.SkeletonMoved -= SkeletonMoved;
         }

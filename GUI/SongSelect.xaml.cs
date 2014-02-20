@@ -325,6 +325,11 @@ namespace Orchestra
 
         }
 
+        private void PlayRightHandMode(object sender, RoutedEventArgs e)
+        {
+            Gestures.Load(true);
+        }
+
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             //PreviewText.Content = "Loading";

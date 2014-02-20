@@ -26,7 +26,7 @@ namespace Orchestra
             Dispatch.SkeletonMoved += SkeletonMoved;
         }
 
-        ~StopGesture() { Dispatch.SkeletonMoved -= this.SkeletonMoved; }
+        public void Unload() { Dispatch.SkeletonMoved -= this.SkeletonMoved; }
 
         void SkeletonMoved(float time, Skeleton skeleton)
         {

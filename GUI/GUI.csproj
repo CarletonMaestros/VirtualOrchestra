@@ -94,6 +94,9 @@
     <Compile Include="StartScreen.xaml.cs">
       <DependentUpon>StartScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tutorial.xaml.cs">
+      <DependentUpon>Tutorial.xaml</DependentUpon>
+    </Compile>
     <Page Include="GUIWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -118,6 +121,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StartScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tutorial.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,6 +162,10 @@
     <ProjectReference Include="..\Dispatch\Dispatch.csproj">
       <Project>{f190e14d-fef2-49ff-aec1-118209a207f9}</Project>
       <Name>Dispatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gestures\Gestures.csproj">
+      <Project>{30440ea9-6e96-4b4c-9057-814ec231b9f9}</Project>
+      <Name>Gestures</Name>
     </ProjectReference>
     <ProjectReference Include="..\MIDI\MIDI.csproj">
       <Project>{63b7c1dd-a88b-469f-b065-c95e34fde015}</Project>

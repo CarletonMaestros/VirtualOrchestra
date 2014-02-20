@@ -7,20 +7,29 @@ namespace Orchestra
 {
     public class Gestures
     {
-        /// <summary>
-        /// Gesture recognizers (stored to prevent garbage collection)
-        /// </summary>
-        private static List<object> gestures = new List<object>();
+        public static TempoGesture tempo;
+        public static StopGesture stop;
+        public static TempoVolume tempoVolume;
+        public static VolumeGesture volume;
 
         /// <summary>
         /// Activate a bunch of gesture recognizers
         /// </summary>
-        public static void Load()
+        public static void Load(bool rightHandVolume)
         {
-            //gestures.Add(new VolumeGesture());
-            gestures.Add(new TempoGesture());
-            gestures.Add(new StopGesture());
-            gestures.Add(new TempoVolume());
+            Unload();
+            if (rightHandVolume) { tempoVolume = new TempoVolume(); }
+            else { volume = new VolumeGesture(); }
+            tempo = new TempoGesture();
+            stop = new StopGesture();
+        }
+
+        public static void Unload()
+        {
+            if (tempo != null) tempo.Unload();
+            if (stop != null) stop.Unload();
+            if (tempoVolume != null) tempoVolume.Unload();
+            if (volume != null) volume.Unload();
         }
     }
 }

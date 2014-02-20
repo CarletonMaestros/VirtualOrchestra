@@ -153,7 +153,8 @@ namespace Sanford.Multimedia.Midi
             }
             else if(fileName == null)
             {
-                throw new ArgumentNullException("fileName");
+                //throw new ArgumentNullException("fileName");
+                return; // LOL
             }
 
             #endregion                        

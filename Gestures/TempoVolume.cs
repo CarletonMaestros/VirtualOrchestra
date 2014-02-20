@@ -56,7 +56,7 @@ namespace Orchestra
 
         public void print(double a) { Console.WriteLine(a); }
 
-        ~TempoVolume()
+        public void Unload()
         {
             Dispatch.SkeletonMoved -= this.SkeletonMoved;
         }
@@ -129,7 +129,7 @@ namespace Orchestra
                         }
                         if (xValues.Count == 4)
                         {
-                            if (xValues.Min() == xValues.ElementAt(3)) { volume = Math.Abs(rightHandX * 2 / -.7) * 127; }
+                            if (xValues.Min() == xValues.ElementAt(3)) { volume = Math.Abs(rightHandX / -.35) * 127; }
                         }
                         seeking = "MAXIMUM";
                         break;
@@ -146,15 +146,15 @@ namespace Orchestra
                     break;
                 }
             }
-            if (Math.Abs(volume - newVolume) > 5)
+            if (Math.Abs(volume - newVolume) > 10)
             {
                 if (volume < newVolume)
                 {
-                    if (newVolume > 0) { newVolume -= (3 * newVolume / 127); }
+                    if (newVolume > 0) { newVolume -= (2 * newVolume / 127); }
                 }
                 if (volume > newVolume)
                 {
-                    if (newVolume < 127) { newVolume += (3 * (127 - newVolume) / 127); }
+                    if (newVolume < 127) { newVolume += (2 * (127 - newVolume) / 127); }
                 }
             }
             Dispatch.TriggerVolumeChanged(newVolume / 127);
