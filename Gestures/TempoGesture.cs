@@ -21,6 +21,8 @@ namespace Orchestra
         float rightHandZ;        
         public float rightHipX;
         public SkeletonPoint rightHip;
+        public SkeletonPoint rightHandBeat;
+        public SkeletonPoint rightHand;
         float rightHipY;
         float rightHipZ;
         float threshold;
@@ -73,6 +75,7 @@ namespace Orchestra
                     rightHandY = joint.Position.Y;
                     rightHandX = joint.Position.X;
                     rightHandZ = joint.Position.Z;
+                    rightHand = joint.Position;
                 }
                 if (joint.JointType == JointType.HipRight)
                 {
@@ -140,6 +143,7 @@ namespace Orchestra
                         {
                             long tempo = stopwatch.ElapsedMilliseconds * 1000;
                         }
+                        rightHandBeat = rightHand;
                         stopwatch.Restart();
                         Dispatch.TriggerBeat(counter, "beat");
                         seeking = "MAXIMUM";

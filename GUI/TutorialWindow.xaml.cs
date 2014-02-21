@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Kinect;
+using System.Diagnostics;
 
 namespace Orchestra
 {
@@ -35,14 +36,23 @@ namespace Orchestra
         private DrawingGroup drawingGroup;
         private DrawingImage imageSource;
         private int nextInstruction = 1;
-        private Point rightHipValues;
-        private Point rightHipUpperBound;
-        private bool drawHipBox;
+        private Point boxTopLeftValues;
+        private Point boxBottomRightValues;
+        private bool drawBox;
         private SkeletonPoint rightHand;
         private SkeletonPoint rightHip;
         private SkeletonPoint leftHand;
         private SkeletonPoint leftHip;
-        private Point rightHandValues;
+        private Point handValues;
+        private bool checkIfRightHandStill;
+        private bool checkIfLeftHandStill;
+        private int counter;
+        private SkeletonPoint prevOne;
+        private SkeletonPoint prevTwo;
+        private bool aboveHip;
+        private float curY;
+        private Point hipValues;
+        Stopwatch stopwatch;
 
         public TutorialWindow()
         {
@@ -64,9 +74,11 @@ namespace Orchestra
         private void RedoStepButton_Click_1(object sender, RoutedEventArgs e)
         {
             if ((nextInstruction - 1) == 1) { Instructions.Text = "Welcome to the Virtual Orchestra tutorial! You should be able to see your kinect skeleton in the frame to the left."; }
-            else if ((nextInstruction - 1) == 1)
+            else if ((nextInstruction - 1) == 3)
             {
-                hipBox.BorderBrush = Brushes.Red;
+                box.BorderThickness = new Thickness(0);
+                checkIfRightHandStill = false;
+                box.BorderBrush = Brushes.Red;
             }
             else { Instructions.Text = ""; }
             WriteInstructions(nextInstruction - 1);
@@ -76,7 +88,7 @@ namespace Orchestra
         {
             if (InstructionNumber == 1)
             {
-                Instructions.Text = Instructions.Text + Environment.NewLine + "The first gesture we will go over is the basic conducting gesture.";
+                Instructions.Text += Environment.NewLine + "The first gesture we will go over is the basic conducting gesture.";
             }
             else if (InstructionNumber == 2)
             {
@@ -87,12 +99,17 @@ namespace Orchestra
             else if (InstructionNumber == 3)
             {
                 conductingImage.Source = null;
-                Instructions.Text = "Your first conducting gesture must fall in the box pictured on the skeleton, which is located roughly at your hip. The box will turn green when this is successfully completed.";
-                drawHipBox = true;
+                Instructions.Text = "To begin, put your right hand up at a comfortable starting height (must be above your hip), and leave it in the same place for about one second. When this is done, a box, located roughly at your hip will appear on the skelton. Your first beat must fall in this box. The box will turn green when this is successfully completed.";
+                checkIfRightHandStill = true;
+                drawBox = true;
             }
             else if (InstructionNumber == 4)
             {
-                drawHipBox = false;
+                conductingImage.Source = null;
+                checkIfRightHandStill = false;
+                Instructions.Text = "The next key gesture to learn is the volume gesture.";
+                checkIfLeftHandStill = true;
+                Instructions.Text += Environment.NewLine + "Similar to the conducting gesture, you must leave your left hand in the same place for about a second. When you do, a green rectangle will appear. Move your hand up and down in this box to increase and decrease the volume. If you want to stop changing the volume, simply move your hand outside of the box. The box will turn red.";
             }
         }
 
@@ -181,33 +198,90 @@ namespace Orchestra
                     if (joint.JointType == JointType.HipRight) { rightHip = joint.Position; }
                     if (joint.JointType == JointType.HipLeft) { leftHip = joint.Position; }
                 }
-                if (drawHipBox)
+                if (checkIfRightHandStill)
                 {
-                    Console.WriteLine(rightHip.Y);
-                    rightHip.X -= .13f;
-                    rightHip.Y += .13f;
-                    rightHipValues = SkeletonPointToScreen(rightHip);
-                    rightHandValues = SkeletonPointToScreen(rightHand);
-                    rightHip.X += .26f;
-                    rightHipUpperBound = SkeletonPointToScreen(rightHip);
-                    rightHipUpperBound.Y -= (rightHipUpperBound.X - rightHipValues.X);
-                    if (rightHipValues.X != 0 && rightHandValues.X != 0)
-                    {                        
-                        
-                        //Console.WriteLine(rightHipUpperBound.Y);
-                        //Console.WriteLine(rightHandValues.Y);
-                        //Console.WriteLine(rightHipValues.Y);
-                        //Console.WriteLine("");
-                        hipBox.Margin = new Thickness(rightHipValues.X, rightHipValues.Y, 0, 0);
-                        hipBox.Width = 85;
-                        hipBox.Height = 85;
-                        hipBox.BorderThickness = new Thickness(4);
-                        if (rightHandValues.X > rightHipValues.X + 10 && rightHandValues.X < rightHipUpperBound.X - 10 && rightHandValues.Y < rightHipValues.Y - 10 && rightHandValues.Y > rightHipUpperBound.Y + 10)
+                    if (rightHand.X != 0 && rightHip.X != 0)
+                    {
+                        if (rightHand.Y > rightHip.Y) { aboveHip = true; }
+                        if (counter == 15)
                         {
-                            hipBox.BorderBrush = Brushes.LawnGreen;
+                            if (drawBox)
+                            {
+                                handValues = SkeletonPointToScreen(rightHand);
+                                rightHip.X -= .11f;
+                                rightHip.Y += .12f;
+                                boxTopLeftValues = SkeletonPointToScreen(rightHip);
+                                rightHip.X += .22f;
+                                boxBottomRightValues = SkeletonPointToScreen(rightHip);
+                                boxBottomRightValues.Y -= (boxBottomRightValues.X - boxTopLeftValues.X);
+                                box.Margin = new Thickness(boxTopLeftValues.X, boxTopLeftValues.Y, 0, 0);
+                                box.Width = 80;
+                                box.Height = 80;
+                                box.BorderThickness = new Thickness(4);
+                                if (handValues.X > boxTopLeftValues.X && handValues.X < boxBottomRightValues.X && handValues.Y < boxTopLeftValues.Y && handValues.Y > boxBottomRightValues.Y)
+                                {
+                                    box.BorderBrush = Brushes.LawnGreen;
+                                    Instructions.Text = "Good job!" + Environment.NewLine + "You are now free to conduct as you please. Spend some time practicing! Your beats no longer need to land in the box. Below you can see again the picture of the 4/4 conducting gesture.";
+                                    var newImage = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct.jpg");
+                                    conductingImage.Source = new BitmapImage(newImage);
+                                }
+                            }
+                            //counter = 0;
                         }
+                        if (counter < 15 && Math.Abs(prevOne.X - rightHand.X) < .08 && Math.Abs(prevOne.Y - rightHand.Y) < .08 && Math.Abs(prevTwo.X - rightHand.X) < .08 && Math.Abs(prevTwo.Y - rightHand.Y) < .08 && aboveHip == true)
+                        {
+                            counter++;
+                        }
+                        else if (counter < 15)
+                        {
+                            counter = 0;
+                        }
+                        prevTwo = prevOne;
+                        prevOne = rightHand;
                     }
-                    
+                }
+                if (checkIfLeftHandStill)
+                {
+                    if (leftHand.X != 0 && leftHip.X != 0)
+                    {
+                        if (leftHand.Y > leftHip.Y) { aboveHip = true; }
+                        else { aboveHip = false; }
+                        if (counter == 15)
+                        {
+                            if (drawBox)
+                            {
+                                handValues = SkeletonPointToScreen(leftHand);
+                                leftHand.X -= .1f;
+                                curY = leftHand.Y;
+                                leftHand.Y = .1f;
+                                boxTopLeftValues = SkeletonPointToScreen(leftHand);
+                                leftHand.X += .2f;
+                                leftHand.Y = curY;
+                                boxBottomRightValues = SkeletonPointToScreen(leftHand);
+                                hipValues = SkeletonPointToScreen(leftHip);
+                                box.Width = 75;
+                                if (box.Height == 0) { box.Height =  hipValues.Y + 20; }
+                                if (box.Margin.Left == 0 && box.Margin.Right == 0 && box.Margin.Top == 0) { box.Margin = new Thickness(boxTopLeftValues.X, 20, 0, 0); }
+                                box.BorderThickness = new Thickness(4);
+                                if (handValues.X > box.Margin.Left && handValues.X < box.Margin.Left + 75 && handValues.Y > 20 && handValues.Y < hipValues.Y + 20) { box.BorderBrush = Brushes.Green; }
+                                else 
+                                { 
+                                    box.BorderBrush = Brushes.Red;
+                                    counter = 0;
+                                }                             
+                            }
+                        }
+                        if (counter < 15 && Math.Abs(prevOne.X - leftHand.X) < .08 && Math.Abs(prevOne.Y - leftHand.Y) < .08 && Math.Abs(prevTwo.X - leftHand.X) < .08 && Math.Abs(prevTwo.Y - leftHand.Y) < .08 && aboveHip == true)
+                        {
+                            counter++;
+                        }
+                        else if (counter < 15)
+                        {
+                            counter = 0;
+                        }
+                        prevTwo = prevOne;
+                        prevOne = leftHand;
+                    }
                 }
                 
             }

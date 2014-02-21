@@ -43,6 +43,6 @@
         <Label x:Name="Title" Content="TUTORIAL" Foreground="LightGray"  HorizontalContentAlignment="Center" FontSize="50" Margin="10" Grid.ColumnSpan="2"/>
         <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" Margin="5,93,0,0" Stroke="White" HorizontalAlignment="Left" Width="1291" Height="4" VerticalAlignment="Top"/>
         <Rectangle Fill="#FFF4F4F5" Margin="649,98,0,0" Stroke="White" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="4" Height="489" VerticalAlignment="Top"/>
-        <Border Name ="hipBox" BorderBrush="Red" BorderThickness="0" HorizontalAlignment="Left" Height="92" Margin="330,258,0,0" Grid.Row="1" VerticalAlignment="Top" Width="203"/>
+        <Border Name ="box" BorderBrush="Red" BorderThickness="0" HorizontalAlignment="Left" Height="0" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="203"/>
     </Grid>
 </Window>
