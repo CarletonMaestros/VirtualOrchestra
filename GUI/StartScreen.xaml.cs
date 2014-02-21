@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Diagnostics;
+
 
 namespace Orchestra
 {
@@ -22,12 +24,24 @@ namespace Orchestra
         public StartScreen()
         {
             InitializeComponent();
-
         }
 
         private void QuitButtonClick(object sender, RoutedEventArgs e)
         {
             this.Close();
+            Process.GetCurrentProcess().Kill();
+        }
+
+        private void PlayButtonClick(object sender, RoutedEventArgs e)
+        {
+            SongSelectWindow songSelect = new SongSelectWindow(false, this);
+            songSelect.Show();
+        }
+
+        private void TutorialButtonClick(object sender, RoutedEventArgs e)
+        {
+            TutorialWindow tutorial = new TutorialWindow();
+            tutorial.Show();
         }
     }
 }

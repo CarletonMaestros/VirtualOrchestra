@@ -20,12 +20,15 @@ namespace Orchestra
     public partial class SongSelectWindow : Window
     {
         public bool guiCall;
+        public bool rightVolCheck = false;
         public string songFile;
         public string songName;
+        public StartScreen startScreen;
 
-        public SongSelectWindow(bool guiCalled)
+        public SongSelectWindow(bool guiCalled, StartScreen start)
         {
             guiCall = guiCalled;
+            startScreen = start;
             InitializeComponent();
             if (guiCalled) { this.WindowStyle = 0; }
         }
@@ -327,7 +330,7 @@ namespace Orchestra
 
         private void PlayRightHandMode(object sender, RoutedEventArgs e)
         {
-            Gestures.Load(true);
+            rightVolCheck = true;
         }
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
@@ -345,7 +348,10 @@ namespace Orchestra
 
 
             this.Close();
-            
+
+            if (startScreen != null) { startScreen.Close(); }
+
+            Gestures.Load(rightVolCheck);            
             Dispatch.TriggerStart();
             Dispatch.TriggerSongSelected(songFile, songName);
         }

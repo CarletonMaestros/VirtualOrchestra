@@ -228,7 +228,7 @@ namespace Orchestra
                     {
                         if (!(midievent.MidiMessage.Status == 0x2F)) //if not end of track message
                         {
-                            track.RemoveAt(counter);
+                            //track.RemoveAt(counter);
                         }
                     }
                     counter++;
@@ -455,7 +455,7 @@ namespace Orchestra
         public static void LoadSong(string file, string songName)
         {
             sequence.Load(file);
-            
+
             stripMetaMessages(sequencer.Sequence);
             int[,] instrumentsAtTicksArray = populateInstrChanges(sequencer.Sequence);
             ppq = sequencer.Sequence.Division;
@@ -466,7 +466,7 @@ namespace Orchestra
                 eventsAtTicksDict = getInstrumentNoteTimes(track, instrumentsAtTicksArray, eventsAtTicksDict);
             }
             instrumentsAtTicks = arrayToDict(instrumentsAtTicksArray);
-            SongData song = new SongData{ppq=ppq, beatsPerMeasure=4, eventsAtTicksDict=eventsAtTicksDict, instrumentsAtTicks=instrumentsAtTicks};
+            SongData song = new SongData { ppq = ppq, beatsPerMeasure = 4, eventsAtTicksDict = eventsAtTicksDict, instrumentsAtTicks = instrumentsAtTicks };
 
             sequencer.Start();
             sequencer.Stop();

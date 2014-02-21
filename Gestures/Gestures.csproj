@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TempoVolume.cs" />
-    <Compile Include="TempoGestureII.cs" />
     <Compile Include="Gestures.cs" />
     <Compile Include="TempoGesture.cs" />
     <Compile Include="VolumeGesture.cs" />

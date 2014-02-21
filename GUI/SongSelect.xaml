@@ -39,7 +39,7 @@
         <Image Name="PreviewImage" Source="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" HorizontalAlignment="Left" Height="200" Margin="490,49,0,0" VerticalAlignment="Top" Width="200"/>
         <Label x:Name="PreviewText" Foreground="White" Content="Pick a Song!" FontSize="20" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Height="40" Margin="490,280,0,0" VerticalAlignment="Top" Width="200"/>
         <Button Name="ConfirmButton" Content="Confirm" HorizontalAlignment="Left" Height="42" Margin="542,335,0,0" VerticalAlignment="Top" Width="100" Click="ConfirmButton_Click"/>
-        <CheckBox Content="Use Right Hand Volume" Foreground ="White" Margin ="445,400,6,7" Checked="PlayRightHandMode">
+        <CheckBox Content="Use Right Hand Volume" Foreground ="White" Margin ="434,397,10,52" Checked="PlayRightHandMode">
 
             <CheckBox.LayoutTransform>
                 <ScaleTransform ScaleX="2" ScaleY="2" />

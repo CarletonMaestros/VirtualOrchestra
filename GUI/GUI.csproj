@@ -94,8 +94,8 @@
     <Compile Include="StartScreen.xaml.cs">
       <DependentUpon>StartScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tutorial.xaml.cs">
-      <DependentUpon>Tutorial.xaml</DependentUpon>
+    <Compile Include="TutorialWindow.xaml.cs">
+      <DependentUpon>TutorialWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="GUIWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -124,7 +124,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tutorial.xaml">
+    <Page Include="TutorialWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

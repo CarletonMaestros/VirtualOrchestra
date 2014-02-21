@@ -1,13 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using Microsoft.Kinect;
 
-namespace Orchestra.Sandbox
+namespace Orchestra
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for Tutorial.xaml
+    /// </summary>
+    public partial class TutorialWindow : Window
     {
         private const float RenderWidth = 640.0f;
         private const float RenderHeight = 480.0f;
@@ -22,54 +34,48 @@ namespace Orchestra.Sandbox
         private KinectSensor sensor;
         private DrawingGroup drawingGroup;
         private DrawingImage imageSource;
+        private int nextInstruction = 1;
+        private Point rightHipValues;
+        private bool drawHipBox;
+        private SkeletonPoint rightHand;
+        private SkeletonPoint rightHip;
+        private SkeletonPoint leftHand;
+        private SkeletonPoint leftHip;
 
-        //private GUIWindow guiWindow = new GUIWindow();
-        //private SongSelectWindow songWindow = new SongSelectWindow(false);
-        private SineTracker sineWindow = new SineTracker();
-        private StartScreen startScreen = new StartScreen();
-        
-
-        public MainWindow()
+        public TutorialWindow()
         {
             InitializeComponent();
-
-            //songWindow.Show();
-            //Gestures.tempo.rightHandY;
         }
 
-
-        private void WindowLoaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded_1(object sender, RoutedEventArgs e)
         {
-
-            startScreen.Show();
-            //songWindow.Show();
-            sineWindow.Show();
-            
-            // Initialize GUI elements
             InitKinect();
             InitDrawing();
-
-            // Load components
-            Dispatch.Load();
-            Gestures.Load(false);
-            MIDI.Load();
-
-            //GUIWindow guiWindow = new GUIWindow();
-           // guiWindow.Hide();
-
-            // Add event loggers
-            //Dispatch.Beat += (time, beat) => Console.WriteLine("Beat {0}", beat);
-            //Dispatch.VolumeChanged += (time, volume) => Console.WriteLine("Volume {0}%", (int)(volume*100));
-
-            // Please don't stop the muuusic
-            //Dispatch.TriggerPlay(); //we do what we want.
-
-            Hide();
         }
-        
-        public void EndThis()
+
+        private void ContinueButton_Click(object sender, RoutedEventArgs e) 
         {
-            Environment.Exit(0);
+            if (nextInstruction == 1)
+            {
+                Instructions.Text = Instructions.Text + Environment.NewLine + "The first gesture we will go over is the basic conducting gesture.";
+            }
+            else if (nextInstruction == 2)
+            {
+                Instructions.Text = "You can choose to either bounce your hand up and down, or conduct with a standard 4/4 conducting gesture, as pictured below.";
+                var newImage = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct.jpg");
+                conductingImage.Source = new BitmapImage(newImage);
+            }
+            else if (nextInstruction == 3)
+            {
+                conductingImage.Source = null;
+                Instructions.Text = "Your first conducting gesture must fall in the box pictured on the skeleton, which is located roughly at your hip. The box will turn green when this is successfully completed.";
+                drawHipBox = true;
+            }
+            else if (nextInstruction == 4)
+            {
+                drawHipBox = false;
+            }
+            nextInstruction++;
         }
 
         private void InitKinect()
@@ -103,11 +109,6 @@ namespace Orchestra.Sandbox
                     this.sensor = null;
                 }
             }
-
-            if (null == this.sensor)
-            {
-                this.statusBarText.Text = Properties.Resources.NoKinectReady;
-            }
         }
 
         private void InitDrawing()
@@ -119,7 +120,7 @@ namespace Orchestra.Sandbox
             this.imageSource = new DrawingImage(this.drawingGroup);
 
             // Display the drawing using our image control
-            Image.Source = this.imageSource;
+            SkeletonWindow.Source = this.imageSource;
         }
 
         /// <summary>
@@ -152,7 +153,27 @@ namespace Orchestra.Sandbox
                     skeletonFrame.CopySkeletonDataTo(skeletons);
                 }
             }
-            
+
+            foreach (Skeleton skel in skeletons)
+            {
+                foreach (Joint joint in skel.Joints)
+                {
+                    if (joint.JointType == JointType.HandRight) { rightHand = joint.Position; }
+                    if (joint.JointType == JointType.HandLeft) { leftHand = joint.Position; }
+                    if (joint.JointType == JointType.HipRight) { rightHip = joint.Position; }
+                    if (joint.JointType == JointType.HipLeft) { leftHip = joint.Position; }
+                    //Console.WriteLine(rightHip);
+                }
+                if (drawHipBox)
+                {
+                    rightHipValues = SkeletonPointToScreen(rightHip);
+                    hipBox.Margin = new Thickness(rightHipValues.X, rightHipValues.Y, 0, 0);
+                    Console.WriteLine(rightHipValues.X);
+                    Console.WriteLine(rightHipValues.Y);
+                    hipBox.BorderThickness = new Thickness(4);
+                }
+            }
+
             // Push event to the rest of the system
             foreach (Skeleton skel in skeletons)
             {
@@ -268,7 +289,7 @@ namespace Orchestra.Sandbox
             this.DrawBone(skeleton, drawingContext, JointType.HipRight, JointType.KneeRight);
             this.DrawBone(skeleton, drawingContext, JointType.KneeRight, JointType.AnkleRight);
             this.DrawBone(skeleton, drawingContext, JointType.AnkleRight, JointType.FootRight);
- 
+
             // Render Joints
             foreach (Joint joint in skeleton.Joints)
             {
@@ -276,11 +297,11 @@ namespace Orchestra.Sandbox
 
                 if (joint.TrackingState == JointTrackingState.Tracked)
                 {
-                    drawBrush = this.trackedJointBrush;                    
+                    drawBrush = this.trackedJointBrush;
                 }
                 else if (joint.TrackingState == JointTrackingState.Inferred)
                 {
-                    drawBrush = this.inferredJointBrush;                    
+                    drawBrush = this.inferredJointBrush;
                 }
 
                 if (drawBrush != null)
@@ -337,26 +358,6 @@ namespace Orchestra.Sandbox
             }
 
             drawingContext.DrawLine(drawPen, this.SkeletonPointToScreen(joint0.Position), this.SkeletonPointToScreen(joint1.Position));
-        }
-
-        /// <summary>
-        /// Handles the checking or unchecking of the seated mode combo box
-        /// </summary>
-        /// <param name="sender">object sending the event</param>
-        /// <param name="e">event arguments</param>
-        private void CheckBoxSeatedModeChanged(object sender, RoutedEventArgs e)
-        {
-            if (null != this.sensor)
-            {
-                if (this.checkBoxSeatedMode.IsChecked.GetValueOrDefault())
-                {
-                    this.sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Seated;
-                }
-                else
-                {
-                    this.sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default;
-                }
-            }
         }
     }
 }

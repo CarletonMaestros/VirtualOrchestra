@@ -19,7 +19,8 @@ namespace Orchestra
         float rightHandX;
         float rightHandY;
         float rightHandZ;        
-        float rightHipX;
+        public float rightHipX;
+        public SkeletonPoint rightHip;
         float rightHipY;
         float rightHipZ;
         float threshold;
@@ -78,6 +79,7 @@ namespace Orchestra
                     rightHipX = joint.Position.X;
                     rightHipY = joint.Position.Y;
                     rightHipZ = joint.Position.Z;
+                    rightHip = joint.Position;
                 }
             }
             if (rightHipZ < .2) 
@@ -160,6 +162,7 @@ namespace Orchestra
             prevXTwo = prevXOne;
             prevYOne = rightHandY;
             prevXOne = rightHandX;
+            Console.WriteLine(Math.Abs(rightHandX - rightHipX));
         }
     }
 }

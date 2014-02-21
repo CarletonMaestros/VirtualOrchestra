@@ -72,6 +72,7 @@ namespace Orchestra
             Dispatch.SkeletonMoved += this.SkeletonMoved;
 
             //AddChart();
+            Hide();
         }
 
         

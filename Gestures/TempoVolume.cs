@@ -129,8 +129,9 @@ namespace Orchestra
                         }
                         if (xValues.Count == 4)
                         {
-                            if (xValues.Min() == xValues.ElementAt(3)) { volume = Math.Abs(rightHandX / -.35) * 127; }
+                            if (xValues.Min() == xValues.ElementAt(3)) { volume = Math.Abs((rightHandX - prevBeat) / .4) * 127; }
                         }
+                        prevBeat = rightHandX;
                         seeking = "MAXIMUM";
                         break;
                     }
