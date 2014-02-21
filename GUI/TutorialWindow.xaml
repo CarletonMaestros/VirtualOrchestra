@@ -38,7 +38,8 @@
             <Image Name="conductingImage"
            Width="200" Height="200" Margin="880,320,-428,-416"/>
         </Grid>
-        <Button Name="ContinueButton" Content="Continue" Grid.Column="1" Margin="10,10,10,10" Grid.Row="2" Click="ContinueButton_Click"/>
+        <Button Name="ContinueButton" Content="Continue" Grid.Column="1" Margin="333,10,12,10" Grid.Row="2" Click="ContinueButton_Click"/>
+        <Button Name="RedoStepButton" Content="Restart Current Step" Grid.Column="1" Margin="10,10,333,10" Grid.Row="2" Click="RedoStepButton_Click_1"/>
         <Label x:Name="Title" Content="TUTORIAL" Foreground="LightGray"  HorizontalContentAlignment="Center" FontSize="50" Margin="10" Grid.ColumnSpan="2"/>
         <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" Margin="5,93,0,0" Stroke="White" HorizontalAlignment="Left" Width="1291" Height="4" VerticalAlignment="Top"/>
         <Rectangle Fill="#FFF4F4F5" Margin="649,98,0,0" Stroke="White" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="4" Height="489" VerticalAlignment="Top"/>

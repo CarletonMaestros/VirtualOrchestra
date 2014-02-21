@@ -344,6 +344,9 @@ namespace Orchestra
             {
                 
             }
+            //Things weren't working, added this
+            GUIWindow newWindow = new GUIWindow();
+            newWindow.Show();
 
 
             this.Close();

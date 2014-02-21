@@ -46,8 +46,14 @@ namespace Orchestra
 
         private void TutorialClick(object sender, RoutedEventArgs e)
         {
-            Tutorial tutorialWindow = new Tutorial();
+            TutorialWindow tutorialWindow = new TutorialWindow();
             tutorialWindow.Show();
+        }
+        //Things weren't working, added this
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            SongSelectWindow songSelect = new SongSelectWindow(false, this);
+            songSelect.Show();
         }
     }
 }

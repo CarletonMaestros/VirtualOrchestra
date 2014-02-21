@@ -36,11 +36,13 @@ namespace Orchestra
         private DrawingImage imageSource;
         private int nextInstruction = 1;
         private Point rightHipValues;
+        private Point rightHipUpperBound;
         private bool drawHipBox;
         private SkeletonPoint rightHand;
         private SkeletonPoint rightHip;
         private SkeletonPoint leftHand;
         private SkeletonPoint leftHip;
+        private Point rightHandValues;
 
         public TutorialWindow()
         {
@@ -55,27 +57,43 @@ namespace Orchestra
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e) 
         {
-            if (nextInstruction == 1)
+            WriteInstructions(nextInstruction);
+            nextInstruction++;           
+        }
+
+        private void RedoStepButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            if ((nextInstruction - 1) == 1) { Instructions.Text = "Welcome to the Virtual Orchestra tutorial! You should be able to see your kinect skeleton in the frame to the left."; }
+            else if ((nextInstruction - 1) == 1)
+            {
+                hipBox.BorderBrush = Brushes.Red;
+            }
+            else { Instructions.Text = ""; }
+            WriteInstructions(nextInstruction - 1);
+        }
+
+        private void WriteInstructions(int InstructionNumber)
+        {
+            if (InstructionNumber == 1)
             {
                 Instructions.Text = Instructions.Text + Environment.NewLine + "The first gesture we will go over is the basic conducting gesture.";
             }
-            else if (nextInstruction == 2)
+            else if (InstructionNumber == 2)
             {
                 Instructions.Text = "You can choose to either bounce your hand up and down, or conduct with a standard 4/4 conducting gesture, as pictured below.";
                 var newImage = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct.jpg");
                 conductingImage.Source = new BitmapImage(newImage);
             }
-            else if (nextInstruction == 3)
+            else if (InstructionNumber == 3)
             {
                 conductingImage.Source = null;
                 Instructions.Text = "Your first conducting gesture must fall in the box pictured on the skeleton, which is located roughly at your hip. The box will turn green when this is successfully completed.";
                 drawHipBox = true;
             }
-            else if (nextInstruction == 4)
+            else if (InstructionNumber == 4)
             {
                 drawHipBox = false;
             }
-            nextInstruction++;
         }
 
         private void InitKinect()
@@ -162,16 +180,36 @@ namespace Orchestra
                     if (joint.JointType == JointType.HandLeft) { leftHand = joint.Position; }
                     if (joint.JointType == JointType.HipRight) { rightHip = joint.Position; }
                     if (joint.JointType == JointType.HipLeft) { leftHip = joint.Position; }
-                    //Console.WriteLine(rightHip);
                 }
                 if (drawHipBox)
                 {
+                    Console.WriteLine(rightHip.Y);
+                    rightHip.X -= .13f;
+                    rightHip.Y += .13f;
                     rightHipValues = SkeletonPointToScreen(rightHip);
-                    hipBox.Margin = new Thickness(rightHipValues.X, rightHipValues.Y, 0, 0);
-                    Console.WriteLine(rightHipValues.X);
-                    Console.WriteLine(rightHipValues.Y);
-                    hipBox.BorderThickness = new Thickness(4);
+                    rightHandValues = SkeletonPointToScreen(rightHand);
+                    rightHip.X += .26f;
+                    rightHipUpperBound = SkeletonPointToScreen(rightHip);
+                    rightHipUpperBound.Y -= (rightHipUpperBound.X - rightHipValues.X);
+                    if (rightHipValues.X != 0 && rightHandValues.X != 0)
+                    {                        
+                        
+                        //Console.WriteLine(rightHipUpperBound.Y);
+                        //Console.WriteLine(rightHandValues.Y);
+                        //Console.WriteLine(rightHipValues.Y);
+                        //Console.WriteLine("");
+                        hipBox.Margin = new Thickness(rightHipValues.X, rightHipValues.Y, 0, 0);
+                        hipBox.Width = 85;
+                        hipBox.Height = 85;
+                        hipBox.BorderThickness = new Thickness(4);
+                        if (rightHandValues.X > rightHipValues.X + 10 && rightHandValues.X < rightHipUpperBound.X - 10 && rightHandValues.Y < rightHipValues.Y - 10 && rightHandValues.Y > rightHipUpperBound.Y + 10)
+                        {
+                            hipBox.BorderBrush = Brushes.LawnGreen;
+                        }
+                    }
+                    
                 }
+                
             }
 
             // Push event to the rest of the system
