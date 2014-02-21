@@ -342,8 +342,7 @@ namespace Orchestra
 
             if (guiCall == false)
             {
-                GUIWindow guiWindow = new GUIWindow();
-                guiWindow.Show();
+                
             }
 
 

@@ -43,5 +43,11 @@ namespace Orchestra
             TutorialWindow tutorial = new TutorialWindow();
             tutorial.Show();
         }
+
+        private void TutorialClick(object sender, RoutedEventArgs e)
+        {
+            Tutorial tutorialWindow = new Tutorial();
+            tutorialWindow.Show();
+        }
     }
 }
