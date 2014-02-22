@@ -41,7 +41,7 @@
             <Image Name="conductingImage1" Width="140" Height="140" Margin="910, 100,-382,-260" Panel.ZIndex="1"/>
         </Grid>
         <Grid>
-            <Image Name="checkMarkImage" Width="200" Height="200" Margin="880,80,-428,-416" Panel.ZIndex="1"/>
+            <Image Name="checkMarkImage" Width="200" Height="200" Margin="880,170,-428,-416" Panel.ZIndex="1"/>
         </Grid>
         <Button Name="ContinueButton" Content="Continue" Grid.Column="1" Margin="333,10,12,10" Grid.Row="2" Click="ContinueButton_Click"/>
         <Button Name="GoBackStepButton" Content="Go Back A Step" Grid.Column="1" Margin="10,10,333,10" Grid.Row="2" Click="GoBackStepButton_Click"/>
