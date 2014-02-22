@@ -38,12 +38,14 @@ namespace Orchestra
         private int nextInstruction = 1;
         private Point boxTopLeftValues;
         private Point boxBottomRightValues;
-        private bool drawBox;
+        private bool showShoulderBox = false;
         private SkeletonPoint rightHand;
         private SkeletonPoint rightHip;
         private SkeletonPoint leftHand;
-        private SkeletonPoint leftHip;
-        private Point handValues;
+        private SkeletonPoint leftHip; 
+        private SkeletonPoint rightShoulder;
+        private Point rightHandValues;
+        private Point leftHandValues;
         private bool checkIfRightHandStill;
         private bool checkIfLeftHandStill;
         private int counter;
@@ -51,8 +53,14 @@ namespace Orchestra
         private SkeletonPoint prevTwo;
         private bool aboveHip;
         private float curY;
-        private Point hipValues;
-        Stopwatch stopwatch;
+        private Point rightHipValues;
+        private Point leftHipValues;
+        private Point rightShoulderValues;
+        Stopwatch stopwatch = new Stopwatch();
+        private bool boxDisappear = false;
+        private int belowHipCounter;
+        private bool showCheckMark = true;
+        private bool printText;
 
         public TutorialWindow()
         {
@@ -71,16 +79,30 @@ namespace Orchestra
             nextInstruction++;           
         }
 
-        private void RedoStepButton_Click_1(object sender, RoutedEventArgs e)
+        private void GoBackStepButton_Click(object sender, RoutedEventArgs e)
         {
-            if ((nextInstruction - 1) == 1) { Instructions.Text = "Welcome to the Virtual Orchestra tutorial! You should be able to see your kinect skeleton in the frame to the left."; }
-            else if ((nextInstruction - 1) == 3)
+            if (nextInstruction - 1 == 0) { return; }
+            if (nextInstruction - 1 <= 3)
             {
-                box.BorderThickness = new Thickness(0);
-                checkIfRightHandStill = false;
-                box.BorderBrush = Brushes.Red;
+                hipLineLeft.Height = 0;
+                hipLineRight.Height = 0;
             }
+            if (nextInstruction - 1 == 1 || nextInstruction - 1 == 2) { Instructions.Text = "Welcome to the Virtual Orchestra tutorial! You should be able to see your kinect skeleton in the frame to the left."; }
             else { Instructions.Text = ""; }
+            box.BorderThickness = new Thickness(0);
+            checkIfRightHandStill = false;
+            box.BorderBrush = Brushes.Red;
+            checkIfLeftHandStill = false;
+            box.BorderThickness = new Thickness(0);
+            box.Margin = new Thickness(0, 0, 0, 0);
+            conductingImage4.Source = null;
+            conductingImage1.Source = null;
+            box.Height = 0;
+            showShoulderBox = false;
+            showCheckMark = false;
+            belowHipCounter = 0;
+            counter = 0;
+            nextInstruction -= 1;
             WriteInstructions(nextInstruction - 1);
         }
 
@@ -88,28 +110,57 @@ namespace Orchestra
         {
             if (InstructionNumber == 1)
             {
+                Instructions.Text += Environment.NewLine + "If you ever want to go back a step, simply press the 'Go Back A Step' button below.";
                 Instructions.Text += Environment.NewLine + "The first gesture we will go over is the basic conducting gesture.";
             }
             else if (InstructionNumber == 2)
             {
-                Instructions.Text = "You can choose to either bounce your hand up and down, or conduct with a standard 4/4 conducting gesture, as pictured below.";
-                var newImage = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct.jpg");
-                conductingImage.Source = new BitmapImage(newImage);
+                Instructions.Text = "You can choose to either bounce your hand up and down:";
+                var newImage = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct2.jpg");
+                conductingImage1.Source = new BitmapImage(newImage);
+                Instructions.Text += Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "Or conduct with a standard 4/4 conducting gesture";
+                var newImage2 = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct.jpg");
+                conductingImage4.Source = new BitmapImage(newImage2);
             }
             else if (InstructionNumber == 3)
             {
-                conductingImage.Source = null;
-                Instructions.Text = "To begin, put your right hand up at a comfortable starting height (must be above your hip), and leave it in the same place for about one second. When this is done, a box, located roughly at your hip will appear on the skelton. Your first beat must fall in this box. The box will turn green when this is successfully completed.";
-                checkIfRightHandStill = true;
-                drawBox = true;
+                conductingImage4.Source = null;
+                conductingImage1.Source = null;
+                Instructions.Text = "You'll notice a line going across your screen at the level of your hips.";
+                Instructions.Text += Environment.NewLine + "For some gestures, your hand must be above this line. Try moving your left and right hands above and below this line, and notice what happens.";
+                hipLineRight.Height = 4;
+                hipLineLeft.Height = 4;
             }
             else if (InstructionNumber == 4)
             {
-                conductingImage.Source = null;
+                conductingImage4.Source = null;
+                conductingImage1.Source = null;
+                Instructions.Text = "To begin the conducting gesture, put your right hand in the gray box, and leave it in the same place for about one second.";
+                checkIfRightHandStill = true;
+                showShoulderBox = true;
+            }
+            else if (InstructionNumber == 5)
+            {
+                showShoulderBox = false;
+                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "In order to start a song..." + Environment.NewLine + "  1. Your hand must be above your hip." + Environment.NewLine + "  2. Your hand must stay in the same place for roughly a second" + Environment.NewLine + "  3. Your first beat must be roughly at your hip" + Environment.NewLine + Environment.NewLine + "Remember: conducting is a right-hand gesture";
+            }
+            else if (InstructionNumber == 6)
+            {
+                conductingImage1.Source = null;
+                conductingImage4.Source = null;
                 checkIfRightHandStill = false;
                 Instructions.Text = "The next key gesture to learn is the volume gesture.";
+                printText = true;
+            }
+            else if (InstructionNumber == 7)
+            {
                 checkIfLeftHandStill = true;
-                Instructions.Text += Environment.NewLine + "Similar to the conducting gesture, you must leave your left hand in the same place for about a second. When you do, a green rectangle will appear. Move your hand up and down in this box to increase and decrease the volume. If you want to stop changing the volume, simply move your hand outside of the box. The box will turn red.";
+                Instructions.Text += Environment.NewLine + "Similar to the conducting gesture, you must leave your left hand in the same place for about a second.";
+                Instructions.Text += Environment.NewLine + "Make sure your hand is above your hip.";
+            }
+            else if (InstructionNumber == 8)
+            {
+                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "In order to change the volume of a song..." + Environment.NewLine + "  1. Your left hand must be above your hip." + Environment.NewLine + "  2. Your hand must stay in the same place for roughly a second" + Environment.NewLine + "  3. Your had must stay in the same X-location as you move it up and down." + Environment.NewLine + "  4. If you want to leave the volume at a certain level, move it outside the acceptable box of X-values" + Environment.NewLine + Environment.NewLine + "Remember: changing the volume is a left-hand gesture";
             }
         }
 
@@ -197,36 +248,65 @@ namespace Orchestra
                     if (joint.JointType == JointType.HandLeft) { leftHand = joint.Position; }
                     if (joint.JointType == JointType.HipRight) { rightHip = joint.Position; }
                     if (joint.JointType == JointType.HipLeft) { leftHip = joint.Position; }
+                    if (joint.JointType == JointType.ShoulderRight) { rightShoulder = joint.Position; }
                 }
+                if (rightHand.X != 0 && rightHip.X != 0)
+                {
+                    rightHipValues = SkeletonPointToScreen(rightHip);
+                    leftHipValues = SkeletonPointToScreen(leftHip);
+                    rightHandValues = SkeletonPointToScreen(rightHand);
+                    leftHandValues = SkeletonPointToScreen(leftHand);
+                    rightShoulderValues = SkeletonPointToScreen(rightShoulder);
+                    hipLineRight.Margin = new Thickness((rightHipValues.X + leftHipValues.X) / 2, rightHipValues.Y, 0, 0);
+                    hipLineLeft.Margin = new Thickness(0, rightHipValues.Y, 0, 0);
+                    hipLineLeft.Width = Math.Abs((rightHipValues.X + leftHipValues.X) / 2);
+                    hipLineRight.Width = 645 - ((rightHipValues.X + leftHipValues.X) / 2);
+                    if (rightHandValues.Y < rightHipValues.Y) { hipLineRight.Stroke = Brushes.Green; hipLineRight.Fill = new SolidColorBrush(Colors.Green); }
+                    else { hipLineRight.Stroke = Brushes.Red; hipLineRight.Fill = new SolidColorBrush(Colors.Red); }
+                    if (leftHandValues.Y < rightHipValues.Y) { hipLineLeft.Stroke = Brushes.Green; hipLineLeft.Fill = new SolidColorBrush(Colors.Green); }
+                    else { hipLineLeft.Stroke = Brushes.Red; hipLineLeft.Fill = new SolidColorBrush(Colors.Red); }
+                }
+                if (showShoulderBox)
+                {
+                    startBox.Margin = new Thickness(rightShoulderValues.X - 50, rightShoulderValues.Y - 150, 0, 0);
+                    startBox.BorderThickness = new Thickness(4);
+                }
+                else { startBox.BorderThickness = new Thickness(0); }
                 if (checkIfRightHandStill)
                 {
                     if (rightHand.X != 0 && rightHip.X != 0)
                     {
                         if (rightHand.Y > rightHip.Y) { aboveHip = true; }
+                        else { aboveHip = false; belowHipCounter++; }
                         if (counter == 15)
                         {
-                            if (drawBox)
+                            if (showCheckMark)
                             {
-                                handValues = SkeletonPointToScreen(rightHand);
-                                rightHip.X -= .11f;
-                                rightHip.Y += .12f;
-                                boxTopLeftValues = SkeletonPointToScreen(rightHip);
-                                rightHip.X += .22f;
-                                boxBottomRightValues = SkeletonPointToScreen(rightHip);
-                                boxBottomRightValues.Y -= (boxBottomRightValues.X - boxTopLeftValues.X);
-                                box.Margin = new Thickness(boxTopLeftValues.X, boxTopLeftValues.Y, 0, 0);
-                                box.Width = 80;
-                                box.Height = 80;
-                                box.BorderThickness = new Thickness(4);
-                                if (handValues.X > boxTopLeftValues.X && handValues.X < boxBottomRightValues.X && handValues.Y < boxTopLeftValues.Y && handValues.Y > boxBottomRightValues.Y)
-                                {
-                                    box.BorderBrush = Brushes.LawnGreen;
-                                    Instructions.Text = "Good job!" + Environment.NewLine + "You are now free to conduct as you please. Spend some time practicing! Your beats no longer need to land in the box. Below you can see again the picture of the 4/4 conducting gesture.";
-                                    var newImage = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct.jpg");
-                                    conductingImage.Source = new BitmapImage(newImage);
-                                }
+                                Instructions.Text = "Good! See the red box? Your first beat must fall in this box. Make a down and up motion roughly like this:";
+                                var newImage3 = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\capture.jpg");
+                                checkMarkImage.Source = new BitmapImage(newImage3);
+                                Instructions.Text += Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "The box will turn green when this is successfully completed.";
                             }
-                            //counter = 0;
+                            rightHandValues = SkeletonPointToScreen(rightHand);
+                            rightHip.X -= .11f;
+                            rightHip.Y += .11f;
+                            boxTopLeftValues = SkeletonPointToScreen(rightHip);
+                            rightHip.X += .22f;
+                            rightHip.Y -= .22f;
+                            boxBottomRightValues = SkeletonPointToScreen(rightHip);
+                            box.Margin = new Thickness(boxTopLeftValues.X, boxTopLeftValues.Y, 0, 0);
+                            box.Width = 80;
+                            box.Height = 80;
+                            box.BorderThickness = new Thickness(4);
+                            if (rightHandValues.X > boxTopLeftValues.X && rightHandValues.X < boxBottomRightValues.X && rightHandValues.Y > boxTopLeftValues.Y && rightHandValues.Y < boxBottomRightValues.Y)
+                            {
+                                box.BorderBrush = Brushes.LawnGreen;
+                                checkMarkImage.Source = null;
+                                showCheckMark = false;
+                                Instructions.Text = "Well done!" + Environment.NewLine + "Notice how the boxes are gone. You are now free to conduct as you please." + Environment.NewLine +"Spend some time practicing! Your beats are no longer constrained.";
+                                stopwatch.Start();
+                                boxDisappear = true;
+                            }
                         }
                         if (counter < 15 && Math.Abs(prevOne.X - rightHand.X) < .08 && Math.Abs(prevOne.Y - rightHand.Y) < .08 && Math.Abs(prevTwo.X - rightHand.X) < .08 && Math.Abs(prevTwo.Y - rightHand.Y) < .08 && aboveHip == true)
                         {
@@ -245,12 +325,12 @@ namespace Orchestra
                     if (leftHand.X != 0 && leftHip.X != 0)
                     {
                         if (leftHand.Y > leftHip.Y) { aboveHip = true; }
-                        else { aboveHip = false; }
-                        if (counter == 15)
+                        else { aboveHip = false; belowHipCounter++; }
+                        if (belowHipCounter > 1)
                         {
-                            if (drawBox)
+                            if (counter == 15)
                             {
-                                handValues = SkeletonPointToScreen(leftHand);
+                                leftHandValues = SkeletonPointToScreen(leftHand);
                                 leftHand.X -= .1f;
                                 curY = leftHand.Y;
                                 leftHand.Y = .1f;
@@ -258,32 +338,54 @@ namespace Orchestra
                                 leftHand.X += .2f;
                                 leftHand.Y = curY;
                                 boxBottomRightValues = SkeletonPointToScreen(leftHand);
-                                hipValues = SkeletonPointToScreen(leftHip);
+                                leftHipValues = SkeletonPointToScreen(leftHip);
                                 box.Width = 75;
-                                if (box.Height == 0) { box.Height =  hipValues.Y + 20; }
+                                if (box.Height == 0) { box.Height = leftHipValues.Y + 20; }
                                 if (box.Margin.Left == 0 && box.Margin.Right == 0 && box.Margin.Top == 0) { box.Margin = new Thickness(boxTopLeftValues.X, 20, 0, 0); }
                                 box.BorderThickness = new Thickness(4);
-                                if (handValues.X > box.Margin.Left && handValues.X < box.Margin.Left + 75 && handValues.Y > 20 && handValues.Y < hipValues.Y + 20) { box.BorderBrush = Brushes.Green; }
-                                else 
+                                if (leftHandValues.X > box.Margin.Left && leftHandValues.X < box.Margin.Left + 75 && leftHandValues.Y > 20 && leftHandValues.Y < leftHipValues.Y + 20 && boxDisappear == false) 
                                 { 
+                                    box.BorderBrush = Brushes.Green;
+                                    if (printText) { Instructions.Text += Environment.NewLine + "See the green box? Move your hand up and down in this box to increase and decrease the volume."; }
+                                    printText = false;
+                                }
+                                else
+                                {
                                     box.BorderBrush = Brushes.Red;
-                                    counter = 0;
-                                }                             
+                                    boxDisappear = true;
+                                    stopwatch.Start();
+                                    
+                                }
                             }
+                            if (counter < 15 && Math.Abs(prevOne.X - leftHand.X) < .08 && Math.Abs(prevOne.Y - leftHand.Y) < .08 && Math.Abs(prevTwo.X - leftHand.X) < .08 && Math.Abs(prevTwo.Y - leftHand.Y) < .08 && aboveHip == true)
+                            {
+                                counter++;
+                            }
+                            else if (counter < 15)
+                            {
+                                counter = 0;
+                            }
+                            prevTwo = prevOne;
+                            prevOne = leftHand;
                         }
-                        if (counter < 15 && Math.Abs(prevOne.X - leftHand.X) < .08 && Math.Abs(prevOne.Y - leftHand.Y) < .08 && Math.Abs(prevTwo.X - leftHand.X) < .08 && Math.Abs(prevTwo.Y - leftHand.Y) < .08 && aboveHip == true)
-                        {
-                            counter++;
-                        }
-                        else if (counter < 15)
-                        {
-                            counter = 0;
-                        }
-                        prevTwo = prevOne;
-                        prevOne = leftHand;
                     }
                 }
-                
+                if (boxDisappear == true && stopwatch.ElapsedMilliseconds > 750)
+                {
+                    box.BorderThickness = new Thickness(0);
+                    box.Margin = new Thickness(0, 0, 0, 0);
+                    box.Height = 0;
+                    counter = 0;
+                    checkIfRightHandStill = false;
+                    boxDisappear = false;
+                    stopwatch.Reset();
+                    belowHipCounter = 0;
+                    showShoulderBox = false;
+                    if (checkIfLeftHandStill == true)
+                    {
+                        Instructions.Text = "Your hand was no longer inside the box of allowed values, which is why it disappeared." + Environment.NewLine + "To resume changing the volume, put your left hand below your hip. This resets the volume. You can then put your left hand back above your hip and leave it in the same place for about a second. You will see the green box again.";
+                    }
+                }                
             }
 
             // Push event to the rest of the system

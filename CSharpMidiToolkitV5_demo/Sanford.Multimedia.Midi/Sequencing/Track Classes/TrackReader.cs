@@ -163,9 +163,9 @@ namespace Sanford.Multimedia.Midi
                 else
                 {
                     status = runningStatus;
-                }  
+                }
               
-                ParseMessage();                
+                ParseMessage();
             }
         }
 
@@ -203,7 +203,7 @@ namespace Sanford.Multimedia.Midi
             else if(status >= (int)SysRealtimeType.Clock &&
                 status <= (int)SysRealtimeType.Reset)
             {
-                ParseSysRealtimeMessage();                
+                ParseSysRealtimeMessage();
             }
         }
 

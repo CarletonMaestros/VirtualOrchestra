@@ -170,7 +170,7 @@ namespace Sanford.Multimedia.Midi
 
                 newProperties.Read(stream);
 
-                for(int i = 0; i < newProperties.TrackCount; i++)
+                for (int i = 0; i < newProperties.TrackCount; i++)
                 {
                     reader.Read(stream);
                     newTracks.Add(reader.Track);

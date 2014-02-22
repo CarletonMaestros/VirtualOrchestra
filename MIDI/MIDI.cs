@@ -20,6 +20,7 @@ namespace Orchestra
         static Stopwatch stopwatch = new Stopwatch();
         static Timer timer = new Timer(1);
         static OutputDevice outDevice = new OutputDevice(0);
+        static Boolean songhasbeenloaded = false;
 
         // Per song variables
         static Sequence sequence = new Sanford.Multimedia.Midi.Sequence();
@@ -228,7 +229,7 @@ namespace Orchestra
                     {
                         if (!(midievent.MidiMessage.Status == 0x2F)) //if not end of track message
                         {
-                            //track.RemoveAt(counter);
+                            track.RemoveAt(counter);
                         }
                     }
                     counter++;

@@ -35,14 +35,22 @@
             Welcome to the Virtual Orchestra tutorial! You should be able to see your kinect skeleton in the frame to the left.
         </TextBlock>
         <Grid>
-            <Image Name="conductingImage"
-           Width="200" Height="200" Margin="880,320,-428,-416"/>
+            <Image Name="conductingImage4" Width="140" Height="140" Margin="870,340,-428,-416" Panel.ZIndex="1"/> 
+        </Grid>
+        <Grid>
+            <Image Name="conductingImage1" Width="140" Height="140" Margin="910, 100,-382,-260" Panel.ZIndex="1"/>
+        </Grid>
+        <Grid>
+            <Image Name="checkMarkImage" Width="200" Height="200" Margin="880,80,-428,-416" Panel.ZIndex="1"/>
         </Grid>
         <Button Name="ContinueButton" Content="Continue" Grid.Column="1" Margin="333,10,12,10" Grid.Row="2" Click="ContinueButton_Click"/>
-        <Button Name="RedoStepButton" Content="Restart Current Step" Grid.Column="1" Margin="10,10,333,10" Grid.Row="2" Click="RedoStepButton_Click_1"/>
+        <Button Name="GoBackStepButton" Content="Go Back A Step" Grid.Column="1" Margin="10,10,333,10" Grid.Row="2" Click="GoBackStepButton_Click"/>
         <Label x:Name="Title" Content="TUTORIAL" Foreground="LightGray"  HorizontalContentAlignment="Center" FontSize="50" Margin="10" Grid.ColumnSpan="2"/>
         <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" Margin="5,93,0,0" Stroke="White" HorizontalAlignment="Left" Width="1291" Height="4" VerticalAlignment="Top"/>
         <Rectangle Fill="#FFF4F4F5" Margin="649,98,0,0" Stroke="White" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="4" Height="489" VerticalAlignment="Top"/>
         <Border Name ="box" BorderBrush="Red" BorderThickness="0" HorizontalAlignment="Left" Height="0" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="203"/>
+        <Border Name ="startBox" BorderBrush="Gray" BorderThickness="0" HorizontalAlignment="Left" Height="200" Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="200"/>
+        <Rectangle Name ="hipLineRight" Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="0" Margin="0,0,0,0" Grid.Row="1" Stroke="Green" VerticalAlignment="Top" Width="0"/>
+        <Rectangle Name ="hipLineLeft" Grid.ColumnSpan="2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="0" Margin="0,0,0,0" Grid.Row="1" Stroke="Green" VerticalAlignment="Top" Width="0"/>
     </Grid>
 </Window>

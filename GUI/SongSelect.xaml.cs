@@ -340,10 +340,6 @@ namespace Orchestra
             
             SongSelector.Visibility = Visibility.Hidden;
 
-            if (guiCall == false)
-            {
-                
-            }
             //Things weren't working, added this
             GUIWindow newWindow = new GUIWindow();
             newWindow.Show();
