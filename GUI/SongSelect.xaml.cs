@@ -319,7 +319,12 @@ namespace Orchestra
 
         }
 
-        private void PlayRightHandMode(object sender, RoutedEventArgs e)
+        private void LeftHandMode(object sender, RoutedEventArgs e)
+        {
+            Gestures.rightHandVolume = false;
+        }
+
+        private void RightHandMode(object sender, RoutedEventArgs e)
         {
             Gestures.rightHandVolume = true;
         }

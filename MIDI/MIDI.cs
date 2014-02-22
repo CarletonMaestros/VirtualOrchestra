@@ -135,7 +135,6 @@ namespace Orchestra
         /// </summary>
         private static void SkeletonMoved(float time, Skeleton skeleton)
         {
-            Console.WriteLine(sequencer.Position);
             if (sequencer.Clock.Tempo != int.MaxValue)
             {
                 Dispatch.TriggerTickInfo(sequencer.Position - (int)(5000000 * (furthestEvent / (double)numEvents) / (double)sequencer.Clock.Tempo)); //Calder, help
@@ -465,10 +464,6 @@ namespace Orchestra
         static void MIDIChannelMessagePlayed(object sender, ChannelMessageEventArgs e)
         {
             outDevice.Send(e.Message);
-            if (e.Message.MidiChannel == 4)
-            {
-                //Console.WriteLine(e.Message.Message);
-            }
         }
 
         static void MIDIMetaMessagePlayed(object sender, MetaMessageEventArgs e)
