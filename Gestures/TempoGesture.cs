@@ -166,7 +166,7 @@ namespace Orchestra
             prevXTwo = prevXOne;
             prevYOne = rightHandY;
             prevXOne = rightHandX;
-            Console.WriteLine(Math.Abs(rightHandX - rightHipX));
+            //Console.WriteLine(Math.Abs(rightHandX - rightHipX));
         }
     }
 }

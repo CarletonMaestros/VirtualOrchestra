@@ -24,7 +24,7 @@ namespace Orchestra
     /// </summary>
     public partial class PlaybackWindow : Window
     {
-        GUIWindow gui = new GUIWindow();
+        MainWindow gui = new MainWindow();
         static SynchronizationContext mainThread;
 
         public PlaybackWindow()

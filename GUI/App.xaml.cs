@@ -6,13 +6,59 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace GUI
+namespace Orchestra
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        public static StartScreen startScreen;
+        public static SongSelectWindow songSelect;
+        public static TutorialWindow tutorial;
+        public static MainWindow main;
 
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            Dispatch.Load();
+            Kinect.Load();
+            MIDI.Load();
+
+            startScreen = new StartScreen();
+            songSelect = new SongSelectWindow();
+            tutorial = new TutorialWindow();
+            main = new MainWindow();
+
+            ShowStartScreen();
+        }
+
+        public static void ShowStartScreen()
+        {
+            startScreen.Show();
+            startScreen.Activate();
+        }
+
+        public static void RunTutorial()
+        {
+            tutorial.Show();
+            tutorial.Activate();
+        }
+
+        public static void SelectSong()
+        {
+            Gestures.Unload();
+            Dispatch.TriggerStop();
+
+            songSelect.Show();
+            songSelect.Activate();
+        }
+
+        public static void PlaySong(string songFile, string songName)
+        {
+            main.Show();
+            main.Activate();
+
+            Gestures.Load();
+            MIDI.LoadSong(songFile, songName);
+        }
     }
 }

@@ -65,8 +65,6 @@ namespace Orchestra
             Dispatch.Beat += Beat;
             Dispatch.VolumeChanged += VolumeChanged;
             Dispatch.SkeletonMoved += SkeletonMoved;
-            Dispatch.SongSelected += SongSelected;
-            Dispatch.GuiLoaded += GuiLoaded;
 
             // Subscribe to MIDI events
             sequencer.ChannelMessagePlayed += MIDIChannelMessagePlayed;
@@ -74,54 +72,12 @@ namespace Orchestra
             sequencer.Chased += MIDIChased;
             sequencer.Stopped += Stopped;
 
-            // Initialize MIDI
+            // Initialize sequencer
             sequencer.Sequence = sequence;
 
-            //LoadSong(songFile);
-
             // Initialize timer
-            //timer.Elapsed += new ElapsedEventHandler(TimePassed);
-            //timer.Enabled = true;
-        }
-
-
-        public static void SongSelected(string file, string name)
-        {
-            eventsAtTicksDict = new Dictionary<int, List<int[]>>();
-            instrumentsAtTicks = new Dictionary<int, int[]>();
-            instrChanges = new List<int[]>();
-            //sequencer.Position = 0;
-            //sequencer.Clock.Tempo = int.MaxValue;
-            lastBeatStarts = new double[]{ -1, -1, -1, -1, -1 };
-
-
-            songFile = file;
-            songName = name;
-
-            if (guiLoad)
-            {
-                LoadSong(songFile, songName);
-
-                // Initialize timer
-                timer.Elapsed += new ElapsedEventHandler(TimePassed);
-                timer.Enabled = true;
-            }
-        }
-
-        private static void GuiLoaded()
-        {
-            if (songFile != null)
-            {
-                LoadSong(songFile, songName);
-
-                // Initialize timer
-                timer.Elapsed += new ElapsedEventHandler(TimePassed);
-                timer.Enabled = true;
-            }
-            else
-            {
-                guiLoad = true;
-            }
+            timer.Elapsed += new ElapsedEventHandler(TimePassed);
+            timer.Enabled = true;
         }
 
         private static void Stopped(object sender, StoppedEventArgs e)
@@ -147,6 +103,7 @@ namespace Orchestra
                 if ((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)) < 0)
                     Console.WriteLine((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)));
 
+                //Console.WriteLine((int)(Math.Min(int.MaxValue, 1000000 / Last4BPS)));
                 sequencer.Clock.Tempo = (int)(Math.Min(int.MaxValue,1000000/Last4BPS));
             }
         }
@@ -178,6 +135,7 @@ namespace Orchestra
         /// </summary>
         private static void SkeletonMoved(float time, Skeleton skeleton)
         {
+            Console.WriteLine(sequencer.Position);
             if (sequencer.Clock.Tempo != int.MaxValue)
             {
                 Dispatch.TriggerTickInfo(sequencer.Position - (int)(5000000 * (furthestEvent / (double)numEvents) / (double)sequencer.Clock.Tempo)); //Calder, help
@@ -276,10 +234,6 @@ namespace Orchestra
                 }
             }
             allInstrumentsUsed.Sort();
-            foreach (int instr in allInstrumentsUsed)
-            {
-                Console.WriteLine(instr);
-            }
             return mergeInstrChangeData();
         }
 
@@ -455,6 +409,11 @@ namespace Orchestra
 
         public static void LoadSong(string file, string songName)
         {
+            eventsAtTicksDict = new Dictionary<int, List<int[]>>();
+            instrumentsAtTicks = new Dictionary<int, int[]>();
+            instrChanges = new List<int[]>();
+            lastBeatStarts = new double[] { -1, -1, -1, -1, -1 };
+
             sequence.Load(file);
 
             stripMetaMessages(sequencer.Sequence);
@@ -469,6 +428,7 @@ namespace Orchestra
             instrumentsAtTicks = arrayToDict(instrumentsAtTicksArray);
             SongData song = new SongData { ppq = ppq, beatsPerMeasure = 4, eventsAtTicksDict = eventsAtTicksDict, instrumentsAtTicks = instrumentsAtTicks };
 
+            sequencer.clock.Tempo = int.MaxValue;
             sequencer.Start();
             sequencer.Stop();
             stopwatch.Restart();
@@ -514,9 +474,7 @@ namespace Orchestra
         static void MIDIMetaMessagePlayed(object sender, MetaMessageEventArgs e)
         {
             var m = e.Message;
-            Console.Write("{0}    ", m.MetaType);
             foreach (var b in m.GetBytes()) Console.Write("{0:X} ", b);
-            Console.WriteLine();
         }
 
         static void MIDIChased(object sender, ChasedEventArgs e)

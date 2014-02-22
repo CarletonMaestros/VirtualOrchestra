@@ -14,23 +14,14 @@ using System.Windows.Shapes;
 
 namespace Orchestra
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
     public partial class SongSelectWindow : Window
     {
-        public bool guiCall;
-        public bool rightVolCheck = false;
         public string songFile;
         public string songName;
-        public StartScreen startScreen;
 
-        public SongSelectWindow(bool guiCalled, StartScreen start)
+        public SongSelectWindow()
         {
-            guiCall = guiCalled;
-            startScreen = start;
             InitializeComponent();
-            if (guiCalled) { this.WindowStyle = 0; }
         }
 
         public void ListBoxItem_Selected_1(object sender, RoutedEventArgs e)
@@ -330,28 +321,13 @@ namespace Orchestra
 
         private void PlayRightHandMode(object sender, RoutedEventArgs e)
         {
-            rightVolCheck = true;
+            Gestures.rightHandVolume = true;
         }
 
-        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        private void ConfirmButtonClick(object sender, RoutedEventArgs e)
         {
-            //PreviewText.Content = "Loading";
             StopAllMusic();
-            
-            SongSelector.Visibility = Visibility.Hidden;
-
-            //Things weren't working, added this
-            GUIWindow newWindow = new GUIWindow();
-            newWindow.Show();
-
-
-            this.Close();
-
-            if (startScreen != null) { startScreen.Close(); }
-
-            Gestures.Load(rightVolCheck);            
-            Dispatch.TriggerStart();
-            Dispatch.TriggerSongSelected(songFile, songName);
+            App.PlaySong(songFile, songName);
         }
     }
 }

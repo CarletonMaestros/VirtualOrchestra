@@ -21,11 +21,10 @@ using System.Timers;
 
 namespace Orchestra
 {
-    public partial class GUIWindow : Window
+    public partial class MainWindow : Window
     {
         private int currTick = 0;
         private ChannelHandler[] channels = new ChannelHandler[16];
-        public static string songFile = "";
 
 
         // private float beatsPerSecond = 2; //will be set dynamically
@@ -45,7 +44,7 @@ namespace Orchestra
         private string curSongName;
         private string curSongFile;
 
-        public GUIWindow()
+        public MainWindow()
         {
             InitializeComponent();
         }
@@ -60,11 +59,8 @@ namespace Orchestra
             //entries are [instr, pitch, velocity, duration, channel]
 
             Dispatch.SongLoaded += SongLoaded;
-            Dispatch.SongSelected += SongSelected;
             Dispatch.TickInfo += TickTriggered;
             Dispatch.VolumeChanged += VolumeChanged;
-
-            Dispatch.TriggerGuiLoaded();
 
         }
 
@@ -74,11 +70,6 @@ namespace Orchestra
             VolumeGauge.Height = volume * PianoRoll.ActualHeight;
         }
 
-        private void SongSelected(string file, string name)
-        {
-            Dispatch.TriggerGuiLoaded();
-        }
-         
         private void SongLoaded(SongData song, string songName, string songFile)
         {
             curSong = song;
@@ -105,7 +96,7 @@ namespace Orchestra
 
             for (int i = 0; i < 16; i++)
             {
-                var squareNumber = "square" + (i+1).ToString(); //get the correct image to populate's name. I changed the image names to what's on that sheet of paper.
+                var squareNumber = "square" + (i + 1).ToString(); //get the correct image to populate's name. I changed the image names to what's on that sheet of paper.
                 var rectNumber = "rect" + (i + 1).ToString(); //get the correct rect to populate's name. I changed the rect names to what's on that sheet of paper.
                 //Console.WriteLine(squareNumber); 
 
@@ -115,11 +106,11 @@ namespace Orchestra
                 rect.Opacity = .6;
 
                 object item = FindName(squareNumber); // turn its name from a string into the Image
-                
+
                 Image imgToPopulate = (Image)item;
 
                 imgToPopulate.Source = null;
-                
+
                 ChannelHandler temp = new ChannelHandler();
                 channels[i] = temp;
                 channels[i].channelImage = imgToPopulate;
@@ -175,7 +166,7 @@ namespace Orchestra
                         }
                         //entries are [ticks, duration, instr, velocity]
 
-                        channels[note[4]].EventData.Add(new int[] { ticks, note[3], note[0], note[2]});
+                        channels[note[4]].EventData.Add(new int[] { ticks, note[3], note[0], note[2] });
                     }
                     eventsAtTicksDict.Remove(ticks);
                 }
@@ -213,13 +204,13 @@ namespace Orchestra
 
         protected void UpdateChannelPictures()
         {
-            
-            foreach (ChannelHandler channel in channels) 
+
+            foreach (ChannelHandler channel in channels)
             {
                 bool escapedAtContinue = false;
                 List<int[]> markedChildren = new List<int[]>();
                 foreach (int[] note in channel.EventData)
-                { 
+                {
                     if ((note[0] + note[1]) < currTick)
                     {
                         markedChildren.Add(note);
@@ -236,7 +227,7 @@ namespace Orchestra
                             //entries are [tick, duration, instr, velocity]
                             //var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".png";
                             var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
-                            Console.WriteLine(uriString);
+                            //Console.WriteLine(uriString);
                             BitmapImage bitIm = new BitmapImage();
                             bitIm.BeginInit();
                             bitIm.UriSource = new Uri(uriString);
@@ -263,7 +254,7 @@ namespace Orchestra
                 foreach (int[] child in markedChildren)
                 {
                     channel.EventData.Remove(child);
-                }    
+                }
             }
         }
 
@@ -286,61 +277,24 @@ namespace Orchestra
             currTick = tick;
             Dispatcher.Invoke((Action)(() => UpdateRectangles()));
             Dispatcher.Invoke((Action)(() => UpdateChannelPictures()));
-            //UpdateRectangles();
-            //TestPlayback(currTick);
             PopulatePianoRoll();
         }
 
-        //private void TestPlayback(int currTick)
-        //{
-        //    ///
-
-        //    ///
-        //    if (instChangesDict.ContainsKey(currTick))
-        //    {
-
-        //        Console.WriteLine("\nCurrent tick:  {0}", currTick);
-        //        System.Console.WriteLine("Turning On: ");
-        //        foreach (int thing in instChangesDict[currTick]["TurnOn"][0])
-        //        {
-        //            Console.WriteLine(thing);
-        //            Console.WriteLine(instChangesDict[currTick]["TurnOn"][thing].ToString());
-        //        }
-
-        //        System.Console.WriteLine("Turning Off: ");
-        //        if (instChangesDict[currTick].ContainsKey("TurnOff"))
-        //        {
-        //            foreach (int thing in instChangesDict[currTick]["TurnOff"][0])
-        //            {
-        //                Console.WriteLine(thing);
-        //                Console.WriteLine(instChangesDict[currTick]["TurnOn"][thing].ToString());
-        //            }
-        //        }
-        //    }
-
-        //}
-
-        private void EndSongButton_Click(object sender, RoutedEventArgs e)
+        private void EndSongButtonClick(object sender, RoutedEventArgs e)
         {
             Dispatch.TriggerStop();
-            Dispatch.TriggerVolumeChanged(0.5f);
-            Dispatch.TriggerLock(true);
-            SongSelectWindow newSelect = new SongSelectWindow(true, null);
-            newSelect.Show();
+            App.SelectSong();
         }
 
-        private void RestartButton_Click(object sender, RoutedEventArgs e)
+        private void RestartButtonClick(object sender, RoutedEventArgs e)
         {
             Dispatch.TriggerStop();
-            Dispatch.TriggerLock(true);
-            Dispatch.TriggerVolumeChanged(0.5f);
-            Dispatch.TriggerSongSelected(curSongFile, curSongName);
-            Dispatch.TriggerGuiLoaded();
+            App.PlaySong(curSongFile, curSongName);
         }
 
-        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        private void QuitButtonClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Shutdown();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<Window x:Class="Orchestra.GUIWindow"
+﻿<Window x:Class="Orchestra.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Virtual Orchestra!" Height="800" Width="1000" Loaded="WindowLoaded" WindowState="Maximized" WindowStyle="None" Background="DimGray" Closed="OnClosed">
@@ -161,9 +161,9 @@
             </Canvas>
         <Rectangle x:Name="VolumeBorder"  Margin="36,62,24,30" Stroke ="White" StrokeThickness="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Grid.ColumnSpan="1"  Grid.Column="0" Grid.RowSpan="1"/>
             <Label Name="SongName" Content="PICK A SONG!!" FontSize="20" Foreground="LightGray" Grid.RowSpan="1" Margin="10,12,20,0" Height="37" VerticalAlignment="Top" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" Grid.ColumnSpan="2"/>
-            <Button Name="EndSongButton" Content="New Song!!" Grid.Column="3" HorizontalAlignment="Stretch" Height="37" Margin="10,12,10,0" VerticalAlignment="Top" Click="EndSongButton_Click"/>
-            <Button Name="RestartButton" Content="Restart!!" Height="38" Margin="10,12,10,0" VerticalAlignment="Top" Click="RestartButton_Click" Grid.Column="2"/>
-            <Button Name="QuitButton" Content="Quit!!" Grid.Column="4" Height="37" Margin="10,12,10,0" VerticalAlignment="Top" Click="QuitButton_Click"/>
+            <Button Name="EndSongButton" Content="New Song!!" Grid.Column="3" HorizontalAlignment="Stretch" Height="37" Margin="10,12,10,0" VerticalAlignment="Top" Click="EndSongButtonClick"/>
+            <Button Name="RestartButton" Content="Restart!!" Height="38" Margin="10,12,10,0" VerticalAlignment="Top" Click="RestartButtonClick" Grid.Column="2"/>
+            <Button Name="QuitButton" Content="Quit!!" Grid.Column="4" Height="37" Margin="10,12,10,0" VerticalAlignment="Top" Click="QuitButtonClick"/>
 
             <!--<Separator Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="100" Margin="252,361,0,0" VerticalAlignment="Top" Width="1089"/>-->
             </Grid>

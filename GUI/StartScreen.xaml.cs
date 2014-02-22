@@ -28,32 +28,19 @@ namespace Orchestra
 
         private void QuitButtonClick(object sender, RoutedEventArgs e)
         {
-            this.Close();
             Process.GetCurrentProcess().Kill();
         }
 
         private void PlayButtonClick(object sender, RoutedEventArgs e)
         {
-            SongSelectWindow songSelect = new SongSelectWindow(false, this);
-            songSelect.Show();
+            App.songSelect.Show();
+            App.songSelect.Activate();
         }
 
         private void TutorialButtonClick(object sender, RoutedEventArgs e)
         {
-            TutorialWindow tutorial = new TutorialWindow();
-            tutorial.Show();
-        }
-
-        private void TutorialClick(object sender, RoutedEventArgs e)
-        {
-            TutorialWindow tutorialWindow = new TutorialWindow();
-            tutorialWindow.Show();
-        }
-        //Things weren't working, added this
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            SongSelectWindow songSelect = new SongSelectWindow(false, this);
-            songSelect.Show();
+            App.tutorial.Show();
+            App.tutorial.Activate();
         }
     }
 }

@@ -172,6 +172,7 @@ namespace Orchestra
             }
             else if (InstructionNumber == 8)
             {
+                checkIfLeftHandStill = false;
                 Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "In order to change the volume of a song..." + Environment.NewLine + "  1. Your left hand must be above your hip." + Environment.NewLine + "  2. Your hand must stay in the same place for roughly a second" + Environment.NewLine + "  3. Your hand must stay in the same X-location as you move it up and down." + Environment.NewLine + "  4. If you want to leave the volume at a certain level, move your hand to the left or right." + Environment.NewLine + Environment.NewLine + "Remember: changing the volume is a left-hand gesture";
             }
             else if (InstructionNumber == 9)
@@ -342,7 +343,6 @@ namespace Orchestra
                                     boxDisappear = true;
                                     stopwatch.Start();
                                 }
-                                else { box.BorderBrush = Brushes.Red; }
                             }
                         }
                         if (counter < 15 && Math.Abs(prevOne.X - rightHand.X) < .08 && Math.Abs(prevOne.Y - rightHand.Y) < .08 && Math.Abs(prevTwo.X - rightHand.X) < .08 && Math.Abs(prevTwo.Y - rightHand.Y) < .08 && aboveHip == true)
@@ -419,7 +419,7 @@ namespace Orchestra
                         startBox.Width = 240;
                     }
                     startBox.Margin = new Thickness(rightShoulderValues.X - 170, rightShoulderValues.Y - 70, 0, 0);
-                    if (leftHandStill && rightHandStill && leftHandValues.X > startBox.Margin.Left && leftHandValues.X < startBox.Margin.Left + 170 && leftHandValues.Y < startBox.Margin.Top && leftHandValues.Y < startBox.Margin.Top + 75 && rightHandValues.X > box.Margin.Left && rightHandValues.X < box.Margin.Left + 80 && rightHandValues.Y > box.Margin.Top && rightHandValues.Y < box.Margin.Top + 80)
+                    if (leftHandStill && rightHandStill && Contains(leftHandValues, startBox.Margin, 170, 75) && Contains(rightHandValues, startBox.Margin, 75, 75))
                     {
                         startBox.BorderBrush = Brushes.Green;
                     }
