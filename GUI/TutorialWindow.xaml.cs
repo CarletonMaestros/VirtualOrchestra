@@ -76,6 +76,8 @@ namespace Orchestra
         private bool setLocation;
         private bool goBack;
         private bool tempoBox;
+        private bool musicStopped;
+        private bool playSong;
 
         public TutorialWindow()
         {
@@ -86,7 +88,6 @@ namespace Orchestra
         {
             InitDrawing();
             Gestures.Load();
-            Dispatch.Load();
             Dispatch.SkeletonMoved += SkeletonMoved;
             Dispatch.TriggerLock(false);
         }
@@ -105,11 +106,16 @@ namespace Orchestra
                 drawHipLine = false;
             }
             if (checkMarkImage.Source != null || goBack) { nextInstruction++; }
-            if (nextInstruction - 1 == 2 || nextInstruction - 1 == 8 || nextInstruction - 1 == 10) { nextInstruction--; }
+            if (nextInstruction - 1 == 2 || nextInstruction - 1 == 8) { nextInstruction--; }
+            if (nextInstruction - 1 == 10 || nextInstruction - 1 == 9) { checkBothHandsStill = false; }
             if (nextInstruction - 1 == 1 || nextInstruction - 1 == 2) { Instructions.Text = "Welcome to the Virtual Orchestra tutorial! You should be able to see your kinect skeleton in the frame to the left."; }
+            //else if (nextInstruction - 1 == 9) { Instructions.Text = "The final gesture to learn is the one that stops the music."; }
             else { Instructions.Text = ""; }
             checkRightHandStill = false;
             checkLeftHandStill = false;
+            musicStopped = false;
+            leftHandStill = false;
+            rightHandStill = false;
             conductingImage4.Source = null;
             conductingImage1.Source = null;
             checkMarkImage.Source = null;
@@ -120,6 +126,7 @@ namespace Orchestra
             counterRight = 0;
             counterLeft = 0;
             goBack = false;
+            boxDisappear = false;
             nextInstruction--;
             WriteInstructions(nextInstruction - 1);
         }
@@ -202,9 +209,21 @@ namespace Orchestra
                 checkBothHandsStill = true;
                 checkLeftHandStill = true;
                 checkRightHandStill = true;
-                ContinueButton.Content = "Quit Tutorial";
             }
-            if (InstructionNumber == 11) 
+            if (InstructionNumber == 11)
+            {
+                musicStopped = false;
+                checkBothHandsStill = false;
+                counterRight = 0;
+                counterLeft = 0;
+                Instructions.Text = "Now practice on a song.";
+                ContinueButton.Content = "Quit Tutorial";
+                checkRightHandStill = true;
+                playSong = true;
+                showStartBox = true;
+                boxDisappear = false;
+            }
+            if (InstructionNumber == 12) 
             {
                 App.tutorial = null;
                 App.ShowStartScreen();
@@ -313,7 +332,7 @@ namespace Orchestra
                                 box1.Location = new Point((spineValues.X + leftHipValues.X) / 2, (spineValues.Y + coreValues.Y) / 2);
                                 box1.Size = new Size(Math.Abs(spineValues.Y - rightHipValues.Y) * 1.5, Math.Abs(spineValues.Y - rightHipValues.Y) * 1.5);
                                 if (!boxDisappear) { dc.DrawRectangle(null, new Pen(Brushes.Red, 4), box1); }
-                                if (showCheckMark)
+                                if (showCheckMark && !playSong)
                                 {
                                     if (Contains(rightHandValues, box2))
                                     {
@@ -329,7 +348,13 @@ namespace Orchestra
                                     showStartBox = false;
                                     checkMarkImage.Source = null;
                                     showCheckMark = false;
-                                    Instructions.Text = "Well done!" + Environment.NewLine + "Now spend a little time practicing!";
+                                    if (!playSong) { Instructions.Text = "Well done!" + Environment.NewLine + "Now spend a little time practicing!"; }
+                                    else
+                                    {
+                                        checkLeftHandStill = true;
+                                        checkBothHandsStill = true;
+                                        counterRight = 0;
+                                    }
                                     goBack = true;
                                     boxDisappear = true;
                                     tempoBox = true;
@@ -359,14 +384,14 @@ namespace Orchestra
                             if (counterLeft == 15)
                             {
                                 if (checkBothHandsStill) { leftHandStill = true; }
-                                else
+                                if (!checkBothHandsStill || playSong)
                                 {
                                     if (setLocation) { box1.Location = new Point(leftHandValues.X - Math.Abs(leftHipValues.X - rightHipValues.X) * .875,  10); setLocation = false; }
                                     box1.Size = new Size(Math.Abs(leftHipValues.X - rightHipValues.X) * 1.25, rightHipValues.Y);
                                     if (Contains(leftHandValues, box1) && boxDisappear == false)
                                     {
                                         dc.DrawRectangle(null, new Pen(Brushes.Green, 4), box1); 
-                                        if (printText) { Instructions.Text += Environment.NewLine + "See the green box? Move your hand up and down in this box to increase and decrease the volume."; }
+                                        if (printText && !playSong) { Instructions.Text += Environment.NewLine + "See the green box? Move your hand up and down in this box to increase and decrease the volume."; }
                                         printText = false;
                                     }
                                     else
@@ -399,7 +424,7 @@ namespace Orchestra
                     }
                     if (leftHandStill && rightHandStill)
                     {
-                        if (Instructions.Text != "You stopped the music! Congratulations!") { Instructions.Text = "Awesome! Now, move your hands diagonally downward, into the red boxes."; }
+                        if (Instructions.Text == "You stopped the music! Congratulations!" && musicStopped != true && !playSong) { Instructions.Text = "Awesome! Now, move your hands diagonally downward, into the red boxes."; }
                         box2.Size = new Size(Math.Abs(rightHipValues.X - leftHipValues.X) * 1.25, Math.Abs(rightHipValues.X - leftHipValues.X) * 1.25);
                         box2.Location = new Point(coreValues.X - Math.Abs(neckValues.Y - coreValues.Y) - box2.Size.Width, spineValues.Y);
                         box3.Size = box2.Size;
@@ -408,7 +433,8 @@ namespace Orchestra
                         {
                             dc.DrawRectangle(null, new Pen(Brushes.Green, 4), box2);
                             dc.DrawRectangle(null, new Pen(Brushes.Green, 4), box3);
-                            Instructions.Text = "You stopped the music! Congratulations!";
+                            if (!playSong) { Instructions.Text = "You stopped the music! Congratulations!"; }
+                            musicStopped = true;
                             boxDisappear = true;
                         }
                         else if (boxDisappear == false)
@@ -429,7 +455,7 @@ namespace Orchestra
                     belowHipCounter = 0;
                     showStartBox = false;
                     setLocation = true;
-                    if (checkLeftHandStill == true)
+                    if (checkLeftHandStill == true && !playSong)
                     {
                         Instructions.Text = "Your hand was no longer inside the box of allowed values, which is why it disappeared." + Environment.NewLine + "To resume changing the volume, put your left hand below your hip. This resets the volume. You can then put your left hand back above your hip and leave it in the same place for about a second. You will see the green box again.";
                     }

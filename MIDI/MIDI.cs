@@ -75,7 +75,8 @@ namespace Orchestra
             // Initialize sequencer
             sequencer.Sequence = sequence;
 
-            // Initialize timer
+            // Initialize timers
+            stopwatch.Start();
             timer.Elapsed += new ElapsedEventHandler(TimePassed);
             timer.Enabled = true;
         }
