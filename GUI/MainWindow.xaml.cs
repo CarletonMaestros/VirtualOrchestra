@@ -294,7 +294,8 @@ namespace Orchestra
 
         private void QuitButtonClick(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Dispatch.TriggerStop();
+            App.ShowStartScreen();
         }
     }
 }

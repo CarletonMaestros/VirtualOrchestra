@@ -33,14 +33,12 @@ namespace Orchestra
 
         private void PlayButtonClick(object sender, RoutedEventArgs e)
         {
-            App.songSelect.Show();
-            App.songSelect.Activate();
+            App.SelectSong();
         }
 
         private void TutorialButtonClick(object sender, RoutedEventArgs e)
         {
-            App.tutorial.Show();
-            App.tutorial.Activate();
+            App.RunTutorial();
         }
     }
 }

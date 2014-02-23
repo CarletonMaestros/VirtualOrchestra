@@ -9,41 +9,23 @@ namespace Orchestra
 {
     public class TempoVolume
     {
-        Int32 counter = 0;
-        Stopwatch stopwatch;
         String seeking;
-        float prevYOne;
-        float prevYTwo;
-        float prevXOne;
-        float prevXTwo;
-        float rightHandY;
-        float rightHandX;
-        float rightHipX = 0;
-        float rightHipY;
+        SkeletonPoint prevOne;
+        SkeletonPoint prevTwo;
+        SkeletonPoint rightHand;
+        SkeletonPoint rightHip;
         float threshold;
         int stillFramesCount;
         int framesInFirstBeat;
         double volume = 64;
-        float floatVolume;
         float newVolume = 64;
-        int beat = 1;
         float prevBeat;
-        float prevBeatOne;
-        float minX;
-        float maxX;
-        float maxY;
-        double curVolume;
-        float curVolumeFloat;
         List<float> xValues = new List<float>();
-        bool smallestX;
 
         public TempoVolume()
         {
             Dispatch.SkeletonMoved += this.SkeletonMoved;
-            stopwatch = new Stopwatch();
-            counter = 0;
             seeking = "STILL";
-            threshold = .002F;
             stillFramesCount = 0;
             framesInFirstBeat = 0;
         }
@@ -56,62 +38,42 @@ namespace Orchestra
 
         public void print(double a) { Console.WriteLine(a); }
 
-        public void Unload()
-        {
-            Dispatch.SkeletonMoved -= this.SkeletonMoved;
-        }
+        public void Unload() { Dispatch.SkeletonMoved -= this.SkeletonMoved; }
 
-        void SongLoaded(SongData song, string songName, string songFile)
-        {
-            Dispatch.TriggerVolumeChanged(0.5f);
+        void SongLoaded(SongData song, string songName, string songFile) 
+        { 
+            Dispatch.TriggerVolumeChanged(0.5f); 
+            rightHip.X = 0; 
         }
 
         void SkeletonMoved(float time, Skeleton skel)
         {
             foreach (Joint joint in skel.Joints)
             {
-                if (joint.JointType == JointType.HandRight)
-                {
-                    rightHandY = joint.Position.Y;
-                    rightHandX = joint.Position.X;
-                }
-                if (joint.JointType == JointType.HipRight && rightHipX == 0)
-                {
-                    rightHipX = joint.Position.X;
-                    rightHipY = joint.Position.Y;
-                }
+                rightHand = skel.Joints[JointType.HandRight].Position;
+                if (rightHip.X == 0) { rightHip = skel.Joints[JointType.HipRight].Position; }
             }
             switch (seeking)
             {
                 case "STILL":
                 {
-                    if (stillFramesCount == 15)
-                    {
-                        seeking = "START";
-                    }
-                    if (stillFramesCount < 15 && Math.Abs(prevXOne - rightHandX) < .08 && Math.Abs(prevYOne - rightHandY) < .08 && Math.Abs(prevXTwo - rightHandX) < .08 && Math.Abs(prevYTwo - rightHandY) < .08)
+                    if (stillFramesCount == 15) { seeking = "START"; }
+                    if (stillFramesCount < 15 && Math.Abs(prevOne.X - rightHand.X) < .08 && Math.Abs(prevOne.Y - rightHand.Y) < .08 && Math.Abs(prevTwo.X - rightHand.X) < .08 && Math.Abs(prevTwo.Y - rightHand.Y) < .08)
                     {
                         stillFramesCount++;
                         break;
                     }
-                    else if (stillFramesCount < 15)
-                    {
-                        stillFramesCount = 0;
-                    }
+                    else if (stillFramesCount < 15) { stillFramesCount = 0; }
                     break;
                 }
                 case "START":
                 {
-                    if (prevYTwo < (prevYOne - .01) && prevYOne < (rightHandY - .01))
+                    if (prevTwo.Y < (prevOne.Y - .01) && prevOne.Y < (rightHand.Y - .01))
                     {
-                        if (framesInFirstBeat == 0)
-                        {
-                            stopwatch.Start();
-                        }
                         framesInFirstBeat++;
                         break;
                     }
-                    if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01))
+                    if (framesInFirstBeat >= 2 && prevTwo.Y > (prevOne.Y + .01) && prevOne.Y > (rightHand.Y + .01))
                     {
                         seeking = "MINIMUM";
                         break;
@@ -120,18 +82,12 @@ namespace Orchestra
                 }
                 case "MINIMUM":
                 {
-                    if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold))
+                    if (prevTwo.Y < (prevOne.Y - threshold) && prevOne.Y < (rightHand.Y - threshold))
                     {
-                        xValues.Add(rightHandX);
-                        if (xValues.Count == 5)
-                        {
-                            xValues.RemoveAt(0);
-                        }
-                        if (xValues.Count == 4)
-                        {
-                            if (xValues.Min() == xValues.ElementAt(3)) { volume = Math.Abs((rightHandX - prevBeat) / .4) * 127; }
-                        }
-                        prevBeat = rightHandX;
+                        xValues.Add(rightHand.X);
+                        if (xValues.Count == 5) { xValues.RemoveAt(0); }
+                        if (xValues.Count == 4) { if (xValues.Min() == xValues.ElementAt(3)) { volume = Math.Abs((rightHand.X - prevBeat) / .4) * 127; } }
+                        prevBeat = rightHand.X;
                         seeking = "MAXIMUM";
                         break;
                     }
@@ -139,7 +95,7 @@ namespace Orchestra
                 }
                 case "MAXIMUM":
                 {
-                    if (prevYTwo > (prevYOne + threshold) && prevYOne > (rightHandY + threshold))
+                    if (prevTwo.Y > (prevOne.Y + threshold) && prevOne.Y > (rightHand.Y + threshold))
                     {
                         seeking = "MINIMUM";
                         break;
@@ -149,20 +105,12 @@ namespace Orchestra
             }
             if (Math.Abs(volume - newVolume) > 10)
             {
-                if (volume < newVolume)
-                {
-                    if (newVolume > 0) { newVolume -= (2 * newVolume / 127); }
-                }
-                if (volume > newVolume)
-                {
-                    if (newVolume < 127) { newVolume += (2 * (127 - newVolume) / 127); }
-                }
+                if (volume < newVolume) { if (newVolume > 0) { newVolume -= (2 * newVolume / 127); } }
+                if (volume > newVolume) { if (newVolume < 127) { newVolume += (2 * (127 - newVolume) / 127); } }
             }
             Dispatch.TriggerVolumeChanged(newVolume / 127);
-            prevYTwo = prevYOne;
-            prevXTwo = prevXOne;
-            prevYOne = rightHandY;
-            prevXOne = rightHandX;
+            prevTwo = prevOne;
+            prevOne = rightHand;
         }
     }
 }

@@ -25,7 +25,6 @@ namespace Orchestra
 
             startScreen = new StartScreen();
             songSelect = new SongSelectWindow();
-            tutorial = new TutorialWindow();
             main = new MainWindow();
 
             ShowStartScreen();
@@ -33,12 +32,16 @@ namespace Orchestra
 
         public static void ShowStartScreen()
         {
+            Gestures.Unload();
+            Dispatch.TriggerStop();
+
             startScreen.Show();
             startScreen.Activate();
         }
 
         public static void RunTutorial()
         {
+            tutorial = new TutorialWindow();
             tutorial.Show();
             tutorial.Activate();
         }
@@ -56,7 +59,6 @@ namespace Orchestra
         {
             main.Show();
             main.Activate();
-
             Gestures.Load();
             MIDI.LoadSong(songFile, songName);
         }

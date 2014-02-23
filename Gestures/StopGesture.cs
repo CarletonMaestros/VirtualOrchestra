@@ -8,65 +8,38 @@ namespace Orchestra
 {
     public class StopGesture
     {
-        float leftHandX;
-        float leftHandY;
-        float rightHandX;
-        float rightHandY;
-        float hipRightY;
-        float hipRightZ;
-        float prevRightYOne;
-        float prevRightXOne;
-        float prevLeftYOne;
-        float prevLeftXOne;
-        float counter;
-        bool tooClose = false;
+        SkeletonPoint leftHand;
+        SkeletonPoint rightHand;
+        SkeletonPoint rightHip;
+        SkeletonPoint prevRightOne;
+        SkeletonPoint prevLeftOne;
+        int counter;
 
-        public StopGesture()
-        {
-            Dispatch.SkeletonMoved += SkeletonMoved;
-        }
+        public StopGesture() { Dispatch.SkeletonMoved += SkeletonMoved; }
 
         public void Unload() { Dispatch.SkeletonMoved -= this.SkeletonMoved; }
 
-        void SkeletonMoved(float time, Skeleton skeleton)
+        void SkeletonMoved(float time, Skeleton skel)
         {
-            foreach (Joint joint in skeleton.Joints)
+            foreach (Joint joint in skel.Joints)
             {
-                if (joint.JointType == JointType.HandRight)
-                {
-                    rightHandX = joint.Position.X;
-                    rightHandY = joint.Position.Y;
-                }
-                if (joint.JointType == JointType.HandLeft)
-                {
-                    leftHandX = joint.Position.X;
-                    leftHandY = joint.Position.Y;
-                }
-                if (joint.JointType == JointType.HipRight) 
-                { 
-                    hipRightY = joint.Position.Y;
-                    hipRightZ = joint.Position.Z;
-                }
+                rightHand = skel.Joints[JointType.HandRight].Position;
+                leftHand = skel.Joints[JointType.HandLeft].Position;
+                rightHip = skel.Joints[JointType.HipRight].Position;
             }
-            if (hipRightZ < .1) 
-            { 
-                tooClose = true; 
-                //Console.WriteLine("TOO CLOSE"); 
-            }
-            else { tooClose = false; }
-            if (Math.Abs(leftHandY - rightHandY) < .1 && tooClose == false)
+            if (Math.Abs(leftHand.Y - rightHand.Y) < .1)
             {          
-                if (rightHandX >= prevRightXOne && leftHandX <= prevLeftXOne && rightHandY <= prevRightYOne && leftHandY <= prevLeftYOne) { counter += 1; }
-                if (counter >= 4 && Math.Abs(rightHandX - prevRightXOne) < .1 && Math.Abs(leftHandX - prevLeftXOne) < .1 && Math.Abs(rightHandY - prevRightYOne) < .1 && Math.Abs(leftHandY - prevLeftYOne) < .1)
+                if (rightHand.X >= prevRightOne.X && leftHand.X <= prevLeftOne.X && rightHand.Y <= prevRightOne.Y && leftHand.Y <= prevLeftOne.Y) { counter += 1; }
+                if (counter >= 4 && Math.Abs(rightHand.X - prevRightOne.X) < .1 && Math.Abs(leftHand.X - prevLeftOne.X) < .1 && Math.Abs(rightHand.Y - prevRightOne.Y) < .1 && Math.Abs(leftHand.Y - prevLeftOne.Y) < .1)
                 {
                     counter = 0;
                     Dispatch.TriggerStop();
                 }
             }
-            prevRightXOne = rightHandX;
-            prevRightYOne = rightHandY;
-            prevLeftXOne = leftHandX;
-            prevLeftYOne = leftHandY;
+            prevRightOne.X = rightHand.X;
+            prevRightOne.Y = rightHand.Y;
+            prevLeftOne.X = leftHand.X;
+            prevLeftOne.Y = leftHand.Y;
         }
     }
 }

@@ -12,29 +12,16 @@ namespace Orchestra
         Int32 counter = 1;
         Stopwatch stopwatch;
         String seeking;
-        float prevXOne;
-        float prevYOne;
-        float prevXTwo;
-        float prevYTwo;
-        float rightHandX;
-        float rightHandY;
-        float rightHandZ;        
-        public float rightHipX;
-        public SkeletonPoint rightHip;
-        public SkeletonPoint rightHandBeat;
-        public SkeletonPoint rightHand;
-        float rightHipY;
-        float rightHipZ;
+        SkeletonPoint rightHand;
+        SkeletonPoint rightHip;
+        SkeletonPoint prevOne;
+        SkeletonPoint prevTwo;
         float threshold;
-        float middleBeat;
-        float prevBeat = 0;
-        float prevXBeatValue;
         int stillFramesCount;
         int framesInFirstBeat;
         int startMarker = 0;
         bool locked = true;
-        bool aboveHip = false;
-        bool tooClose = false;
+        public bool beat = false;
 
         public TempoGesture()
         {
@@ -50,78 +37,40 @@ namespace Orchestra
             Dispatch.Lock += Lock;
         }
 
-        private void Stopped(float time)
-        {
-            seeking = "STILL";
-        }
+        private void Stopped(float time) { seeking = "STILL"; }
 
-        public void Unload()
-        {
-            Dispatch.SkeletonMoved -= this.SkeletonMoved;
-        }
+        public void Unload() { Dispatch.SkeletonMoved -= this.SkeletonMoved; }
 
-        private void Lock(bool songLocked)
-        {
-            locked = songLocked;
-        }
+        private void Lock(bool songLocked) { locked = songLocked; }
 
         void SkeletonMoved(float time, Skeleton skel)
         {
+            beat = false;
             if (locked) return;
-            foreach (Joint joint in skel.Joints)
-            {
-                if (joint.JointType == JointType.HandRight)
-                {
-                    rightHandY = joint.Position.Y;
-                    rightHandX = joint.Position.X;
-                    rightHandZ = joint.Position.Z;
-                    rightHand = joint.Position;
-                }
-                if (joint.JointType == JointType.HipRight)
-                {
-                    rightHipX = joint.Position.X;
-                    rightHipY = joint.Position.Y;
-                    rightHipZ = joint.Position.Z;
-                    rightHip = joint.Position;
-                }
-            }
-            if (rightHipZ < .2) 
-            { 
-                tooClose = true; 
-                //Console.WriteLine("TOO CLOSE"); 
-            }
-            else { tooClose = false; }
+            rightHand = skel.Joints[JointType.HandRight].Position;
+            rightHip = skel.Joints[JointType.HipRight].Position;
             switch (seeking)
             {
                 case "STILL":
                 {
-                    if (stillFramesCount == 15)
-                    {
-                        seeking = "START";
-                    }
-                    if (stillFramesCount < 15 && Math.Abs(prevXOne - rightHandX) < .08 && Math.Abs(prevYOne - rightHandY) < .08 && Math.Abs(prevXTwo - rightHandX) < .08 && Math.Abs(prevYTwo - rightHandY) < .08)
+                    if (stillFramesCount == 15) { seeking = "START"; }
+                    if (stillFramesCount < 15 && Math.Abs(prevOne.X - rightHand.X) < .08 && Math.Abs(prevOne.Y - rightHand.Y) < .08 && Math.Abs(prevTwo.X - rightHand.X) < .08 && Math.Abs(prevTwo.Y - rightHand.Y) < .08)
                     {
                         stillFramesCount++;
                         break;
                     }
-                    else if (stillFramesCount < 15)
-                    {
-                        stillFramesCount = 0;
-                    }
+                    else if (stillFramesCount < 15) { stillFramesCount = 0; }
                     break;
                 }
                 case "START":
                 {
-                    if (prevYTwo < (prevYOne - .01) && prevYOne < (rightHandY - .01))
+                    if (prevTwo.Y < (prevOne.Y - .01) && prevOne.Y < (rightHand.Y - .01))
                     {
-                        if (framesInFirstBeat == 0)
-                        {
-                            stopwatch.Start();
-                        }
+                        if (framesInFirstBeat == 0) { stopwatch.Start(); }
                         framesInFirstBeat++;
                         break;
                     }
-                    if (framesInFirstBeat >= 2 && prevYTwo > (prevYOne + .01) && prevYOne > (rightHandY + .01) && Math.Abs(rightHandX - rightHipX) < .15)
+                    if (framesInFirstBeat >= 2 && prevTwo.Y > (prevOne.Y + .01) && prevOne.Y > (rightHand.Y + .01) && Math.Abs(rightHand.X - rightHip.X) < .15)
                     {
                         seeking = "MINIMUM";
                         Dispatch.TriggerStart();
@@ -131,7 +80,7 @@ namespace Orchestra
                 }
                 case "MINIMUM":
                 {
-                    if (prevYTwo < (prevYOne - threshold) && prevYOne < (rightHandY - threshold) && tooClose == false)
+                    if (prevTwo.Y < (prevOne.Y - threshold) && prevOne.Y < (rightHand.Y - threshold))
                     {
                         if (counter == 5) { counter = 1; }
                         if (startMarker == 0)
@@ -139,13 +88,10 @@ namespace Orchestra
                             startMarker = 1;
                             long firstTempo = stopwatch.ElapsedMilliseconds * 1000 / 2;
                         }
-                        else
-                        {
-                            long tempo = stopwatch.ElapsedMilliseconds * 1000;
-                        }
-                        rightHandBeat = rightHand;
+                        else { long tempo = stopwatch.ElapsedMilliseconds * 1000; }
                         stopwatch.Restart();
                         Dispatch.TriggerBeat(counter, "beat");
+                        beat = true;
                         seeking = "MAXIMUM";
                         counter++;
                         break;
@@ -154,7 +100,7 @@ namespace Orchestra
                 }
                 case "MAXIMUM":
                 {
-                    if (prevYTwo > (prevYOne + threshold) && prevYOne > (rightHandY + threshold))
+                    if (prevTwo.Y > (prevOne.Y + threshold) && prevOne.Y > (rightHand.Y + threshold))
                     {
                         seeking = "MINIMUM";
                         break;
@@ -162,11 +108,8 @@ namespace Orchestra
                     break;
                 }
             }
-            prevYTwo = prevYOne;
-            prevXTwo = prevXOne;
-            prevYOne = rightHandY;
-            prevXOne = rightHandX;
-            //Console.WriteLine(Math.Abs(rightHandX - rightHipX));
+            prevTwo = prevOne;
+            prevOne = rightHand;
         }
     }
 }

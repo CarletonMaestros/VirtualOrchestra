@@ -10,7 +10,7 @@ namespace Orchestra
 {
     public class Kinect
     {
-        private static KinectSensor sensor;
+        public static KinectSensor sensor;
 
         public static void Load()
         {

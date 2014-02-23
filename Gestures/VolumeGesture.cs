@@ -8,15 +8,11 @@ namespace Orchestra
 {
     public class VolumeGesture
     {
-        float leftHandX;
-        float leftHandY;
-        float leftHipX;
-        float leftHipZ;
-        float startValueX;
-        float startValueY;
-        float prevYValue;
-        float yAverage;
-        float xAverage;
+        SkeletonPoint leftHand;
+        SkeletonPoint leftHip;
+        SkeletonPoint startValue;
+        SkeletonPoint average;
+        float prevYValue;        
         float changeInYVal;
         float changeVolume;
         float increaseToDecrease = 1; // 0 means hand is moving down, 1 moving up
@@ -24,7 +20,6 @@ namespace Orchestra
         int count;
         bool aboveHip = false;
         bool outsideBox = true;
-        bool tooClose = false;
 
         public VolumeGesture()
         {
@@ -32,108 +27,85 @@ namespace Orchestra
             Dispatch.SongLoaded += SongLoaded;
         }
 
-        public void Unload()
-        {
-            Dispatch.SkeletonMoved -= SkeletonMoved;
-        }
+        public void Unload() { Dispatch.SkeletonMoved -= SkeletonMoved; }
 
-        void SongLoaded(SongData song, string songName, string songFile)
-        {
-            Dispatch.TriggerVolumeChanged(0.5f);
-        }
+        void SongLoaded(SongData song, string songName, string songFile) { Dispatch.TriggerVolumeChanged(0.5f); }
 
-        void SkeletonMoved(float time, Skeleton skeleton)
+        void SkeletonMoved(float time, Skeleton skel)
         {
-            foreach (Joint joint in skeleton.Joints)
+            foreach (Joint joint in skel.Joints)
             {
-                if (joint.JointType == JointType.HipLeft)
+                leftHip = skel.Joints[JointType.HipLeft].Position;
+                leftHand = skel.Joints[JointType.HandLeft].Position;
+                if (leftHand.Y > joint.Position.Y)
                 {
-                    leftHipX = joint.Position.X;
-                    leftHipZ = joint.Position.Z;
-                    if (leftHandY > joint.Position.Y)
-                    {
-                        aboveHip = true;
-                        outsideBox = false;
-                    }
-                    else
-                    {
-                        aboveHip = false;
-                        count = 0;
-                        startValueY = 0;
-                        startValueX = 0;
-                        yAverage = 0;
-                        xAverage = 0;
-                    }
+                    aboveHip = true;
+                    outsideBox = false;
                 }
-                if (leftHipZ < .1) 
-                { 
-                    tooClose = true; 
-                }
-                else { tooClose = false; }
-                if (joint.JointType == JointType.WristLeft)
+                else
                 {
-                    leftHandY = joint.Position.Y;
-                    leftHandX = joint.Position.X;
-                    if (count == 15)
+                    aboveHip = false;
+                    count = 0;
+                    startValue.Y = 0;
+                    startValue.X = 0;
+                    average = startValue;
+                }
+                if (count == 15)
+                {
+                    startValue = average;
+                    count += 1;
+                }
+                else if (count < 15)
+                {
+                    if (aboveHip == true && average.Y == 0 && average.X == 0)
                     {
-                        startValueY = yAverage;
-                        startValueX = xAverage;
                         count += 1;
+                        average = leftHand;
                     }
-                    else if (count < 15)
+                    else if (aboveHip == true && average.Y != 0 && average.X != 0)
                     {
-                        if (aboveHip == true && yAverage == 0 && xAverage == 0)
+                        if (average.Y - leftHand.Y > -.1 && average.Y - leftHand.Y < .1 && average.X - leftHand.X > -.1 && average.X - leftHand.X < .1)
                         {
+                            average.Y = (average.Y + leftHand.Y) / 2;
+                            average.X = (average.X + leftHand.X) / 2;
                             count += 1;
-                            yAverage = leftHandY;
-                            xAverage = leftHandX;
                         }
-                        else if (aboveHip == true && yAverage != 0 && xAverage != 0)
+                        else
                         {
-                            if (yAverage - leftHandY > -.1 && yAverage - leftHandY < .1 && xAverage - leftHandX > -.1 && xAverage - leftHandX < .1)
-                            {
-                                yAverage = (yAverage + leftHandY) / 2;
-                                xAverage = (xAverage + leftHandX) / 2;
-                                count += 1;
-                            }
-                            else
-                            {
-                                yAverage = leftHandY;
-                                xAverage = leftHandX;
-                                count = 0;
-                            }
+                            average = leftHand;
+                            count = 0;
                         }
-                    } 
-                    else if (aboveHip == true && startValueY != 0 && startValueX != 0 && tooClose == false)
-                    {
-                        if ((startValueX - leftHandX) < .1 && (startValueX - leftHandX) > -.1 && Math.Abs(leftHandX - leftHipX) < .3 && outsideBox == false) // if wrist is within the acceptable "box" of x-ranges
-                        {
-                            changeInYVal += (leftHandY - prevYValue);
-                            if (increaseToDecrease == 0 && leftHandY - prevYValue > 0) //hand is moving up now
-                            {
-                                increaseToDecrease = 1;
-                                changeVolume = changeInYVal;
-                            }
-                            else if (increaseToDecrease == 1 && leftHandY - prevYValue < 0) //hand is moving down now
-                            {
-                                increaseToDecrease = 0;
-                                changeVolume = changeInYVal;
-                            }
-                            else { changeInYVal += (leftHandY - prevYValue); }
-                            prevYValue = leftHandY;
-                            if (changeInYVal - changeVolume > .1)
-                            {
-                                if (volume < 127) { volume += (5 * (127 - volume) / 127); }
-                            }
-                            else if (changeInYVal - changeVolume < -.1)
-                            {
-                                if (volume > 0) { volume -= (5 * volume / 127); }
-                            }
-                            int intVolume = (int)volume;
-                            Dispatch.TriggerVolumeChanged(intVolume / 127f);
-                        }
-                        else { outsideBox = true; }
                     }
+                } 
+                else if (aboveHip == true && startValue.Y != 0 && startValue.X != 0)
+                {
+                    if ((startValue.X - leftHand.X) < .1 && (startValue.X - leftHand.X) > -.1 && Math.Abs(leftHand.X - leftHip.X) < .3 && outsideBox == false) // if wrist is within the acceptable "box" of x-ranges
+                    {
+                        changeInYVal += (leftHand.Y - prevYValue);
+                        if (increaseToDecrease == 0 && leftHand.Y - prevYValue > 0) //hand is moving up now
+                        {
+                            increaseToDecrease = 1;
+                            changeVolume = changeInYVal;
+                        }
+                        else if (increaseToDecrease == 1 && leftHand.Y - prevYValue < 0) //hand is moving down now
+                        {
+                            increaseToDecrease = 0;
+                            changeVolume = changeInYVal;
+                        }
+                        else { changeInYVal += (leftHand.Y - prevYValue); }
+                        prevYValue = leftHand.Y;
+                        if (changeInYVal - changeVolume > .1) 
+                        { 
+                            if (volume < 127) { volume += (5 * (127 - volume) / 127); }
+                        }
+                        else if (changeInYVal - changeVolume < -.1)
+                        {
+                            if (volume > 0) { volume -= (5 * volume / 127); }
+                        }
+                        int intVolume = (int)volume;
+                        Dispatch.TriggerVolumeChanged(intVolume / 127f);
+                    }
+                    else { outsideBox = true; }
                 }
             }
         }
