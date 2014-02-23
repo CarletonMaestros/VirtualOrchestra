@@ -47,9 +47,12 @@ namespace Orchestra
         private Point leftHandValues;
         private bool checkIfRightHandStill;
         private bool checkIfLeftHandStill;
-        private int counter;
-        private SkeletonPoint prevOne;
-        private SkeletonPoint prevTwo;
+        private int counterRight;
+        private int counterLeft;
+        private SkeletonPoint prevOneRight;
+        private SkeletonPoint prevTwoRight;
+        private SkeletonPoint prevOneLeft;
+        private SkeletonPoint prevTwoLeft;
         private bool aboveHip;
         private float curY;
         private Point rightHipValues;
@@ -108,7 +111,8 @@ namespace Orchestra
             showStartBox = false;
             showCheckMark = false;
             belowHipCounter = 0;
-            counter = 0;
+            counterRight = 0;
+            counterLeft = 0;
             nextInstruction--;
             WriteInstructions(nextInstruction - 1);
         }
@@ -181,7 +185,9 @@ namespace Orchestra
             }
             else if (InstructionNumber == 10)
             {
-                Instructions.Text += Environment.NewLine + "As with the previous gestures, your hands must be in the same place for about a second." + Environment.NewLine + "Place both of your hands in the gray box.";
+                counterLeft = 0;
+                counterRight = 0;
+                Instructions.Text += Environment.NewLine + "As with the previous gestures, your hands must be in the same place for about a second." + Environment.NewLine + "Place both of your hands above the gray line.";
                 checkBothHandsStill = true;
                 checkIfLeftHandStill = true;
                 checkIfRightHandStill = true;
@@ -287,6 +293,7 @@ namespace Orchestra
                     rightHandValues = SkeletonPointToScreen(rightHand);
                     leftHandValues = SkeletonPointToScreen(leftHand);
                     rightShoulderValues = SkeletonPointToScreen(rightShoulder);
+
                     hipLineRight.Margin = new Thickness((rightHipValues.X + leftHipValues.X) / 2, rightHipValues.Y, 0, 0);
                     hipLineLeft.Margin = new Thickness(0, rightHipValues.Y, 0, 0);
                     hipLineLeft.Width = Math.Abs((rightHipValues.X + leftHipValues.X) / 2);
@@ -308,7 +315,7 @@ namespace Orchestra
                     {
                         if (rightHand.Y > rightHip.Y) { aboveHip = true; }
                         else { aboveHip = false; belowHipCounter++; }
-                        if (counter == 15)
+                        if (counterRight == 15)
                         {
                             if (checkBothHandsStill) { rightHandStill = true; }
                             else
@@ -345,16 +352,16 @@ namespace Orchestra
                                 }
                             }
                         }
-                        if (counter < 15 && Math.Abs(prevOne.X - rightHand.X) < .08 && Math.Abs(prevOne.Y - rightHand.Y) < .08 && Math.Abs(prevTwo.X - rightHand.X) < .08 && Math.Abs(prevTwo.Y - rightHand.Y) < .08 && aboveHip == true)
+                        if (counterRight < 15 && Math.Abs(prevOneRight.X - rightHand.X) < .08 && Math.Abs(prevOneRight.Y - rightHand.Y) < .08 && Math.Abs(prevTwoRight.X - rightHand.X) < .08 && Math.Abs(prevTwoRight.Y - rightHand.Y) < .08 && aboveHip == true)
                         {
-                            counter++;
+                            counterRight++;
                         }
-                        else if (counter < 15)
+                        else if (counterRight < 15)
                         {
-                            counter = 0;
+                            counterRight = 0;
                         }
-                        prevTwo = prevOne;
-                        prevOne = rightHand;
+                        prevTwoRight = prevOneRight;
+                        prevOneRight = rightHand;
                     }
                 }
                 if (checkIfLeftHandStill)
@@ -365,7 +372,7 @@ namespace Orchestra
                         else { aboveHip = false; belowHipCounter++; }
                         if (belowHipCounter > 1)
                         {
-                            if (counter == 15)
+                            if (counterLeft == 15)
                             {
                                 if (checkBothHandsStill) { leftHandStill = true; }
                                 else
@@ -397,16 +404,16 @@ namespace Orchestra
                                     }
                                 }
                             }
-                            if (counter < 15 && Math.Abs(prevOne.X - leftHand.X) < .08 && Math.Abs(prevOne.Y - leftHand.Y) < .08 && Math.Abs(prevTwo.X - leftHand.X) < .08 && Math.Abs(prevTwo.Y - leftHand.Y) < .08 && aboveHip == true)
+                            if (counterLeft < 15 && Math.Abs(prevOneLeft.X - leftHand.X) < .08 && Math.Abs(prevOneLeft.Y - leftHand.Y) < .08 && Math.Abs(prevTwoLeft.X - leftHand.X) < .08 && Math.Abs(prevTwoLeft.Y - leftHand.Y) < .08 && aboveHip == true)
                             {
-                                counter++;
+                                counterLeft++;
                             }
-                            else if (counter < 15)
+                            else if (counterLeft < 15)
                             {
-                                counter = 0;
+                                counterLeft = 0;
                             }
-                            prevTwo = prevOne;
-                            prevOne = leftHand;
+                            prevTwoLeft = prevOneLeft;
+                            prevOneLeft = leftHand;
                         }
                     }
                 }
@@ -415,21 +422,23 @@ namespace Orchestra
                     if (!showStartBox)
                     {
                         showStartBox = true;
-                        startBox.Height = 75;
-                        startBox.Width = 240;
+                        startBox.Height = 4;
+                        startBox.Width = SkeletonWindow.ActualWidth;
                     }
-                    startBox.Margin = new Thickness(rightShoulderValues.X - 170, rightShoulderValues.Y - 70, 0, 0);
-                    if (leftHandStill && rightHandStill && Contains(leftHandValues, startBox.Margin, 170, 75) && Contains(rightHandValues, startBox.Margin, 75, 75))
+                    startBox.Margin = new Thickness(13, rightShoulderValues.Y + 5, 0, 0);
+                    if (leftHandStill && rightHandStill && rightHand.Y < rightShoulderValues.Y - 5 && leftHand.Y < rightShoulderValues.Y)
                     {
                         startBox.BorderBrush = Brushes.Green;
                     }
+                    else { startBox.BorderBrush = Brushes.Green; }
                 }
                 if (boxDisappear == true && stopwatch.ElapsedMilliseconds > 750)
                 {
                     box.BorderThickness = new Thickness(0);
                     box.Margin = new Thickness(0, 0, 0, 0);
                     box.Height = 0;
-                    counter = 0;
+                    counterLeft = 0;
+                    counterRight = 0;
                     checkIfRightHandStill = false;
                     boxDisappear = false;
                     stopwatch.Reset();
