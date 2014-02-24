@@ -32,7 +32,6 @@
         
 
             <Image Name="SkeletonWindow" Margin="50,50,50,50" Grid.Row="1" Grid.RowSpan="2" />
-        <Label x:Name ="StartBeat" Margin="1, 1,1, 1" HorizontalAlignment="Center" VerticalAlignment="Center" Content=""/>
 
             
 
@@ -60,10 +59,12 @@
         <Viewbox Margin="10, 10, 10, 10" Stretch="Uniform"  Grid.ColumnSpan="2">
         <Label x:Name="Title" Content="TUTORIAL" Foreground="LightGray"  HorizontalContentAlignment="Center"  />
         </Viewbox>
-            
+
+        <!--<Label x:Name ="StartBeat" Margin="1,1,1,1" HorizontalAlignment="Center" Foreground="White" FontSize ="40" VerticalAlignment="Center" Content="And"/>-->
+
         <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" Margin="5,0,0,0" Stroke="White" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"   Height="4" />
 
-        <Canvas x:Name ="VolumeGauge" Margin="36,0,24,30"   HorizontalAlignment="Stretch" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Height="0" >
+        <!--<Canvas x:Name ="VolumeGauge" Margin="32,447,489,0"   HorizontalAlignment="Stretch" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Height="0">
             <Canvas.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="-1"/>
@@ -79,9 +80,7 @@
                 </LinearGradientBrush>
             </Canvas.Background>
         </Canvas>
-
-
-        <Rectangle x:Name="VolumeBorder"  Margin="36,62,24,30" Stroke ="White" StrokeThickness="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Rectangle x:Name="VolumeBorder"  Margin="30,30,488,34" Stroke ="White" StrokeThickness="0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
 
     </Grid>
 </Window>
