@@ -140,6 +140,9 @@
                 <ColumnDefinition Width="140*"/>
             </Grid.ColumnDefinitions>
             <Canvas x:Name="PianoRoll"  Margin="26,62,24,30" Background="LightGray" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="1" Grid.ColumnSpan="4" />
+            <Viewbox HorizontalAlignment ="Stretch" VerticalAlignment="Stretch" Margin="26,62,24,30" Grid.Column="1" Grid.ColumnSpan="4">
+            <Label x:Name ="StartBeat" Margin="1, 1,1, 1" HorizontalAlignment="Center" VerticalAlignment="Center" Content=""/>
+                </Viewbox>
         <Canvas x:Name ="VolumeGauge" Margin="36,0,24,30"   HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Column="0"  Grid.ColumnSpan="1"  RenderTransformOrigin="0.5,0.5" Height="0" >
             <Canvas.RenderTransform>
                 <TransformGroup>

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Orchestra.TutorialWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Tutorial" Height="627" Width="1150" Loaded="Window_Loaded_1">
+        Title="Tutorial" Height="627" Width="1150" Loaded="Window_Loaded_1" WindowStyle="None" WindowState="Maximized">
     
     <Window.Resources>
         <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
@@ -24,29 +24,64 @@
             <ColumnDefinition Width="191*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="104*"/>
-            <RowDefinition Height="430*"/>
-            <RowDefinition Height="65*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Image Name="SkeletonWindow" Margin="10,10,10,10" Grid.Row="1" Grid.RowSpan="2"/>
-        <TextBlock TextWrapping="WrapWithOverflow" Name ="Instructions" Foreground="LightGray"  FontSize="30" Margin="10" Grid.Row="1" Grid.Column="1">
-            Welcome to the Virtual Orchestra tutorial! You should be able to see your kinect skeleton in the frame to the left.
+        
+
+            <Image Name="SkeletonWindow" Margin="50,50,50,50" Grid.Row="1" Grid.RowSpan="2" />
+        <Label x:Name ="StartBeat" Margin="1, 1,1, 1" HorizontalAlignment="Center" VerticalAlignment="Center" Content=""/>
+
+            
+
+            <StackPanel Margin ="20,30,30,10" Grid.Column ="1" Grid.Row ="1"  Orientation="Vertical" >
+        <TextBlock TextWrapping="Wrap" Name ="Instructions" Foreground="LightGray"  FontSize="40">
+            Welcome to the Virtual Orchestra tutorial! You should be able to see your kinect skeleton in the frame to the left. Let's learn some gestures.
         </TextBlock>
-        <Grid>
-            <Image Name="conductingImage4" Width="140" Height="140" Margin="870,340,-428,-416" Panel.ZIndex="1"/> 
-        </Grid>
-        <Grid>
-            <Image Name="conductingImage1" Width="140" Height="140" Margin="910, 100,-382,-260" Panel.ZIndex="1"/>
-        </Grid>
-        <Grid>
-            <Image Name="checkMarkImage" Width="200" Height="200" Margin="880,170,-428,-416" Panel.ZIndex="1"/>
-        </Grid>
-        <Button Name="ContinueButton" Content="Continue" Grid.Column="1" Margin="333,10,12,10" Grid.Row="2" Click="ContinueButton_Click"/>
-        <Button Name="GoBackStepButton" Content="Go Back A Step" Grid.Column="1" Margin="10,10,333,10" Grid.Row="2" Click="GoBackStepButton_Click"/>
-        <Label x:Name="Title" Content="TUTORIAL" Foreground="LightGray"  HorizontalContentAlignment="Center" FontSize="50" Margin="10" Grid.ColumnSpan="2"/>
-        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" Margin="5,93,0,0" Stroke="White" HorizontalAlignment="Left" Width="1291" Height="4" VerticalAlignment="Top"/>
-        <!--<Rectangle Fill="#FFF4F4F5" Margin="649,98,0,0" Stroke="White" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" Width="4" Height="489" VerticalAlignment="Top"/>-->
+                </StackPanel>
+
+
+
+        <Image Name="conductingImage4"  Width ="170" Height ="170"  Margin="20, 10, 10,10 " Grid.Row ="1" HorizontalAlignment ="Left" VerticalAlignment ="Bottom" Grid.Column ="1"/>
+
+
+
+        <Image Name="conductingImage1" Width ="170" Height ="170"  Margin="220, 10,10, 10" Grid.Row ="1" Grid.Column ="1" HorizontalAlignment ="Left" VerticalAlignment ="Bottom"/>
+
+        <Image Name="checkMarkImage" Width ="170" Height ="170"  Margin="20,0,0,220" Grid.Row ="1" Grid.Column ="1" HorizontalAlignment ="Left" VerticalAlignment ="Bottom"/>
+
+        
+        <Button Name="GoBackStepButton" FontSize="20"  Content="Go Back A Step" Grid.Column="1" Margin="10,10, 10,10" MaxWidth="240" MinWidth ="180" Grid.Row="3" Click="GoBackStepButton_Click" HorizontalAlignment="Center"/>
+        <Button Name="ContinueButton" FontSize="20"  Content="Continue" Grid.Column="1" Margin="10,10,10,10" Grid.Row="3" MaxWidth="240" MinWidth="180"  Click="ContinueButton_Click" HorizontalAlignment ="Right"/>
+        <Button Name="QuitTutorialButton" FontSize="20" Content="Quit Tutorial" Grid.Column="1" Margin="10,10,10,10" Grid.Row="3" MaxWidth="240" MinWidth="180"  Click="QuitTutorial_Click" HorizontalAlignment ="Left"/>
+       
+        <Viewbox Margin="10, 10, 10, 10" Stretch="Uniform"  Grid.ColumnSpan="2">
+        <Label x:Name="Title" Content="TUTORIAL" Foreground="LightGray"  HorizontalContentAlignment="Center"  />
+        </Viewbox>
+            
+        <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" Margin="5,0,0,0" Stroke="White" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"   Height="4" />
+
+        <Canvas x:Name ="VolumeGauge" Margin="36,0,24,30"   HorizontalAlignment="Stretch" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Height="0" >
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+            <Canvas.Background>
+                <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03" >
+                    <GradientStop Color="Red" Offset="0"/>
+                    <GradientStop Color="Goldenrod" Offset="0.567"/>
+                </LinearGradientBrush>
+            </Canvas.Background>
+        </Canvas>
+
+
+        <Rectangle x:Name="VolumeBorder"  Margin="36,62,24,30" Stroke ="White" StrokeThickness="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
     </Grid>
 </Window>

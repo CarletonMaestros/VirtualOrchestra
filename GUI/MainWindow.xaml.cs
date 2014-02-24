@@ -43,6 +43,7 @@ namespace Orchestra
         private SongData curSong;
         private string curSongName;
         private string curSongFile;
+        private int beat;
 
         public MainWindow()
         {
@@ -58,15 +59,20 @@ namespace Orchestra
         {
             //entries are [instr, pitch, velocity, duration, channel]
 
+            Dispatch.Beat += Beat;
             Dispatch.SongLoaded += SongLoaded;
             Dispatch.TickInfo += TickTriggered;
             Dispatch.VolumeChanged += VolumeChanged;
 
         }
 
+        private void Beat(float time, int beat)
+        {
+            this.beat++;
+        }
+
         public void VolumeChanged(float time, float volume)
         {
-            VolumeGauge.Opacity = (volume);
             VolumeGauge.Height = volume * PianoRoll.ActualHeight;
         }
 
@@ -75,6 +81,7 @@ namespace Orchestra
             curSong = song;
             curSongName = songName;
             curSongFile = songFile;
+            beat = 0;
 
             ticksPerBeat = 0;
             beatsPerMeasure = 0;
@@ -184,6 +191,13 @@ namespace Orchestra
             get { return TicksInPianoRoll / PianoRoll.ActualWidth; }
         }
 
+        private void UpdateLeadIn()
+        {
+            if (beat == 1) StartBeat.Content = "And...";
+            else if (1 < beat && beat < 6) StartBeat.Content = beat-1;
+            else StartBeat.Content = "";
+        }
+
         protected void UpdateRectangles()
         {
             List<Rectangle> markedChildren = new List<Rectangle>();
@@ -275,6 +289,7 @@ namespace Orchestra
         private void TickTriggered(int tick)
         {
             currTick = tick;
+            Dispatcher.Invoke((Action)(() => UpdateLeadIn()));
             Dispatcher.Invoke((Action)(() => UpdateRectangles()));
             Dispatcher.Invoke((Action)(() => UpdateChannelPictures()));
             PopulatePianoRoll();
@@ -282,18 +297,21 @@ namespace Orchestra
 
         private void EndSongButtonClick(object sender, RoutedEventArgs e)
         {
+            StartBeat.Content = "";
             Dispatch.TriggerStop();
             App.SelectSong();
         }
 
         private void RestartButtonClick(object sender, RoutedEventArgs e)
         {
+            StartBeat.Content = "";
             Dispatch.TriggerStop();
-            App.PlaySong(curSongFile, curSongName);
+            App.PlaySong(curSongFile, curSongName, false);
         }
 
         private void QuitButtonClick(object sender, RoutedEventArgs e)
         {
+            StartBeat.Content = "";
             Dispatch.TriggerStop();
             App.ShowStartScreen();
         }

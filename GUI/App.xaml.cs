@@ -55,9 +55,10 @@ namespace Orchestra
             songSelect.Activate();
         }
 
-        public static void PlaySong(string songFile, string songName)
+        public static void PlaySong(string songFile, string songName, bool tutorial)
         {
             main.Show();
+            if (tutorial) { main.Hide(); }
             main.Activate();
             Gestures.Load();
             MIDI.LoadSong(songFile, songName);
