@@ -398,28 +398,6 @@ namespace Orchestra
             HeyYa.Play();
         }
 
-        private void ListBoxItem_Selected_18(object sender, RoutedEventArgs e)
-        {
-            StopAllMusic();
-            Jupiter.Play();
-            BitmapImage newIm = new BitmapImage();
-            newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Holst.jpg");
-            newIm.EndInit();
-            PreviewImage.Source = newIm;
-            ArtistName.Content = "Gustav Holst";
-            SongName.Content = "Jupiter, the Bringer of Jollity";
-            YearText.Content = "1915";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\jupiter.mid";
-            songName = "Holst: Jupiter";
-        }
-
-        private void JupiterLoop(object sender, RoutedEventArgs e)
-        {
-            Jupiter.Position = TimeSpan.Zero;
-            Jupiter.Play();
-        }
-
         private void ListBoxItem_Selected_19(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
@@ -594,11 +572,6 @@ namespace Orchestra
             if (heyYaPause == true)
             {
                 HeyYa.Stop();
-            }
-            bool jupiterPause = Jupiter.CanPause;
-            if (jupiterPause == true)
-            {
-                Jupiter.Stop();
             }
             bool lifePause = Life.CanPause;
             if (lifePause == true)
