@@ -48,6 +48,7 @@
         <MediaElement Name="MansWorld" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mansworld.wav" LoadedBehavior="Manual" MediaEnded="MansWorldLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
         <MediaElement Name="Stairway" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\stairway.wav" LoadedBehavior="Manual" MediaEnded="StairwayLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
         <MediaElement Name="Superstition" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\superstition.wav" LoadedBehavior="Manual" MediaEnded="SuperstitionLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Misery" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\misery.wav" LoadedBehavior="Manual" MediaEnded="MiseryLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
         
         <ListBox Name="SongSelector" Margin="25,25,23,34" Grid.RowSpan="8">
             <ListBoxItem Content="    Bach: Air on a G String" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_10"/>
@@ -63,14 +64,15 @@
             <ListBoxItem Content="    Led Zeppelin: Stairway to Heaven" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_21"/>
             <ListBoxItem Content="    Madonna: Like a Prayer" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_2"/>
             <ListBoxItem Content="    OutKast: Hey Ya!" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_17"/>
-            <ListBoxItem Content="    Prince: When Doves Cry" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_14"/>
-            <ListBoxItem Content="    Queen: Bohemian Rhapsody" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_13"/>
-            <ListBoxItem Content="    Radiohead: Paranoid Android" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_1"/>
-            <ListBoxItem Content="    The Rolling Stones: Jumpin' Jack Flash" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_16"/>
-            <ListBoxItem Content="    Sinatra: That's Life" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_19"/>
-            <ListBoxItem Content="    Tchaikovsky: Swan Lake Prelude" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_12"/>
-            <ListBoxItem Content="    Vivaldi: Autumn" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_3"/>
-            <ListBoxItem Content="    Wonder: Superstition" Height="50"  FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_22"/>
+            <ListBoxItem Content="    Paramore: Misery Business" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_23"/>
+            <ListBoxItem Content="    Prince: When Doves Cry" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_14"/>
+            <ListBoxItem Content="    Queen: Bohemian Rhapsody" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_13"/>
+            <ListBoxItem Content="    Radiohead: Paranoid Android" Height="50"  FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_1"/>
+            <ListBoxItem Content="    The Rolling Stones: Jumpin' Jack Flash" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_16"/>
+            <ListBoxItem Content="    Sinatra: That's Life" Height="50"  FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_19"/>
+            <ListBoxItem Content="    Tchaikovsky: Swan Lake Prelude" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_12"/>
+            <ListBoxItem Content="    Vivaldi: Autumn" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_3"/>
+            <ListBoxItem Content="    Wonder: Superstition" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_22"/>
         </ListBox>
         <Image Name="PreviewImage" Source="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" Stretch="Uniform" StretchDirection="Both" Margin="22,18,16,18" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="2"/>
         <Button Name="ConfirmButton" Content="Confirm" FontSize="20"  Click="ConfirmButtonClick"  Margin="22,20,17,20" RenderTransformOrigin="-0.182,0.789" Grid.Column="1" Grid.Row="5"/>

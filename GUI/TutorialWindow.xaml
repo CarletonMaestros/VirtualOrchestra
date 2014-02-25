@@ -60,7 +60,8 @@
         <Label x:Name="Title" Content="TUTORIAL" Foreground="LightGray"  HorizontalContentAlignment="Center"  />
         </Viewbox>
 
-        <!--<Label x:Name ="StartBeat" Margin="1,1,1,1" HorizontalAlignment="Center" Foreground="White" FontSize ="40" VerticalAlignment="Center" Content="And"/>-->
+        <Label x:Name ="StartBeat" Margin="1,1,1,1" Grid.Row="1"  HorizontalAlignment="Center" Foreground="White" FontSize ="40" VerticalAlignment="Center" Content="
+               "/>
 
         <Rectangle Grid.ColumnSpan="2" Fill="#FFF4F4F5" Margin="5,0,0,0" Stroke="White" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"   Height="4" />
 

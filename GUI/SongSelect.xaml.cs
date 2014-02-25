@@ -486,6 +486,28 @@ namespace Orchestra
             Superstition.Play();
         }
 
+        private void ListBoxItem_Selected_23(object sender, RoutedEventArgs e)
+        {
+            StopAllMusic();
+            Misery.Play();
+            BitmapImage newIm = new BitmapImage();
+            newIm.BeginInit();
+            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Paramore.jpg");
+            newIm.EndInit();
+            PreviewImage.Source = newIm;
+            ArtistName.Content = "Paramore";
+            SongName.Content = "Misery Business";
+            YearText.Content = "2007";
+            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\misery.mid";
+            songName = "Paramore: Misery Business";
+        }
+
+        private void MiseryLoop(object sender, RoutedEventArgs e)
+        {
+            Misery.Position = TimeSpan.Zero;
+            Misery.Play();
+        }
+
         private void StopAllMusic()
         {
             bool parAndPause = ParaAnd.CanPause;
@@ -592,6 +614,11 @@ namespace Orchestra
             if (superstitionPause == true)
             {
                 Superstition.Stop();
+            }
+            bool miseryPause = Misery.CanPause;
+            if (miseryPause == true)
+            {
+                Misery.Stop();
             }
         }
 
