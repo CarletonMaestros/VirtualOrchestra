@@ -23,13 +23,11 @@ namespace Orchestra
     {
         float elapsedTime = 0;
         float prevTime = 0;
-        private double Y;
-        private float hipY;
-        private float headY;
         private double tempo;
+        private double fitTempo;
 
-        private Point maxY;
-        private Point minY;
+
+        int maxi = 0;
 
         double canvasWidthInSeconds = 1;
         Canvas sineCanvas;
@@ -38,21 +36,10 @@ namespace Orchestra
 
         Complex[] samples = new Complex[32];
         double[] sineApprox = new double[32];
-        //private double xmin = 0;
-
-        //private double xmax = 6.5;
-        //private double ymin = -1.1;
-        //private double ymax = 1.1;
-        //private Polyline pl;
 
         public double PixelsPerSecond
         {
             get { if (!(sineCanvas == null)) { return sineCanvas.ActualWidth / canvasWidthInSeconds; } else { return 0; } }
-        }
-
-        public double HeadHipScaler
-        {
-            get { return (headY - hipY); } 
         }
 
         public SineTracker()
@@ -72,35 +59,38 @@ namespace Orchestra
             Dispatch.SkeletonMoved += this.SkeletonMoved;
 
             //AddChart();
-            Hide();
+            //Hide();    
         }
 
         
         private void SkeletonMoved(float time, Skeleton skel)
         {
-            Y = skel.Joints[JointType.HandRight].Position.Y;
-            hipY = skel.Joints[JointType.KneeRight].Position.Y;
-            headY = skel.Joints[JointType.Head].Position.Y;
-            scaleInput();
+            double Y = skel.Joints[JointType.HandRight].Position.Y;
+            double hipY = skel.Joints[JointType.KneeRight].Position.Y;
+            double headY = skel.Joints[JointType.Head].Position.Y;
+            scaleInput(); //scales Y: 0 to 1
 
-            for (int i = 0; i < samples.Length-1; ++i) samples[i] = samples[i + 1];
+            for (int i = 0; i < samples.Length-1; ++i) samples[i] = samples[i + 1]; //shift samples down anbd place new sample at the end
             samples[samples.Length - 1] = Y;
 
             elapsedTime = time - prevTime;
             prevTime = time;
-            UpdateChart();
+            UpdateChart(Y);
         }
 
-        private void UpdateChart()
+        private void UpdateChart(double latestY)
         {
             double pixelOffset = elapsedTime * PixelsPerSecond;
             Rectangle datum = new Rectangle { Width = dataRectSize, Fill = Brushes.Red, Height = dataRectSize, Stroke = Brushes.Black, StrokeThickness = 2 };
             datum.Tag = canvasWidthInSeconds + elapsedTime;
-            Canvas.SetTop(datum, Y);
+            Canvas.SetTop(datum, latestY*sineCanvas.ActualHeight);
             sineCanvas.Children.Add(datum);
 
+            Point maxY = new Point();
+            Point minY = new Point();
             maxY.Y = 0;
             minY.Y = double.MaxValue;
+
             List<UIElement> markedChildren = new List<UIElement>();
             foreach (UIElement p in sineCanvas.Children)
             {
@@ -110,7 +100,7 @@ namespace Orchestra
                     markedChildren.Add(p);
                     continue;
                 }
-                double newPos = calculateNewPos(child);
+                double newPos = calculateNewXPos(child);
                 Canvas.SetLeft(child, newPos);
                 if (((double)child.Tag + elapsedTime) < 0)
                 {
@@ -118,14 +108,14 @@ namespace Orchestra
                 }
                 else
                 {
-                    if (Canvas.GetTop(child) > maxY.Y)
+                    if (Canvas.GetTop(child)/sineCanvas.ActualHeight > maxY.Y)
                     {
-                        maxY.Y = Canvas.GetTop(child);
+                        maxY.Y = Canvas.GetTop(child) / sineCanvas.ActualHeight;
                         maxY.X = (double)child.Tag;
                     }
-                    if (Canvas.GetTop(child) < minY.Y)
+                    if (Canvas.GetTop(child) / sineCanvas.ActualHeight < minY.Y)
                     {
-                        minY.Y = Canvas.GetTop(child);
+                        minY.Y = Canvas.GetTop(child) / sineCanvas.ActualHeight;
                         minY.X = (double)child.Tag;
                     }
                 }
@@ -138,23 +128,16 @@ namespace Orchestra
             Complex[] fft = new Complex[samples.Length];
             samples.CopyTo(fft, 0);
             MathNet.Numerics.IntegralTransforms.Transform.FourierForward(fft);
-            //foreach (var i in fft) Console.WriteLine(fft);
             for (int i = 0; i < fft.Length; ++i) fft[i] = fft[i].Magnitude;
 
             double max = 0;
-            int maxi = 0;
             for (int i = 1; i < fft.Length/2; ++i)
                 if (fft[i].Real > max) { max = fft[i].Real; maxi = i; }
-            //Console.WriteLine("{0} {1}", maxi/30*fft.Length, max);
-            t1.Text = ((double)maxi / 30 * fft.Length).ToString("0.##") + " Hz";
+            t1.Text = findFrequency().ToString("0.##") + " Hz";
             t2.Text = "i+1 = " + fft[maxi + 1].Real.ToString("0.##");
             t3.Text = "i-1 = " + fft[maxi - 1].Real.ToString("0.##");    
-            
-            //t2.Text = "max = " + maxY.Y.ToString("0.##");
-            //t3.Text = "min = " + minY.Y.ToString("0.##");
-            t4.Text = "fit = " + goodnessOfFit().ToString("0.##");
-            //Console.WriteLine(t1.Text);
-            //t1.Text = "TEXT";
+            t4.Text = "fit = " + err().ToString("0.##");
+
             tempo = (double)maxi / 30 * fft.Length;
 
             AddChart();
@@ -164,61 +147,75 @@ namespace Orchestra
             //        x - min                                  max - min
             //f(x) = ---------   ===>   f(min) = 0;  f(max) =  --------- = 1
             //       max - min                                 max - min
-            Y = (1 - (Y - hipY) / (headY - hipY))* sineCanvas.ActualHeight;
-            //mathY = (Y - hipY) / (headY - hipY);
+            Y = (Y - hipY) / (headY - hipY);// *sineCanvas.ActualHeight;
             return;
         }
-        private double calculateNewPos(Rectangle child)
+        private double calculateNewXPos(Rectangle child)
         {
             child.Tag = (double)child.Tag - elapsedTime;
             double pixelPosition = (double)child.Tag * PixelsPerSecond;
             return pixelPosition;
         }
-        private double goodnessOfFit()
+        private double err()
         {
-            double total= 0 ;
+            double total = 0 ;
             for (int i = 0; i < sineApprox.Length; ++i)
             {
-                total += (sineApprox[i] - samples[i].Real);
+
+                if (samples[i].Real != double.NaN)
+                {
+                    total += Math.Pow((sineApprox[i] - samples[i].Real) , 2); //add the square of the difference
+                }
+                else
+                {
+                    Console.Write("ble");
+                }
             }
             return total;
         }
-        //private void AddChart()
-        //{
-        //    // Draw sine curve:
-        //    pl = new Polyline();
-        //    pl.Stroke = Brushes.Black;
-        //    for (int i = 0; i < 70; i++)
-        //    {
-        //        double x = i / 5.0;
-        //        double y = Math.Sin(x);
-        //        pl.Points.Add(CurvePoint(
-        //        new Point(x, y)));
-        //    }
-        //    chartCanvas.Children.Add(pl);
-        //    // Draw cosine curve:
-        //    pl = new Polyline();
-        //    pl.Stroke = Brushes.Black;
-        //    pl.StrokeDashArray = new DoubleCollection(
-        //    new double[] { 4, 3 });
-        //    for (int i = 0; i < 70; i++)
-        //    {
-        //        double x = i / 5.0;
-        //        double y = Math.Cos(x);
-        //        pl.Points.Add(CurvePoint(
-        //        new Point(x, y)));
-        //    }
-        //    chartCanvas.Children.Add(pl);
-        //}
-        //private Point CurvePoint(Point pt)
-        //{
-        //    Point result = new Point();
-        //    result.X = (pt.X - xmin) * chartCanvas.Width / (xmax - xmin);
-        //    result.Y = chartCanvas.Height - (pt.Y - ymin) * chartCanvas.Height
-        //    / (ymax - ymin);
-        //    return result;
-        //}
+        public double amp { get { return (maxY.Y - minY.Y) / 2; } }
+        public double mean()
+        {
+            double total= 0 ;
+            int numPoints = 0;
+            for (int i = 0; i < samples.Length; ++i)
+            {
 
+                if (samples[i].Real != double.NaN)
+                {
+                    total += (samples[i].Real);
+                    numPoints++;
+                }
+            }
+            return total/numPoints;
+        }
+        private double findFrequency()
+        {
+            double bestFreq = 0;
+            double bestFit = double.MaxValue;
+            for (int j = -25; j < 25; j++){
+                for (int i = 0; i < samples.Length; ++i)
+                {
+                    double curTempo = tempo-j/50d;
+                    double x = 1.0*(i-maxi)/32;
+                    if (samples[i].Real != double.NaN)
+                    {
+                        double y = amp * Math.Cos(x * curTempo * 2 * Math.PI) - mean();
+                        sineApprox[i] = y;
+                    }
+                }
+                double curErr = err();
+                if (curErr < bestFit)
+                {
+                    bestFit = curErr;
+                    bestFreq = tempo-j/50d;
+                }
+            }
+            fitTempo = bestFreq;
+            return bestFreq;
+        }
+
+        
         int resolution = 96;
         private void AddChart()
         {
@@ -227,8 +224,8 @@ namespace Orchestra
             pl.Stroke = Brushes.Black;
             for (int i = 0; i < resolution; i++)
             {
-                double x = 1.0*i/resolution;
-                double y = Math.Sin(x*tempo*2*Math.PI);
+                double x = 1.0*(i-(maxi*(resolution/32)/resolution));
+                double y = amp*Math.Cos(x*fitTempo*2*Math.PI)-mean();
                 Point newPoint = CurvePoint(new Point(x, y));
                 pl.Points.Add(newPoint);
                 if (i % 3 == 0)
@@ -240,7 +237,7 @@ namespace Orchestra
         }
         private Point CurvePoint(Point pt)
         {
-            double xmin = 0, xmax = 1, ymin = -1, ymax = 1;
+            double xmin = 0, xmax = 1, ymin = 0, ymax = 1;
 
             Point result = new Point();
             result.X = (pt.X - xmin) * sineCanvas.ActualWidth / (xmax - xmin);

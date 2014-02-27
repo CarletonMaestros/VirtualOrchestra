@@ -36,7 +36,7 @@
             
 
             <StackPanel Margin ="20,30,30,10" Grid.Column ="1" Grid.Row ="1"  Orientation="Vertical" >
-        <TextBlock TextWrapping="Wrap" Name ="Instructions" Foreground="LightGray"  FontSize="40">
+        <TextBlock TextWrapping="Wrap" Name ="Instructions" Foreground="LightGray"  FontSize="30">
             Welcome to the Virtual Orchestra tutorial! You should be able to see your kinect skeleton in the frame to the left. Let's learn some gestures.
         </TextBlock>
                 </StackPanel>

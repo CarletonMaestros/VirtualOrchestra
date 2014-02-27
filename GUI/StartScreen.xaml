@@ -31,7 +31,7 @@
         <Rectangle Fill="#BEF202" Opacity=".6" Grid.Column="1" Grid.Row="1" Grid.RowSpan="5" RadiusY="94.5" RadiusX="94.5"/>
 
         <Viewbox Margin="30,70,30,60" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Stretch" Stretch="Uniform" >
-           <Image Source ="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Logo.jpg"/>
+           <Image Source ="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Logo.jpg"/>
         </Viewbox>
         
         <Button Content="Quit" FontSize="20" Grid.Column="1" Margin="20,10,20,10" MaxWidth ="200"  Grid.Row="4" Click="QuitButtonClick"/>

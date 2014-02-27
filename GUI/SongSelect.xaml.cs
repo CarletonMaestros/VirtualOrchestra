@@ -24,19 +24,31 @@ namespace Orchestra
             InitializeComponent();
         }
 
+        public void Clean()
+        {
+            BitmapImage newIm = new BitmapImage();
+            newIm.BeginInit();
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\AlbumArt.jpg");
+            newIm.EndInit();
+            PreviewImage.Source = newIm;
+            ArtistName.Content = "";
+            SongName.Content = "Pick a Song!";
+            YearText.Content = "";
+        }
+
         public void ListBoxItem_Selected_1(object sender, RoutedEventArgs e)
         {
             StopAllMusic();
             ParaAnd.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Radiohead.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Radiohead.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Radiohead";
             SongName.Content = "Paranoid Android";
             YearText.Content = "1997";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\r.mid";
             songName = "Radiohead: Paranoid Android";
         }
 
@@ -52,13 +64,13 @@ namespace Orchestra
             Prayer.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Madonna.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Madonna.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Madonna";
             SongName.Content = "Like a Prayer";
             YearText.Content = "1989";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\prayer.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\prayer.mid";
             songName = "Madonna: Like a Prayer";
         }
 
@@ -74,13 +86,13 @@ namespace Orchestra
             Fall.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Vivaldi.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Vivaldi.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Antonio Vivaldi";
             SongName.Content = "L'autunno";
             YearText.Content = "1725";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\fall.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\fall.mid";
             songName = "Vivaldi: Autumn";
         }
 
@@ -96,13 +108,13 @@ namespace Orchestra
             Sym5.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Beethoven.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Beethoven.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Ludwig van Beethoven";
             SongName.Content = "Symphony No. 5";
             YearText.Content = "1808";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\sym5.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\sym5.mid";
             songName = "Beethoven: Fifth Symphony";
         }
 
@@ -118,13 +130,13 @@ namespace Orchestra
             MtKing.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\MountainKing.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\MountainKing.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Edvard Grieg";
             SongName.Content = "In the Hall of the Mountain King";
             YearText.Content = "1876";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mtking.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\mtking.mid";
             songName = "Greig: In the Hall of the Mountain King";
         }
 
@@ -140,13 +152,13 @@ namespace Orchestra
             GetLucky.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Daftpunk.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Daftpunk.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Daft Punk";
             SongName.Content = "Get Lucky";
             YearText.Content = "2013";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\daft.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\daft.mid";
             songName = "Daft Punk: Get Lucky";
         }
 
@@ -162,13 +174,13 @@ namespace Orchestra
             HardDay.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Beatles.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Beatles.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "The Beatles";
             SongName.Content = "Hard Day's Night";
             YearText.Content = "1964";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\h.mid";
             songName = "The Beatles: Hard Day's Night";
         }
 
@@ -184,13 +196,13 @@ namespace Orchestra
             RockAmadeus.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\falco.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\falco.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Falco";
             SongName.Content = "Rock Me Amadeus";
             YearText.Content = "1985";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rockamadeus.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\rockamadeus.mid";
             songName = "Falco: Rock Me Amadeus";
         }
 
@@ -206,13 +218,13 @@ namespace Orchestra
             Always.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\unicorn.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\unicorn.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Erasure";
             SongName.Content = "Always";
             YearText.Content = "1994";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\always.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\always.mid";
             songName = "Erasure: Always";
         }
 
@@ -228,13 +240,13 @@ namespace Orchestra
             AirG.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Bach.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Bach.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
-            ArtistName.Content = "Air on a G String";
-            SongName.Content = "Johann Sebastian Bach";
+            ArtistName.Content = "Johann Sebastian Bach";
+            SongName.Content = "Air on a G String";
             YearText.Content = "1730";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\airgstr.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\airgstr.mid";
             songName = "Bach: Air on a G String";
         }
 
@@ -250,13 +262,13 @@ namespace Orchestra
             NewWorld.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Dvorak.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Dvorak.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Antonin Dvorak";
             SongName.Content = "From the New World";
             YearText.Content = "1893";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\newworld.mid";
             songName = "Dvorak: From the New World";
         }
 
@@ -272,13 +284,13 @@ namespace Orchestra
             SwanLake.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Tchaikovsky.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Tchaikovsky.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Pyotr Ilyich Tchaikovsky";
             SongName.Content = "Swan Lake Prelude";
             YearText.Content = "1875";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\swan.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\swan.mid";
             songName = "Tchaikovsky: Swan Lake Prelude";
         }
 
@@ -294,13 +306,13 @@ namespace Orchestra
             Bohemian.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Queen.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Queen.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Queen";
             SongName.Content = "Bohemian Rhapsody";
             YearText.Content = "1975";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rhapsody.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\rhapsody.mid";
             songName = "Queen: Bohemian Rhapsody";
         }
 
@@ -316,13 +328,13 @@ namespace Orchestra
             Doves.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Prince.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Prince.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Prince";
             SongName.Content = "When Doves Cry";
             YearText.Content = "1984";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\doves.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\doves.mid";
             songName = "Prince: When Doves Cry";
         }
 
@@ -338,13 +350,13 @@ namespace Orchestra
             CanHeat.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Jamiroquai.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Jamiroquai.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Jamiroquai";
             SongName.Content = "Canned Heat";
             YearText.Content = "1999";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\canheat.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\canheat.mid";
             songName = "Jamiroquai: Canned Heat";
         }
 
@@ -360,13 +372,13 @@ namespace Orchestra
             Flash.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Stones.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Stones.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "The Rolling Stones";
             SongName.Content = "Jumpin' Jack Flash";
             YearText.Content = "1968";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\flash.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\flash.mid";
             songName = "The Rolling Stones: Jumpin' Jack Flash";
         }
 
@@ -382,13 +394,13 @@ namespace Orchestra
             HeyYa.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Outkast.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Outkast.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "OutKast";
             SongName.Content = "Hey Ya!";
             YearText.Content = "2003";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\heyya.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\heyya.mid";
             songName = "OutKast: Hey Ya!";
         }
 
@@ -404,13 +416,13 @@ namespace Orchestra
             Life.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Sinatra.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Sinatra.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Frank Sinatra";
             SongName.Content = "That's Life";
             YearText.Content = "1966";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\life.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\life.mid";
             songName = "Sinatra: That's Life";
         }
 
@@ -426,13 +438,13 @@ namespace Orchestra
             MansWorld.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Brown.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Brown.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "James Brown";
             SongName.Content = "It's a Man's Man's Man's World";
             YearText.Content = "1966";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mansworld.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\mansworld.mid";
             songName = "Brown: It's a Man's Man's Man's World";
         }
 
@@ -448,13 +460,13 @@ namespace Orchestra
             Stairway.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\LedZep.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\LedZep.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Led Zeppelin";
             SongName.Content = "Stairway to Heaven";
             YearText.Content = "1971";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\stairway.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\stairway.mid";
             songName = "Led Zeppelin: Stairway to Heaven";
         }
 
@@ -470,13 +482,13 @@ namespace Orchestra
             Superstition.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
-            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Wonder.jpg");
+            newIm.UriSource = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\Wonder.jpg");
             newIm.EndInit();
             PreviewImage.Source = newIm;
             ArtistName.Content = "Stevie Wonder";
             SongName.Content = "Superstition";
             YearText.Content = "1972";
-            songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\superstition.mid";
+            songFile = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\superstition.mid";
             songName = "Wonder: Superstition";
         }
 
@@ -486,7 +498,7 @@ namespace Orchestra
             Superstition.Play();
         }
 
-        private void StopAllMusic()
+        public void StopAllMusic()
         {
             bool parAndPause = ParaAnd.CanPause;
             if (parAndPause == true)

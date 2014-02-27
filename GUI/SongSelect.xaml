@@ -27,27 +27,27 @@
                 <GradientStop Color="Black" Offset="0.567"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <MediaElement Name="ParaAnd" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.wav" LoadedBehavior="Manual" MediaEnded="ParaAndLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Fall" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\fall.wav" LoadedBehavior="Manual" MediaEnded="FallLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Prayer" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\prayer.wav" LoadedBehavior="Manual" MediaEnded="PrayerLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Sym5" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\Sym5.wav" LoadedBehavior="Manual" MediaEnded="Sym5Loop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="MtKing" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\MtKing.wav" LoadedBehavior="Manual" MediaEnded="MtKingLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="GetLucky" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\daft.wav" LoadedBehavior="Manual" MediaEnded="GetLuckyLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="HardDay" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.wav" LoadedBehavior="Manual" MediaEnded="HardDayLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="RockAmadeus" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rockamadeus.wav" LoadedBehavior="Manual" MediaEnded="RockAmadeusLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Always" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\always.wav" LoadedBehavior="Manual" MediaEnded="AlwaysLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="AirG" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\airgstr.wav" LoadedBehavior="Manual" MediaEnded="AirGLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="NewWorld" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.wav" LoadedBehavior="Manual" MediaEnded="NewWorldLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="SwanLake" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\swan.wav" LoadedBehavior="Manual" MediaEnded="SwanLakeLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Bohemian" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rhapsody.wav" LoadedBehavior="Manual" MediaEnded="BohemianLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Doves" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\doves.wav" LoadedBehavior="Manual" MediaEnded="DovesLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="CanHeat" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\canheat.wav" LoadedBehavior="Manual" MediaEnded="CanHeatLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Flash" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\flash.wav" LoadedBehavior="Manual" MediaEnded="FlashLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="HeyYa" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\heyya.wav" LoadedBehavior="Manual" MediaEnded="HeyYaLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Life" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\life.wav" LoadedBehavior="Manual" MediaEnded="LifeLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="MansWorld" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mansworld.wav" LoadedBehavior="Manual" MediaEnded="MansWorldLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Stairway" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\stairway.wav" LoadedBehavior="Manual" MediaEnded="StairwayLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Superstition" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\superstition.wav" LoadedBehavior="Manual" MediaEnded="SuperstitionLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="ParaAnd" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\r.wav" LoadedBehavior="Manual" MediaEnded="ParaAndLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Fall" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\fall.wav" LoadedBehavior="Manual" MediaEnded="FallLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Prayer" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\prayer.wav" LoadedBehavior="Manual" MediaEnded="PrayerLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Sym5" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\Sym5.wav" LoadedBehavior="Manual" MediaEnded="Sym5Loop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="MtKing" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\MtKing.wav" LoadedBehavior="Manual" MediaEnded="MtKingLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="GetLucky" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\daft.wav" LoadedBehavior="Manual" MediaEnded="GetLuckyLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="HardDay" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\h.wav" LoadedBehavior="Manual" MediaEnded="HardDayLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="RockAmadeus" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\rockamadeus.wav" LoadedBehavior="Manual" MediaEnded="RockAmadeusLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Always" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\always.wav" LoadedBehavior="Manual" MediaEnded="AlwaysLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="AirG" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\airgstr.wav" LoadedBehavior="Manual" MediaEnded="AirGLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="NewWorld" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\newworld.wav" LoadedBehavior="Manual" MediaEnded="NewWorldLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="SwanLake" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\swan.wav" LoadedBehavior="Manual" MediaEnded="SwanLakeLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Bohemian" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\rhapsody.wav" LoadedBehavior="Manual" MediaEnded="BohemianLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Doves" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\doves.wav" LoadedBehavior="Manual" MediaEnded="DovesLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="CanHeat" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\canheat.wav" LoadedBehavior="Manual" MediaEnded="CanHeatLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Flash" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\flash.wav" LoadedBehavior="Manual" MediaEnded="FlashLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="HeyYa" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\heyya.wav" LoadedBehavior="Manual" MediaEnded="HeyYaLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Life" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\life.wav" LoadedBehavior="Manual" MediaEnded="LifeLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="MansWorld" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\mansworld.wav" LoadedBehavior="Manual" MediaEnded="MansWorldLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Stairway" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\stairway.wav" LoadedBehavior="Manual" MediaEnded="StairwayLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
+        <MediaElement Name="Superstition" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\Sample MIDIs\superstition.wav" LoadedBehavior="Manual" MediaEnded="SuperstitionLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
         
         <ListBox Name="SongSelector" Margin="25,25,23,34" Grid.RowSpan="8">
             <ListBoxItem Content="    Bach: Air on a G String" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_10"/>
@@ -68,11 +68,11 @@
             <ListBoxItem Content="    Radiohead: Paranoid Android" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_1"/>
             <ListBoxItem Content="    The Rolling Stones: Jumpin' Jack Flash" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_16"/>
             <ListBoxItem Content="    Sinatra: That's Life" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_19"/>
-            <ListBoxItem Content="    Tchaikovsky: Swan Lake Prelude" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_12"/>
-            <ListBoxItem Content="    Vivaldi: Autumn" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_3"/>
-            <ListBoxItem Content="    Wonder: Superstition" Height="50"  FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_22"/>
-        </ListBox>
-        <Image Name="PreviewImage" Source="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" Stretch="Uniform" StretchDirection="Both" Margin="22,18,16,18" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="2"/>
+            <ListBoxItem Content="    Stevie Wonder: Superstition" Height="50"  FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_22"/>
+            <ListBoxItem Content="    Tchaikovsky: Swan Lake Prelude" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_12"/>
+            <ListBoxItem Content="    Vivaldi: Autumn" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_3"/>
+                    </ListBox>
+        <Image Name="PreviewImage" Source="C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" Stretch="Uniform" StretchDirection="Both" Margin="22,18,16,18" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="2"/>
         <Button Name="ConfirmButton" Content="Confirm" FontSize="20"  Click="ConfirmButtonClick"  Margin="22,20,17,20" RenderTransformOrigin="-0.182,0.789" Grid.Column="1" Grid.Row="5"/>
         <CheckBox Content="Use Right Hand Volume" Checked="RightHandMode" Unchecked="LeftHandMode"  Foreground ="White" Margin ="28,13,64,0" Grid.Column="1" Grid.Row="6" Height="25" VerticalAlignment="Top" Grid.ColumnSpan="4">
             <CheckBox.LayoutTransform>

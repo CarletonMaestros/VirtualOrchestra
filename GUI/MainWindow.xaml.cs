@@ -239,8 +239,8 @@ namespace Orchestra
                             channel.prevInst = note[2];
 
                             //entries are [tick, duration, instr, velocity]
-                            //var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".png";
-                            var uriString = @"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
+                            //var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".png";
+                            var uriString = @"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\Resources\" + (InstrumentEnumerator)note[2] + ".jpg";
                             //Console.WriteLine(uriString);
                             BitmapImage bitIm = new BitmapImage();
                             bitIm.BeginInit();
@@ -298,6 +298,7 @@ namespace Orchestra
         private void EndSongButtonClick(object sender, RoutedEventArgs e)
         {
             StartBeat.Content = "";
+            SongName.Content = "Loading Song...";
             Dispatch.TriggerStop();
             App.SelectSong();
         }
@@ -305,6 +306,7 @@ namespace Orchestra
         private void RestartButtonClick(object sender, RoutedEventArgs e)
         {
             StartBeat.Content = "";
+            SongName.Content = "Loading Song...";
             Dispatch.TriggerStop();
             App.PlaySong(curSongFile, curSongName, false);
         }
@@ -312,6 +314,7 @@ namespace Orchestra
         private void QuitButtonClick(object sender, RoutedEventArgs e)
         {
             StartBeat.Content = "";
+            SongName.Content = "Loading Song...";
             Dispatch.TriggerStop();
             App.ShowStartScreen();
         }
