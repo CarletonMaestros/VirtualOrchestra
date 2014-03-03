@@ -58,6 +58,7 @@ namespace Orchestra
         public void WindowLoaded(object sender, RoutedEventArgs e)
         {
             //entries are [instr, pitch, velocity, duration, channel]
+            App.songSelect.SongPreview.Stop();
 
             Dispatch.Beat += Beat;
             Dispatch.SongLoaded += SongLoaded;

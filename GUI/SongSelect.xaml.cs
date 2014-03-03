@@ -24,10 +24,29 @@ namespace Orchestra
             InitializeComponent();
         }
 
+        public void Clean()
+        {
+            BitmapImage newIm = new BitmapImage();
+            newIm.BeginInit();
+            newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg");
+            newIm.EndInit();
+            PreviewImage.Source = newIm;
+            ArtistName.Content = "";
+            SongName.Content = "Pick a Song!!";
+            YearText.Content = "";
+        }
+
+        public void SongLoop(object sender, RoutedEventArgs e)
+        {
+            SongPreview.Position = TimeSpan.Zero;
+            SongPreview.Play();
+        }
+
         public void ListBoxItem_Selected_1(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            ParaAnd.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Radiohead.jpg");
@@ -40,16 +59,11 @@ namespace Orchestra
             songName = "Radiohead: Paranoid Android";
         }
 
-        private void ParaAndLoop(object sender, RoutedEventArgs e)
-        {
-            ParaAnd.Position = TimeSpan.Zero;
-            ParaAnd.Play();
-        }
-
         private void ListBoxItem_Selected_2(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Prayer.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\prayer.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Madonna.jpg");
@@ -62,16 +76,11 @@ namespace Orchestra
             songName = "Madonna: Like a Prayer";
         }
 
-        private void PrayerLoop(object sender, RoutedEventArgs e)
-        {
-            Prayer.Position = TimeSpan.Zero;
-            Prayer.Play();
-        }
-
         private void ListBoxItem_Selected_3(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Fall.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\fall.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Vivaldi.jpg");
@@ -84,16 +93,11 @@ namespace Orchestra
             songName = "Vivaldi: Autumn";
         }
 
-        private void FallLoop(object sender, RoutedEventArgs e)
-        {
-            Fall.Position = TimeSpan.Zero;
-            Fall.Play();
-        }
-
         private void ListBoxItem_Selected_4(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Sym5.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\sym5.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Beethoven.jpg");
@@ -106,16 +110,11 @@ namespace Orchestra
             songName = "Beethoven: Fifth Symphony";
         }
 
-        private void Sym5Loop(object sender, RoutedEventArgs e)
-        {
-            Sym5.Position = TimeSpan.Zero;
-            Sym5.Play();
-        }
-
         private void ListBoxItem_Selected_5(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            MtKing.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mtking.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\MountainKing.jpg");
@@ -125,19 +124,14 @@ namespace Orchestra
             SongName.Content = "In the Hall of the Mountain King";
             YearText.Content = "1876";
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mtking.mid";
-            songName = "Greig: In the Hall of the Mountain King";
-        }
-
-        private void MtKingLoop(object sender, RoutedEventArgs e)
-        {
-            MtKing.Position = TimeSpan.Zero;
-            MtKing.Play();
+            songName = "Grieg: In the Hall of the Mountain King";
         }
 
         private void ListBoxItem_Selected_6(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            GetLucky.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\daft.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Daftpunk.jpg");
@@ -150,16 +144,11 @@ namespace Orchestra
             songName = "Daft Punk: Get Lucky";
         }
 
-        private void GetLuckyLoop(object sender, RoutedEventArgs e)
-        {
-            GetLucky.Position = TimeSpan.Zero;
-            GetLucky.Play();
-        }
-
         private void ListBoxItem_Selected_7(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            HardDay.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Beatles.jpg");
@@ -172,16 +161,11 @@ namespace Orchestra
             songName = "The Beatles: Hard Day's Night";
         }
 
-        private void HardDayLoop(object sender, RoutedEventArgs e)
-        {
-            HardDay.Position = TimeSpan.Zero;
-            HardDay.Play();
-        }
-
         private void ListBoxItem_Selected_8(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            RockAmadeus.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rockamadeus.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\falco.jpg");
@@ -194,16 +178,11 @@ namespace Orchestra
             songName = "Falco: Rock Me Amadeus";
         }
 
-        private void RockAmadeusLoop(object sender, RoutedEventArgs e)
-        {
-            RockAmadeus.Position = TimeSpan.Zero;
-            RockAmadeus.Play();
-        }
-
         private void ListBoxItem_Selected_9(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Always.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\always.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\unicorn.jpg");
@@ -216,16 +195,11 @@ namespace Orchestra
             songName = "Erasure: Always";
         }
 
-        private void AlwaysLoop(object sender, RoutedEventArgs e)
-        {
-            Always.Position = TimeSpan.Zero;
-            Always.Play();
-        }
-
         private void ListBoxItem_Selected_10(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            AirG.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\airgstr.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Bach.jpg");
@@ -238,16 +212,11 @@ namespace Orchestra
             songName = "Bach: Air on a G String";
         }
 
-        private void AirGLoop(object sender, RoutedEventArgs e)
-        {
-            AirG.Position = TimeSpan.Zero;
-            AirG.Play();
-        }
-
         private void ListBoxItem_Selected_11(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            NewWorld.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Dvorak.jpg");
@@ -260,16 +229,11 @@ namespace Orchestra
             songName = "Dvorak: From the New World";
         }
 
-        private void NewWorldLoop(object sender, RoutedEventArgs e)
-        {
-            NewWorld.Position = TimeSpan.Zero;
-            NewWorld.Play();
-        }
-
         private void ListBoxItem_Selected_12(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            SwanLake.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\swan.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Tchaikovsky.jpg");
@@ -282,16 +246,11 @@ namespace Orchestra
             songName = "Tchaikovsky: Swan Lake Prelude";
         }
 
-        private void SwanLakeLoop(object sender, RoutedEventArgs e)
-        {
-            SwanLake.Position = TimeSpan.Zero;
-            SwanLake.Play();
-        }
-
         private void ListBoxItem_Selected_13(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Bohemian.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rhapsody.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Queen.jpg");
@@ -304,16 +263,11 @@ namespace Orchestra
             songName = "Queen: Bohemian Rhapsody";
         }
 
-        private void BohemianLoop(object sender, RoutedEventArgs e)
-        {
-            Bohemian.Position = TimeSpan.Zero;
-            Bohemian.Play();
-        }
-
         private void ListBoxItem_Selected_14(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Doves.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\doves.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Prince.jpg");
@@ -326,16 +280,11 @@ namespace Orchestra
             songName = "Prince: When Doves Cry";
         }
 
-        private void DovesLoop(object sender, RoutedEventArgs e)
-        {
-            Doves.Position = TimeSpan.Zero;
-            Doves.Play();
-        }
-
         private void ListBoxItem_Selected_15(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            CanHeat.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\canheat.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Jamiroquai.jpg");
@@ -348,16 +297,11 @@ namespace Orchestra
             songName = "Jamiroquai: Canned Heat";
         }
 
-        private void CanHeatLoop(object sender, RoutedEventArgs e)
-        {
-            CanHeat.Position = TimeSpan.Zero;
-            CanHeat.Play();
-        }
-
         private void ListBoxItem_Selected_16(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Flash.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\flash.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Stones.jpg");
@@ -370,16 +314,11 @@ namespace Orchestra
             songName = "The Rolling Stones: Jumpin' Jack Flash";
         }
 
-        private void FlashLoop(object sender, RoutedEventArgs e)
-        {
-            Flash.Position = TimeSpan.Zero;
-            Flash.Play();
-        }
-
         private void ListBoxItem_Selected_17(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            HeyYa.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\heyya.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Outkast.jpg");
@@ -392,16 +331,11 @@ namespace Orchestra
             songName = "OutKast: Hey Ya!";
         }
 
-        private void HeyYaLoop(object sender, RoutedEventArgs e)
-        {
-            HeyYa.Position = TimeSpan.Zero;
-            HeyYa.Play();
-        }
-
         private void ListBoxItem_Selected_19(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Life.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\life.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Sinatra.jpg");
@@ -411,19 +345,14 @@ namespace Orchestra
             SongName.Content = "That's Life";
             YearText.Content = "1966";
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\life.mid";
-            songName = "Sinatra: That's Life";
-        }
-
-        private void LifeLoop(object sender, RoutedEventArgs e)
-        {
-            Life.Position = TimeSpan.Zero;
-            Life.Play();
+            songName = "Frank Sinatra: That's Life";
         }
 
         private void ListBoxItem_Selected_20(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            MansWorld.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mansworld.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Brown.jpg");
@@ -433,19 +362,14 @@ namespace Orchestra
             SongName.Content = "It's a Man's Man's Man's World";
             YearText.Content = "1966";
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mansworld.mid";
-            songName = "Brown: It's a Man's Man's Man's World";
-        }
-
-        private void MansWorldLoop(object sender, RoutedEventArgs e)
-        {
-            MansWorld.Position = TimeSpan.Zero;
-            MansWorld.Play();
+            songName = "James Brown: It's a Man's Man's Man's World";
         }
 
         private void ListBoxItem_Selected_21(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Stairway.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\stairway.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\LedZep.jpg");
@@ -458,16 +382,11 @@ namespace Orchestra
             songName = "Led Zeppelin: Stairway to Heaven";
         }
 
-        private void StairwayLoop(object sender, RoutedEventArgs e)
-        {
-            Stairway.Position = TimeSpan.Zero;
-            Stairway.Play();
-        }
-
         private void ListBoxItem_Selected_22(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Superstition.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\superstition.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Wonder.jpg");
@@ -477,19 +396,14 @@ namespace Orchestra
             SongName.Content = "Superstition";
             YearText.Content = "1972";
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\superstition.mid";
-            songName = "Wonder: Superstition";
-        }
-
-        private void SuperstitionLoop(object sender, RoutedEventArgs e)
-        {
-            Superstition.Position = TimeSpan.Zero;
-            Superstition.Play();
+            songName = "Stevie Wonder: Superstition";
         }
 
         private void ListBoxItem_Selected_23(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
-            Misery.Play();
+            SongPreview.Stop();
+            SongPreview.Source = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\misery.wav");
+            SongPreview.Play();
             BitmapImage newIm = new BitmapImage();
             newIm.BeginInit();
             newIm.UriSource = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\Paramore.jpg");
@@ -500,126 +414,6 @@ namespace Orchestra
             YearText.Content = "2007";
             songFile = @"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\misery.mid";
             songName = "Paramore: Misery Business";
-        }
-
-        private void MiseryLoop(object sender, RoutedEventArgs e)
-        {
-            Misery.Position = TimeSpan.Zero;
-            Misery.Play();
-        }
-
-        private void StopAllMusic()
-        {
-            bool parAndPause = ParaAnd.CanPause;
-            if (parAndPause == true)
-            {
-                ParaAnd.Stop();
-            }
-            bool fallPause = Fall.CanPause;
-            if (fallPause == true)
-            {
-                Fall.Stop();
-            }
-            bool prayerPause = Prayer.CanPause;
-            if (prayerPause == true)
-            {
-                Prayer.Stop();
-            }
-            bool hardDayPause = HardDay.CanPause;
-            if (hardDayPause == true)
-            {
-                HardDay.Stop();
-            }
-            bool sym5Pause = Sym5.CanPause;
-            if (sym5Pause == true)
-            {
-                Sym5.Stop();
-            }
-            bool rockAmadeusPause = RockAmadeus.CanPause;
-            if (rockAmadeusPause == true)
-            {
-                RockAmadeus.Stop();
-            }
-            bool getLuckyPause = GetLucky.CanPause;
-            if (getLuckyPause == true)
-            {
-                GetLucky.Stop();
-            }
-            bool mtKingPause = MtKing.CanPause;
-            if (mtKingPause == true)
-            {
-                MtKing.Stop();
-            }
-            bool alwaysPause = Always.CanPause;
-            if (alwaysPause == true)
-            {
-                Always.Stop();
-            }
-            bool airGPause = AirG.CanPause;
-            if (airGPause == true)
-            {
-                AirG.Stop();
-            }
-            bool newWorldPause = NewWorld.CanPause;
-            if (newWorldPause == true)
-            {
-                NewWorld.Stop();
-            }
-            bool swanLakePause = SwanLake.CanPause;
-            if (swanLakePause == true)
-            {
-                SwanLake.Stop();
-            }
-            bool bohemianPause = Bohemian.CanPause;
-            if (bohemianPause == true)
-            {
-                Bohemian.Stop();
-            }
-            bool dovesPause = Doves.CanPause;
-            if (dovesPause == true)
-            {
-                Doves.Stop();
-            }
-            bool canHeatPause = CanHeat.CanPause;
-            if (canHeatPause == true)
-            {
-                CanHeat.Stop();
-            }
-            bool flashPause = Flash.CanPause;
-            if (flashPause == true)
-            {
-                Flash.Stop();
-            }
-            bool heyYaPause = HeyYa.CanPause;
-            if (heyYaPause == true)
-            {
-                HeyYa.Stop();
-            }
-            bool lifePause = Life.CanPause;
-            if (lifePause == true)
-            {
-                Life.Stop();
-            }
-            bool mansWorldPause = MansWorld.CanPause;
-            if (mansWorldPause == true)
-            {
-                MansWorld.Stop();
-            }
-            bool stairwayPause = Stairway.CanPause;
-            if (stairwayPause == true)
-            {
-                Stairway.Stop();
-            }
-            bool superstitionPause = Superstition.CanPause;
-            if (superstitionPause == true)
-            {
-                Superstition.Stop();
-            }
-            bool miseryPause = Misery.CanPause;
-            if (miseryPause == true)
-            {
-                Misery.Stop();
-            }
         }
 
         private void LeftHandMode(object sender, RoutedEventArgs e)
@@ -634,13 +428,13 @@ namespace Orchestra
 
         private void ConfirmButtonClick(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
+            SongPreview.Stop();
             App.PlaySong(songFile, songName, false);
         }
 
         private void MenuButtonClick(object sender, RoutedEventArgs e)
         {
-            StopAllMusic();
+            SongPreview.Stop();
             App.ShowStartScreen();
         }
 

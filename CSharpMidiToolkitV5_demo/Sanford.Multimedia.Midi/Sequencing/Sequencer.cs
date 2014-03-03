@@ -120,6 +120,7 @@ namespace Sanford.Multimedia.Midi
             dispatcher.ChannelMessageDispatched += delegate(object sender, ChannelMessageEventArgs e)
             {
                 stopper.Process(e.Message);
+                Console.WriteLine("Type: {0:X}\t Message: {1:X}\t Data1: {2:x}\t Data2: {3:x}", e.Message.Status, e.Message.Message, e.Message.Data1, e.Message.Data2);
             };
 
             clock.Tick += delegate(object sender, EventArgs e)

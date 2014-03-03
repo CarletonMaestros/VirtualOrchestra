@@ -27,52 +27,29 @@
                 <GradientStop Color="Black" Offset="0.567"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <MediaElement Name="ParaAnd" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\r.wav" LoadedBehavior="Manual" MediaEnded="ParaAndLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Fall" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\fall.wav" LoadedBehavior="Manual" MediaEnded="FallLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Prayer" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\prayer.wav" LoadedBehavior="Manual" MediaEnded="PrayerLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Sym5" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\Sym5.wav" LoadedBehavior="Manual" MediaEnded="Sym5Loop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="MtKing" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\MtKing.wav" LoadedBehavior="Manual" MediaEnded="MtKingLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="GetLucky" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\daft.wav" LoadedBehavior="Manual" MediaEnded="GetLuckyLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="HardDay" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\h.wav" LoadedBehavior="Manual" MediaEnded="HardDayLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="RockAmadeus" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rockamadeus.wav" LoadedBehavior="Manual" MediaEnded="RockAmadeusLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Always" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\always.wav" LoadedBehavior="Manual" MediaEnded="AlwaysLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="AirG" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\airgstr.wav" LoadedBehavior="Manual" MediaEnded="AirGLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="NewWorld" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\newworld.wav" LoadedBehavior="Manual" MediaEnded="NewWorldLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="SwanLake" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\swan.wav" LoadedBehavior="Manual" MediaEnded="SwanLakeLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Bohemian" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\rhapsody.wav" LoadedBehavior="Manual" MediaEnded="BohemianLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Doves" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\doves.wav" LoadedBehavior="Manual" MediaEnded="DovesLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="CanHeat" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\canheat.wav" LoadedBehavior="Manual" MediaEnded="CanHeatLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Flash" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\flash.wav" LoadedBehavior="Manual" MediaEnded="FlashLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="HeyYa" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\heyya.wav" LoadedBehavior="Manual" MediaEnded="HeyYaLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Life" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\life.wav" LoadedBehavior="Manual" MediaEnded="LifeLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="MansWorld" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\mansworld.wav" LoadedBehavior="Manual" MediaEnded="MansWorldLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Stairway" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\stairway.wav" LoadedBehavior="Manual" MediaEnded="StairwayLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Superstition" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\superstition.wav" LoadedBehavior="Manual" MediaEnded="SuperstitionLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        <MediaElement Name="Misery" Source="C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\misery.wav" LoadedBehavior="Manual" MediaEnded="MiseryLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />
-        
+        <MediaElement Name="SongPreview" LoadedBehavior="Manual" MediaEnded="SongLoop" Grid.ColumnSpan="5" Grid.RowSpan="8" />        
         <ListBox Name="SongSelector" Margin="25,25,23,34" Grid.RowSpan="8">
-            <ListBoxItem Content="    Bach: Air on a G String" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_10"/>
             <ListBoxItem Content="    The Beatles: Hard Day's Night" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_7"/>
             <ListBoxItem Content="    Beethoven: Symphony No. 5" Height="50" FontSize="18"   Background="LightGray" Selected="ListBoxItem_Selected_4"/>
-            <ListBoxItem Content="    Brown: It's a Man's Man's Man's World" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_20"/>
-            <ListBoxItem Content="    Daft Punk: Get Lucky" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_6"/>
-            <ListBoxItem Content="    Dvorak: From the New World" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_11"/>
-            <ListBoxItem Content="    Erasure: Always" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_9"/>
-            <ListBoxItem Content="    Falco: Rock Me Amadeus" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_8"/>
+            <ListBoxItem Content="    Daft Punk: Get Lucky" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_6"/>
+            <ListBoxItem Content="    Dvorak: From the New World" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_11"/>
+            <ListBoxItem Content="    Erasure: Always" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_9"/>
+            <ListBoxItem Content="    Falco: Rock Me Amadeus" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_8"/>
+            <ListBoxItem Content="    Frank Sinatra: That's Life" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_19"/>
             <ListBoxItem Content="    Grieg: In The Hall of the Mountain King" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_5"/>
-            <ListBoxItem Content="    Jamiroquai: Canned Heat" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_15"/>
-            <ListBoxItem Content="    Led Zeppelin: Stairway to Heaven" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_21"/>
-            <ListBoxItem Content="    Madonna: Like a Prayer" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_2"/>
-            <ListBoxItem Content="    OutKast: Hey Ya!" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_17"/>
-            <ListBoxItem Content="    Paramore: Misery Business" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_23"/>
-            <ListBoxItem Content="    Prince: When Doves Cry" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_14"/>
-            <ListBoxItem Content="    Queen: Bohemian Rhapsody" Height="50" FontSize="18" Background="White" Selected="ListBoxItem_Selected_13"/>
-            <ListBoxItem Content="    Radiohead: Paranoid Android" Height="50"  FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_1"/>
-            <ListBoxItem Content="    The Rolling Stones: Jumpin' Jack Flash" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_16"/>
-            <ListBoxItem Content="    Sinatra: That's Life" Height="50"  FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_19"/>
-            <ListBoxItem Content="    Tchaikovsky: Swan Lake Prelude" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_12"/>
-            <ListBoxItem Content="    Vivaldi: Autumn" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_3"/>
-            <ListBoxItem Content="    Wonder: Superstition" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_22"/>
+            <ListBoxItem Content="    James Brown: It's a Man's Man's Man's World" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_20"/>
+            <ListBoxItem Content="    Jamiroquai: Canned Heat" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_15"/>
+            <ListBoxItem Content="    Led Zeppelin: Stairway to Heaven" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_21"/>
+            <ListBoxItem Content="    Madonna: Like a Prayer" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_2"/>
+            <ListBoxItem Content="    OutKast: Hey Ya!" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_17"/>
+            <ListBoxItem Content="    Paramore: Misery Business" Height="50"  FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_23"/>
+            <ListBoxItem Content="    Prince: When Doves Cry" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_14"/>
+            <ListBoxItem Content="    Queen: Bohemian Rhapsody" Height="50" FontSize="18" Background="LightGray" Selected="ListBoxItem_Selected_13"/>
+            <ListBoxItem Content="    Radiohead: Paranoid Android" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_1"/>
+            <ListBoxItem Content="    The Rolling Stones: Jumpin' Jack Flash" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_16"/>
+            <ListBoxItem Content="    Stevie Wonder: Superstition" Height="50"  FontSize="18"  Background="White" Selected="ListBoxItem_Selected_22"/>
+            <ListBoxItem Content="    Tchaikovsky: Swan Lake Prelude" Height="50" FontSize="18"  Background="LightGray" Selected="ListBoxItem_Selected_12"/>
+            <ListBoxItem Content="    Vivaldi: Autumn" Height="50" FontSize="18"  Background="White" Selected="ListBoxItem_Selected_3"/>
         </ListBox>
         <Image Name="PreviewImage" Source="C:\Users\admin\Desktop\VirtualOrchestra\GUI\Resources\AlbumArt.jpg" Stretch="Uniform" StretchDirection="Both" Margin="22,18,16,18" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Grid.ColumnSpan="2"/>
         <Button Name="ConfirmButton" Content="Confirm" FontSize="20"  Click="ConfirmButtonClick"  Margin="22,20,17,20" RenderTransformOrigin="-0.182,0.789" Grid.Column="1" Grid.Row="5"/>

@@ -39,7 +39,7 @@ namespace Orchestra
         private SkeletonPoint rightHand;
         private SkeletonPoint rightHip;
         private SkeletonPoint leftHand;
-        private SkeletonPoint leftHip; 
+        private SkeletonPoint leftHip;
         private SkeletonPoint rightShoulder;
         private SkeletonPoint neck;
         private SkeletonPoint core;
@@ -62,6 +62,7 @@ namespace Orchestra
         private SkeletonPoint prevTwoLeft;
         private bool aboveHip;
         Stopwatch stopwatch = new Stopwatch();
+        Stopwatch stopwatch1 = new Stopwatch();
         private bool boxDisappear = false;
         private int belowHipCounter;
         private bool showCheckMark = true;
@@ -92,29 +93,27 @@ namespace Orchestra
             Dispatch.TriggerLock(false);
         }
 
-        private void ContinueButton_Click(object sender, RoutedEventArgs e) 
+        private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
             WriteInstructions(nextInstruction);
-            nextInstruction++;           
+            nextInstruction++;
         }
 
-        private void QuitTutorial_Click(object sender, RoutedEventArgs e) 
-        { 
-            this.Close(); Dispatch.TriggerStop(); 
+        private void QuitTutorial_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close(); Dispatch.TriggerStop();
         }
 
 
         private void GoBackStepButton_Click(object sender, RoutedEventArgs e)
         {
             if (nextInstruction - 1 == 0) { return; }
-            if (nextInstruction - 1 <= 2) { drawHipLine = false; }
-            if (checkMarkImage.Source != null || goBack || (nextInstruction - 1 == 6 && printText == false)) { nextInstruction++; }
-            if (nextInstruction - 1 == 10 || nextInstruction - 1 == 9) { checkBothHandsStill = false; }
+            if (nextInstruction - 1 == 1) { drawHipLine = false; }
             if (nextInstruction - 1 == 1 || nextInstruction - 1 == 2) { Instructions.Text = "Welcome to the Virtual Orchestra tutorial! \nYou should be able to see your kinect skeleton in the frame to the left. \n\nLet's learn some gestures."; }
-            else if (nextInstruction - 1 == 7) { Instructions.Text = "The next key gesture to learn is the volume gesture."; }
             else { Instructions.Text = ""; }
             checkRightHandStill = false;
             checkLeftHandStill = false;
+            checkBothHandsStill = false;
             musicStopped = false;
             leftHandStill = false;
             rightHandStill = false;
@@ -139,103 +138,105 @@ namespace Orchestra
 
             if (InstructionNumber == 1)
             {
-                Instructions.Text = "You can choose to either bounce your hand up and down, or conduct with a standard 4/4 conducting gesture. If you are just beginning, an up and down motion is recommended. Use these hand movements:";
-                var newImage = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct2.jpg");
-                conductingImage1.Source = new BitmapImage(newImage);
-                var newImage2 = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct.jpg");
-                conductingImage4.Source = new BitmapImage(newImage2);
-            }
-            else if (InstructionNumber == 2)
-            {
-                conductingImage4.Source = null;
-                conductingImage1.Source = null;
                 Instructions.Text = "You'll notice a line going across your screen at the level of your hips.";
                 Instructions.Text += Environment.NewLine + "For some gestures, your hand must be above this line. Try moving your left and right hands above and below this line, and notice what happens.";
                 drawHipLine = true;
             }
-            else if (InstructionNumber == 3 && rightHandValues.Y < rightHipValues.Y)
+            else if (InstructionNumber == 2 && rightHandValues.Y < rightHipValues.Y)
             {
                 Instructions.Text = "Put your hand below your hip before moving on to the next step.";
                 nextInstruction--;
             }
+            else if (InstructionNumber == 2)
+            {
+                Instructions.FontSize = 30;
+                Instructions.Text = "The first gesture to learn is the volume gesture.";
+                printText = true;
+                checkLeftHandStill = true;
+                setLocation = true;
+                Instructions.Text += Environment.NewLine + "You must leave your left hand in the same place for about a second.";
+                Instructions.Text += Environment.NewLine + "Make sure your hand is above your hip.";
+            }
             else if (InstructionNumber == 3)
             {
-                Instructions.FontSize = 40;
-                conductingImage4.Source = null;
-                conductingImage1.Source = null;
-                Instructions.Text = "To begin the tempo gesture, put your right hand in the gray box, and leave it in the same place for about one second.";
-                showStartBox = true;
-                checkRightHandStill = true;
-                showCheckMark = true;
+                checkLeftHandStill = false;
+                printText = false;
+                setLocation = false;
+                Instructions.FontSize = 26;
+                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "In order to change the volume of a song..." + Environment.NewLine + "  1. Your left hand must be above your hip." + Environment.NewLine + "  2. Your hand must stay in the same place for roughly a second." + Environment.NewLine + "  3. Your hand must stay in the same X-location as you move it up and down." + Environment.NewLine + "  4. If you want to leave the volume at a certain level, move your hand to the left or right." + Environment.NewLine + Environment.NewLine + "Remember: changing the volume is a left-hand gesture";
             }
             else if (InstructionNumber == 4)
             {
+                Instructions.FontSize = 30;
+                Instructions.Text = "The next gesture to learn is the one that stops the music.";
+                counterLeft = 0;
+                counterRight = 0;
+                Instructions.Text += Environment.NewLine + "Like the volume gesture, your hands must be in the same place for about a second." + Environment.NewLine + "Place both of your hands somewhere in the gray box.";
+                checkBothHandsStill = true;
+                checkLeftHandStill = true;
+                checkRightHandStill = true;
+                //once = true;
+            }
+            else if (InstructionNumber == 5)
+            {
+                checkLeftHandStill = false;
+                checkRightHandStill = false;
+                checkBothHandsStill = false;
+                Instructions.FontSize = 26;
+                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "To stop a song..." + Environment.NewLine + " 1. Both hands must be at about shoulder height, and at about the same height as each other." + Environment.NewLine + "  2. Your hands must stay in the same place for roughly a second." + Environment.NewLine + "3. Your hands must move diagonally downward and outward, until they are at roughly the same level as your hip.";
+            }
+            else if (InstructionNumber == 6)
+            {
+                checkBothHandsStill = false;
+                checkLeftHandStill = false;
+                Instructions.Text = "The final gesture, is the most important, the tempo gesture.";
+                Instructions.Text += "You can choose to either bounce your hand up and down, or conduct with a standard 4/4 conducting gesture. If you are just beginning, an up and down motion is recommended. Use these hand movements:";
+                //var newImage = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\conduct2.jpg");
+                //conductingImage1.Source = new BitmapImage(newImage);
+                //var newImage2 = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\conduct.jpg");
+                //conductingImage4.Source = new BitmapImage(newImage2);
+                Instructions.FontSize = 30;
+                Instructions.Text = "To begin the tempo gesture, put your right hand in the gray box, and leave it in the same place for about one second.";
+                showStartBox = true;
+                counterRight = 0;
+                checkRightHandStill = true;
+                showCheckMark = true;
+                boxDisappear = false;
+            }
+            else if (InstructionNumber == 7)
+            {
+                conductingImage4.Source = null;
+                conductingImage1.Source = null;
                 tempoBox = false;
                 showStartBox = false;
                 showCheckMark = false;
                 checkRightHandStill = false;
-                once = true;
+                //once = true;
                 checkMarkImage.Source = null;
-                Instructions.FontSize = 36;
+                Instructions.FontSize = 26;
                 Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "In order to start a song..." + Environment.NewLine + "  1. Your hand must be above your hip." + Environment.NewLine + "  2. Your hand must stay in the same place for roughly a second" + Environment.NewLine + "  3. Your first beat must be roughly at your hip" + Environment.NewLine + Environment.NewLine + "In order to play a song..." + Environment.NewLine + "1. You must continually give beats" + Environment.NewLine + Environment.NewLine + "Remember: tempo is a right-hand gesture";
             }
-            else if (InstructionNumber == 5)
+            if (InstructionNumber == 8)
             {
-                Instructions.FontSize = 40;
-                conductingImage1.Source = null;
-                conductingImage4.Source = null;
-                Instructions.Text = "The next key gesture to learn is the volume gesture.";
-            }
-            else if (InstructionNumber == 6)
-            {
-                Instructions.FontSize = 40;
-                printText = true;
-                checkLeftHandStill = true;
-                setLocation = true;
-                Instructions.Text += Environment.NewLine + "Similar to the conducting gesture, you must leave your left hand in the same place for about a second.";
-                Instructions.Text += Environment.NewLine + "Make sure your hand is above your hip.";
-            }
-            else if (InstructionNumber == 7)
-            {
-                checkLeftHandStill = false;
-                Instructions.FontSize = 36;
-                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "In order to change the volume of a song..." + Environment.NewLine + "  1. Your left hand must be above your hip." + Environment.NewLine + "  2. Your hand must stay in the same place for roughly a second" + Environment.NewLine + "  3. Your hand must stay in the same X-location as you move it up and down." + Environment.NewLine + "  4. If you want to leave the volume at a certain level, move your hand to the left or right." + Environment.NewLine + Environment.NewLine + "Remember: changing the volume is a left-hand gesture";
-            }
-            else if (InstructionNumber == 8)
-            {
-                Instructions.FontSize = 40;
-                Instructions.Text = "The final gesture to learn is the one that stops the music.";
-            }
-            else if (InstructionNumber == 9)
-            {
-                counterLeft = 0;
-                counterRight = 0;
-                Instructions.Text += Environment.NewLine + "As with the previous gestures, your hands must be in the same place for about a second." + Environment.NewLine + "Place both of your hands somewhere in the gray box.";
-                checkBothHandsStill = true;
-                checkLeftHandStill = true;
-                checkRightHandStill = true;
-                once = true;
                 ContinueButton.Opacity = 0;
+                StartBeat.Margin = new Thickness(RenderWidth * .75, RenderHeight * .25, 0, 0);
+                StartBeat.BorderThickness = new Thickness(0);
+                musicStopped = false;
+                checkBothHandsStill = false;
+                checkLeftHandStill = false;
+                counterRight = 0;
+                counterLeft = 0;
+                Instructions.Text = "Now practice on a song.";
+                ContinueButton.Opacity = 0;
+                checkRightHandStill = true;
+                setLocation = true;
+                playSong = true;
+                showStartBox = true;
+                boxDisappear = false;
+                drawHipLine = false;
+                App.PlaySong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\sail.mid", "NAME", true);
             }
             if (InstructionNumber > 9) { nextInstruction--; }
-            //if (InstructionNumber == 10)
-            //{
-            //    StartBeat.Margin = new Thickness(RenderWidth * .75, RenderHeight * .25, 0, 0);
-            //    StartBeat.BorderThickness = new Thickness(0);
-            //    musicStopped = false;
-            //    checkBothHandsStill = false;
-            //    checkLeftHandStill = false;
-            //    counterRight = 0;
-            //    counterLeft = 0;
-            //    Instructions.Text = "Now practice on a song.";
-            //    ContinueButton.Opacity = 0;
-            //    checkRightHandStill = true;
-            //    playSong = true;
-            //    showStartBox = true;
-            //    boxDisappear = false;
-            //    drawHipLine = false;
-            //    App.PlaySong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\sail.mid", "NAME", true);
-            //}
             //if (InstructionNumber > 10) { nextInstruction--; }
         }
 
@@ -279,7 +280,7 @@ namespace Orchestra
                 // Draw a transparent background to set the render size
                 dc.DrawRectangle(Brushes.Black, null, new Rect(0.0, 0.0, RenderWidth, RenderHeight));
                 //RenderClippedEdges(skel, dc);
-                
+
                 //rightHand = skel.Joints[JointType.HandRight];
                 foreach (Joint joint in skel.Joints)
                 {
@@ -313,8 +314,8 @@ namespace Orchestra
                 if (showStartBox)
                 {
                     box2.Location = new Point(neckValues.X, 10);
-                    box2.Size = new Size(RenderWidth - neckValues.X - 10, neckValues.Y + Math.Abs(neckValues.Y - rightShoulderValues.Y) * 1.5 );
-                    dc.DrawRectangle(null, new Pen(Brushes.Gray, 4), box2);                  
+                    box2.Size = new Size(RenderWidth - neckValues.X - 10, neckValues.Y + Math.Abs(neckValues.Y - rightShoulderValues.Y) * 1.5);
+                    dc.DrawRectangle(null, new Pen(Brushes.Gray, 4), box2);
                 }
                 if (tempoBox)
                 {
@@ -326,10 +327,11 @@ namespace Orchestra
                     //}
                     box2.Size = new Size(RenderWidth - 20, RenderHeight - 20);
                     box2.Location = new Point(10, 10);
-                    if (Gestures.tempo.beat == true || stopwatch.ElapsedMilliseconds <= 200)
+                    stopwatch1.Start();
+                    if (Gestures.tempo.beat == true || stopwatch1.ElapsedMilliseconds <= 200)
                     {
                         dc.DrawRectangle(null, new Pen(Brushes.Green, 4), box2);
-                        if (stopwatch.ElapsedMilliseconds > 200 || stopwatch.ElapsedMilliseconds == 0) { stopwatch.Restart(); }
+                        if (stopwatch1.ElapsedMilliseconds > 200 || stopwatch1.ElapsedMilliseconds == 0) { stopwatch1.Restart(); }
                     }
                     else { dc.DrawRectangle(null, new Pen(Brushes.Red, 4), box2); }
 
@@ -353,8 +355,8 @@ namespace Orchestra
                                     if (Contains(rightHandValues, box2))
                                     {
                                         Instructions.Text = "Good! See the red box? Your beats must fall in this box. Make a down and up motion roughly like this:";
-                                        var newImage3 = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\capture.jpg");
-                                        checkMarkImage.Source = new BitmapImage(newImage3);
+                                        //var newImage3 = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\capture.jpg");
+                                        //checkMarkImage.Source = new BitmapImage(newImage3);
                                         Instructions.Text += Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + Environment.NewLine + "The box will turn green when this is successfully completed.";
                                     }
                                 }
@@ -373,7 +375,7 @@ namespace Orchestra
                                     }
                                     //if (playSong) { StartBeat.Content = "1"; }
                                     goBack = true;
-                                    if (once) { boxDisappear = true; once = false; }
+                                    //if (once) { boxDisappear = true; once = false; }
                                     tempoBox = true;
                                     checkRightHandStill = false;
                                     stopwatch.Start();
@@ -398,11 +400,11 @@ namespace Orchestra
                                 if (checkBothHandsStill) { leftHandStill = true; }
                                 else
                                 {
-                                    if (setLocation) { box1.Location = new Point(leftHandValues.X - Math.Abs(leftHipValues.X - rightHipValues.X) * .875,  10); setLocation = false; }
+                                    if (setLocation) { box1.Location = new Point(leftHandValues.X - Math.Abs(leftHipValues.X - rightHipValues.X) * .875, 10); setLocation = false; }
                                     box1.Size = new Size(Math.Abs(leftHipValues.X - rightHipValues.X) * 1.25, rightHipValues.Y);
                                     if (Contains(leftHandValues, box1) && boxDisappear == false)
                                     {
-                                        dc.DrawRectangle(null, new Pen(Brushes.Green, 4), box1); 
+                                        dc.DrawRectangle(null, new Pen(Brushes.Green, 4), box1);
                                         if (printText && !playSong) { Instructions.Text += Environment.NewLine + "See the green box? Move your hand up and down in this box to increase and decrease the volume."; }
                                         printText = false;
                                     }
@@ -425,8 +427,8 @@ namespace Orchestra
                     double yValue = neckValues.Y + Math.Abs(rightShoulderValues.Y - neckValues.Y) / 2;
                     box1.Size = new Size(Math.Abs(neckValues.Y - coreValues.Y) * 1.5, yValue - 10);
                     box1.Location = new Point(neckValues.X - Math.Abs(neckValues.Y - coreValues.Y) * .75, 10);
-                    if (leftHandStill && rightHandStill && rightHandValues.Y < yValue && leftHandValues.Y < yValue) 
-                    { 
+                    if (leftHandStill && rightHandStill && rightHandValues.Y < yValue && leftHandValues.Y < yValue)
+                    {
                         dc.DrawRectangle(null, new Pen(Brushes.Green, 4), box1);
                     }
                     if (leftHandStill && rightHandStill)
@@ -459,6 +461,7 @@ namespace Orchestra
                     checkRightHandStill = false;
                     boxDisappear = false;
                     stopwatch.Reset();
+                    stopwatch1.Reset();
                     belowHipCounter = 0;
                     showStartBox = false;
                     setLocation = true;

@@ -51,6 +51,8 @@ namespace Orchestra
             Gestures.Unload();
             Dispatch.TriggerStop();
 
+            songSelect.Clean();
+
             songSelect.Show();
             songSelect.Activate();
         }
@@ -58,6 +60,7 @@ namespace Orchestra
         public static void PlaySong(string songFile, string songName, bool tutorial)
         {
             main.Show();
+            songSelect.SongPreview.Stop();
             if (tutorial) { main.Hide(); }
             main.Activate();
             Gestures.Load();
