@@ -22,6 +22,7 @@ namespace Orchestra
     /// </summary>
     public partial class TutorialWindow : Window
     {
+        // Provided Kinect code variables
         private const float RenderWidth = 640.0f;
         private const float RenderHeight = 480.0f;
         private const double JointThickness = 3;
@@ -34,11 +35,14 @@ namespace Orchestra
         private readonly Pen inferredBonePen = new Pen(Brushes.Gray, 1);
         private DrawingGroup drawingGroup;
         private DrawingImage imageSource;
-        private int nextInstruction = 1;
-        private bool showStartBox = false;
+        // Tutorial variables
+        private SkeletonPoint prevOneRight;
+        private SkeletonPoint prevTwoRight;
+        private SkeletonPoint prevOneLeft;
+        private SkeletonPoint prevTwoLeft;
         private SkeletonPoint rightHand;
-        private SkeletonPoint rightHip;
         private SkeletonPoint leftHand;
+        private SkeletonPoint rightHip;
         private SkeletonPoint leftHip;
         private SkeletonPoint rightShoulder;
         private SkeletonPoint neck;
@@ -50,41 +54,41 @@ namespace Orchestra
         private Point leftHipValues;
         private Point rightShoulderValues;
         private Point neckValues;
-        private Point spineValues;
         private Point coreValues;
-        private bool checkRightHandStill;
-        private bool checkLeftHandStill;
-        private int counterRight;
-        private int counterLeft;
-        private SkeletonPoint prevOneRight;
-        private SkeletonPoint prevTwoRight;
-        private SkeletonPoint prevOneLeft;
-        private SkeletonPoint prevTwoLeft;
-        private bool aboveHip;
-        Stopwatch stopwatch = new Stopwatch();
-        Stopwatch stopwatch1 = new Stopwatch();
-        private bool boxDisappear = false;
-        private int belowHipCounter;
-        private bool showCheckMark = true;
-        private bool printText;
-        private bool checkBothHandsStill;
+        private Point spineValues;
         private bool leftHandStill = false;
         private bool rightHandStill = false;
+        private bool boxDisappear = false;
+        private bool showCheckMark = true;
+        private bool checkRightHandStill;
+        private bool checkLeftHandStill;
+        private bool aboveHip;
+        private bool printText;
+        private bool checkBothHandsStill;
         private bool drawHipLine;
-        private Rect box1 = new Rect();
-        private Rect box2 = new Rect();
-        private Rect box3 = new Rect();
         private bool setLocation;
         private bool goBack;
         private bool tempoBox;
         private bool musicStopped;
         private bool playSong;
         private bool down;
-        private int beat;
         private bool once;
+        private bool showStartBox = false;
+        private int counterRight;
+        private int counterLeft;
+        private int belowHipCounter;
+        private int beat;
+        private int nextInstruction = 1;
+        Stopwatch stopwatch = new Stopwatch();
+        Stopwatch stopwatch1 = new Stopwatch();
+        private Rect box1 = new Rect();
+        private Rect box2 = new Rect();
+        private Rect box3 = new Rect();
 
+        // Initializing the tutorial window
         public TutorialWindow() { InitializeComponent(); }
 
+        // Loading the tutorial window with the skeleton and gestures
         private void Window_Loaded_1(object sender, RoutedEventArgs e)
         {
             InitDrawing();
@@ -93,151 +97,175 @@ namespace Orchestra
             Dispatch.TriggerLock(false);
         }
 
+        // Method for when the continue button is clicked
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
             WriteInstructions(nextInstruction);
             nextInstruction++;
         }
 
+        // Method for when the quit button is clicked
         private void QuitTutorial_Click(object sender, RoutedEventArgs e)
         {
             this.Close(); Dispatch.TriggerStop();
         }
 
-
+        // Method for when the button to go back a step is clicked
+        // Provides instructions for which tutorial slide to return to
         private void GoBackStepButton_Click(object sender, RoutedEventArgs e)
         {
             if (nextInstruction - 1 == 0) { return; }
             if (nextInstruction - 1 == 1) { drawHipLine = false; }
             if (nextInstruction - 1 == 1 || nextInstruction - 1 == 2) { Instructions.Text = "Welcome to the Virtual Orchestra tutorial! \nYou should be able to see your kinect skeleton in the frame to the left. \n\nLet's learn some gestures."; }
             else { Instructions.Text = ""; }
-            checkRightHandStill = false;
-            checkLeftHandStill = false;
-            checkBothHandsStill = false;
-            musicStopped = false;
-            leftHandStill = false;
-            rightHandStill = false;
-            tempoBox = false;
-            conductingImage4.Source = null;
-            conductingImage1.Source = null;
-            checkMarkImage.Source = null;
-            showStartBox = false;
-            showCheckMark = false;
-            setLocation = true;
-            belowHipCounter = 0;
-            counterRight = 0;
-            counterLeft = 0;
-            goBack = false;
-            boxDisappear = false;
+            //checkRightHandStill = false;
+            //checkLeftHandStill = false;
+            //checkBothHandsStill = false;
+            //musicStopped = false;
+            //leftHandStill = false;
+            //rightHandStill = false;
+            //tempoBox = false;
+            //conductingImage4.Source = null;
+            //conductingImage1.Source = null;
+            //checkMarkImage.Source = null;
+            //showStartBox = false;
+            //showCheckMark = false;
+            //setLocation = true;
+            //belowHipCounter = 0;
+            //counterRight = 0;
+            //counterLeft = 0;
+            //boxDisappear = false;
             nextInstruction--;
             WriteInstructions(nextInstruction - 1);
         }
 
+        // Method for what should be displayed on the instruction screen at any given moment
         private void WriteInstructions(int InstructionNumber)
         {
-
-            if (InstructionNumber == 1)
-            {
+            // First slide of instructions, hip line shown 
+            if (InstructionNumber == 1) 
+            { 
                 Instructions.Text = "You'll notice a line going across your screen at the level of your hips.";
-                Instructions.Text += Environment.NewLine + "For some gestures, your hand must be above this line. Try moving your left and right hands above and below this line, and notice what happens.";
-                drawHipLine = true;
+                Instructions.Text += Environment.NewLine + "For some gestures, your hand must be above this line. Try moving your left and right hands above and below this line, and notice what happens."; 
+                drawHipLine = true; 
+                printText = false; 
+                checkLeftHandStill = false;
+                setLocation = false; 
             }
-            else if (InstructionNumber == 2 && rightHandValues.Y < rightHipValues.Y)
-            {
-                Instructions.Text = "Put your hand below your hip before moving on to the next step.";
-                nextInstruction--;
-            }
-            else if (InstructionNumber == 2)
-            {
-                Instructions.FontSize = 30;
+            // Potential second slide of instructions, only appears if your hands are above the hip line. 
+            // Will keep appearing until both hands are below the hip
+            else if (InstructionNumber == 2 && (rightHandValues.Y < rightHipValues.Y || leftHandValues.Y < leftHipValues.Y))
+            { 
+                Instructions.Text = "Put your hand below your hip before moving on to the next step."; 
+                nextInstruction--; 
+            } 
+            // Actual second slide of instructions, left hand volume taught 
+            else if (InstructionNumber == 2) 
+            { 
                 Instructions.Text = "The first gesture to learn is the volume gesture.";
-                printText = true;
-                checkLeftHandStill = true;
-                setLocation = true;
-                Instructions.Text += Environment.NewLine + "You must leave your left hand in the same place for about a second.";
-                Instructions.Text += Environment.NewLine + "Make sure your hand is above your hip.";
-            }
-            else if (InstructionNumber == 3)
+                Instructions.Text += Environment.NewLine + "You must leave your left hand in the same place for about a second."; 
+                Instructions.Text += Environment.NewLine + "Make sure your hand is above your hip."; 
+                Instructions.FontSize = 40; 
+                printText = true; 
+                checkLeftHandStill = true; 
+                setLocation = true; 
+            } 
+            // Third slide of instructions, important takeaways from left hand volume displayed
+            else if (InstructionNumber == 3) 
             {
-                checkLeftHandStill = false;
-                printText = false;
-                setLocation = false;
-                Instructions.FontSize = 26;
-                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "In order to change the volume of a song..." + Environment.NewLine + "  1. Your left hand must be above your hip." + Environment.NewLine + "  2. Your hand must stay in the same place for roughly a second." + Environment.NewLine + "  3. Your hand must stay in the same X-location as you move it up and down." + Environment.NewLine + "  4. If you want to leave the volume at a certain level, move your hand to the left or right." + Environment.NewLine + Environment.NewLine + "Remember: changing the volume is a left-hand gesture";
+                Instructions.FontSize = 36; 
+                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "In order to change the volume of a song..." + Environment.NewLine + "  1. Your left hand must be above your hip." + Environment.NewLine + "  2. Your hand must stay in the same place for roughly a second." + Environment.NewLine + "  3. Your hand must stay in the same X-location as you move it up and down." + Environment.NewLine + "  4. If you want to leave the volume at a certain level, move your hand to the left or right." + Environment.NewLine + Environment.NewLine + "Remember: changing the volume is a left-hand gesture"; 
+                checkLeftHandStill = false; 
+                checkRightHandStill = false; 
+                checkBothHandsStill = false; 
+                printText = false; 
+                setLocation = false; 
             }
-            else if (InstructionNumber == 4)
-            {
-                Instructions.FontSize = 30;
-                Instructions.Text = "The next gesture to learn is the one that stops the music.";
-                counterLeft = 0;
+            // Fourth slide of instructions, stop gesture taught
+            else if (InstructionNumber == 4) 
+            { 
+                Instructions.FontSize = 40;
+                Instructions.Text = "The next gesture to learn is the one that stops the music."; 
+                Instructions.Text += Environment.NewLine + "Like the volume gesture, your hands must be in the same place for about a second." + Environment.NewLine + "Place both of your hands somewhere in the gray box."; 
+                counterLeft = 0; 
                 counterRight = 0;
-                Instructions.Text += Environment.NewLine + "Like the volume gesture, your hands must be in the same place for about a second." + Environment.NewLine + "Place both of your hands somewhere in the gray box.";
-                checkBothHandsStill = true;
-                checkLeftHandStill = true;
-                checkRightHandStill = true;
-                //once = true;
-            }
+                checkBothHandsStill = true; 
+                checkLeftHandStill = true; 
+                checkRightHandStill = true; 
+            } 
+            // Fifth slide of instructions, important takeaways from stop gesture displayed
             else if (InstructionNumber == 5)
-            {
-                checkLeftHandStill = false;
-                checkRightHandStill = false;
+ 
+            { 
+                Instructions.FontSize = 36; 
+                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "To stop a song..." + Environment.NewLine + " 1. Both hands must be at about shoulder height, and at about the same height as each other." + Environment.NewLine + "  2. Your hands must stay in the same place for roughly a second." + Environment.NewLine + "3. Your hands must move diagonally downward and outward, until they are at roughly the same level as your hip."; 
+                checkLeftHandStill = false; 
+                checkRightHandStill = false; 
                 checkBothHandsStill = false;
-                Instructions.FontSize = 26;
-                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "To stop a song..." + Environment.NewLine + " 1. Both hands must be at about shoulder height, and at about the same height as each other." + Environment.NewLine + "  2. Your hands must stay in the same place for roughly a second." + Environment.NewLine + "3. Your hands must move diagonally downward and outward, until they are at roughly the same level as your hip.";
-            }
-            else if (InstructionNumber == 6)
-            {
-                checkBothHandsStill = false;
-                checkLeftHandStill = false;
-                Instructions.Text = "The final gesture, is the most important, the tempo gesture.";
-                Instructions.Text += "You can choose to either bounce your hand up and down, or conduct with a standard 4/4 conducting gesture. If you are just beginning, an up and down motion is recommended. Use these hand movements:";
-                //var newImage = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\conduct2.jpg");
-                //conductingImage1.Source = new BitmapImage(newImage);
-                //var newImage2 = new Uri(@"C:\Users\Rachel\Documents\GitHub\VirtualOrchestra\GUI\conduct.jpg");
-                //conductingImage4.Source = new BitmapImage(newImage2);
-                Instructions.FontSize = 30;
-                Instructions.Text = "To begin the tempo gesture, put your right hand in the gray box, and leave it in the same place for about one second.";
-                showStartBox = true;
-                counterRight = 0;
-                checkRightHandStill = true;
-                showCheckMark = true;
-                boxDisappear = false;
-            }
-            else if (InstructionNumber == 7)
-            {
-                conductingImage4.Source = null;
-                conductingImage1.Source = null;
-                tempoBox = false;
                 showStartBox = false;
                 showCheckMark = false;
-                checkRightHandStill = false;
-                //once = true;
+                conductingImage1.Source = null;
+                conductingImage4.Source = null;
+            }
+ 
+            // Sixth slide of instructions, tempo gesture taught
+            else if (InstructionNumber == 6) 
+            { 
+                //Check this section on computer 
+                Instructions.FontSize = 40; 
+                Instructions.Text = "The final gesture is the most important; the tempo gesture.";
+                Instructions.Text += "You can choose to either bounce your hand up and down, or conduct with a standard 4/4 conducting gesture.";
+                Instructions.Text += "To begin the tempo gesture, put your right hand in the gray box, and leave it in the same place for about one second.";
+                var newImage = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct2.jpg"); 
+                conductingImage1.Source = new BitmapImage(newImage);
+                var newImage2 = new Uri(@"C:\Users\admin\Desktop\VirtualOrchestra\GUI\conduct.jpg"); 
+                conductingImage4.Source = new BitmapImage(newImage2);                 
+                showStartBox = true;                 
+                checkRightHandStill = true; 
+                showCheckMark = true; 
+                boxDisappear = false; 
+                checkBothHandsStill = false; 
+                checkLeftHandStill = false; 
+                counterRight = 0; 
+            } 
+            // Seventh slide of instructions, important takeaways from tempo gesture displayed 
+            else if (InstructionNumber == 7) 
+            { 
+                Instructions.FontSize = 36; 
+                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "In order to start a song..." + Environment.NewLine + "  1. Your hand must be above your hip." + Environment.NewLine + "  2. Your hand must stay in the same place for roughly a second" + Environment.NewLine + "  3. Your first beat must be roughly at your hip" + Environment.NewLine + Environment.NewLine + "In order to play a song..." + Environment.NewLine + "1. You must continually give beats" + Environment.NewLine + Environment.NewLine + "Remember: tempo is a right-hand gesture"; 
+                conductingImage4.Source = null; 
+                conductingImage1.Source = null; 
                 checkMarkImage.Source = null;
-                Instructions.FontSize = 26;
-                Instructions.Text = "TAKEAWAYS: " + Environment.NewLine + "In order to start a song..." + Environment.NewLine + "  1. Your hand must be above your hip." + Environment.NewLine + "  2. Your hand must stay in the same place for roughly a second" + Environment.NewLine + "  3. Your first beat must be roughly at your hip" + Environment.NewLine + Environment.NewLine + "In order to play a song..." + Environment.NewLine + "1. You must continually give beats" + Environment.NewLine + Environment.NewLine + "Remember: tempo is a right-hand gesture";
-            }
-            if (InstructionNumber == 8)
-            {
-                ContinueButton.Opacity = 0;
-                StartBeat.Margin = new Thickness(RenderWidth * .75, RenderHeight * .25, 0, 0);
-                StartBeat.BorderThickness = new Thickness(0);
-                musicStopped = false;
-                checkBothHandsStill = false;
-                checkLeftHandStill = false;
-                counterRight = 0;
-                counterLeft = 0;
-                Instructions.Text = "Now practice on a song.";
-                ContinueButton.Opacity = 0;
-                checkRightHandStill = true;
-                setLocation = true;
-                playSong = true;
-                showStartBox = true;
-                boxDisappear = false;
-                drawHipLine = false;
+                tempoBox = false; 
+                showStartBox = false; 
+                showCheckMark = false; 
+                checkRightHandStill = false; 
+                setLocation = false; 
+                playSong = false; 
+                drawHipLine = true; 
+            } 
+            // Last slide of instructions, a chance to practice with a song and the helpful boxes 
+            if (InstructionNumber == 8) 
+            { 
+                Instructions.FontSize = 40;
+                Instructions.Text = "Now practice on a song."; 
+                ContinueButton.Opacity = 0; 
+                musicStopped = false; 
+                checkBothHandsStill = false; 
+                checkLeftHandStill = false; 
+                counterRight = 0; 
+                counterLeft = 0;                 
+                ContinueButton.Opacity = 0; 
+                checkRightHandStill = true; 
+                setLocation = true; 
+                playSong = true; 
+                showStartBox = true; 
+                boxDisappear = false; 
+                drawHipLine = false; 
                 App.PlaySong(@"C:\Users\admin\Desktop\VirtualOrchestra\Sample MIDIs\sail.mid", "NAME", true);
-            }
-            if (InstructionNumber > 9) { nextInstruction--; }
-            //if (InstructionNumber > 10) { nextInstruction--; }
+            } 
+            // If you keep clicking continue, it will stay on the same page 
+            if (InstructionNumber > 9) { nextInstruction--; } 
         }
 
         private bool Contains(Point hand, Rect boxName)
@@ -373,9 +401,6 @@ namespace Orchestra
                                         checkLeftHandStill = true;
                                         counterRight = 0;
                                     }
-                                    //if (playSong) { StartBeat.Content = "1"; }
-                                    goBack = true;
-                                    //if (once) { boxDisappear = true; once = false; }
                                     tempoBox = true;
                                     checkRightHandStill = false;
                                     stopwatch.Start();

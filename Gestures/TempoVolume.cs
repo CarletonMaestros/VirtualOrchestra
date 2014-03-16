@@ -68,11 +68,6 @@ namespace Orchestra
                 }
                 case "START":
                 {
-                    if (prevTwo.Y < (prevOne.Y - .01) && prevOne.Y < (rightHand.Y - .01))
-                    {
-                        framesInFirstBeat++;
-                        break;
-                    }
                     if (framesInFirstBeat >= 2 && prevTwo.Y > (prevOne.Y + .01) && prevOne.Y > (rightHand.Y + .01))
                     {
                         seeking = "MINIMUM";

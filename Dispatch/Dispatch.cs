@@ -13,7 +13,7 @@ namespace Orchestra
 
         public delegate void TickInfoDelegate(int tick);
         public static event TickInfoDelegate TickInfo;
-        public static void TriggerTickInfo(int tick) { if ( TickInfo != null) TickInfo(tick);}
+        public static void TriggerTickInfo(int tick) { if ( TickInfo != null) TickInfo(tick); }
 
         public delegate void SongLoadedDelegate(SongData song, string songName, string songFile);
         public static event SongLoadedDelegate SongLoaded;

@@ -125,7 +125,6 @@ namespace Orchestra
             if (verbose) { Console.WriteLine("\n\n****Beginning of Beat {0}****", beatCount); }
         }
 
-
         public double NoteDensity
         {
             get { return furthestEvent / (double)numEvents; }
@@ -236,7 +235,6 @@ namespace Orchestra
             allInstrumentsUsed.Sort();
             return mergeInstrChangeData();
         }
-
         /*
          * Merges the irresponsibly-generated instr-change data
          */
